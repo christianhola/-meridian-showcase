@@ -1,43 +1,140 @@
-<svg width="1400" height="520" viewBox="0 0 1400 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1600" height="620" viewBox="0 0 1600 620" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="520" gradientUnits="userSpaceOnUse">
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="620" gradientUnits="userSpaceOnUse">
       <stop stop-color="#000000"/>
-      <stop offset="0.48" stop-color="#061109"/>
+      <stop offset="0.44" stop-color="#061009"/>
       <stop offset="1" stop-color="#000000"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1048 246) rotate(151.5) scale(430 330)">
-      <stop stop-color="#00FF66" stop-opacity="0.28"/>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1260 250) rotate(148) scale(470 360)">
+      <stop stop-color="#00FF66" stop-opacity="0.30"/>
       <stop offset="1" stop-color="#00FF66" stop-opacity="0"/>
     </radialGradient>
-    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
-      <path d="M52 0H0V52" stroke="#44FF88" stroke-opacity="0.10"/>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(285 465) rotate(-18) scale(420 180)">
+      <stop stop-color="#00FF66" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#00FF66" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="screen" x1="946" y1="97" x2="1450" y2="488" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#121B15"/>
+      <stop offset="1" stop-color="#050706"/>
+    </linearGradient>
+    <linearGradient id="area" x1="1068" y1="375" x2="1365" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FF66" stop-opacity="0.03"/>
+      <stop offset="1" stop-color="#00FF66" stop-opacity="0.52"/>
+    </linearGradient>
+    <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M54 0H0V54" stroke="#50FF89" stroke-opacity="0.05"/>
     </pattern>
-    <filter id="blur" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="9"/>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="26" stdDeviation="28" flood-color="#000000" flood-opacity="0.82"/>
     </filter>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+    <clipPath id="clip">
+      <rect x="910" y="86" width="548" height="390" rx="30"/>
+    </clipPath>
   </defs>
-  <rect width="1400" height="520" rx="32" fill="url(#bg)"/>
-  <rect width="1400" height="520" rx="32" fill="url(#grid)"/>
-  <rect width="1400" height="520" rx="32" fill="url(#glow)"/>
 
-  <g transform="translate(1080 260)">
-    <circle r="126" stroke="#00FF66" stroke-opacity="0.22" stroke-width="2"/>
-    <circle r="84" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2"/>
-    <circle r="7" fill="#00FF66"/>
-    <circle r="16" fill="#00FF66" fill-opacity="0.34" filter="url(#blur)"/>
-    <line x1="0" y1="-84" x2="0" y2="84" stroke="#C7FFD9" stroke-opacity="0.70" stroke-width="2"/>
-    <path d="M-62 44C-45 -14 45 -14 62 44" stroke="#00FF66" stroke-width="4" stroke-linecap="round"/>
-    <path d="M-126 0H-84M84 0H126" stroke="#00FF66" stroke-opacity="0.45"/>
+  <rect width="1600" height="620" rx="36" fill="url(#bg)"/>
+  <rect width="1600" height="620" rx="36" fill="url(#grid)"/>
+  <rect width="1600" height="620" rx="36" fill="url(#glowA)"/>
+  <rect width="1600" height="620" rx="36" fill="url(#glowB)"/>
+  <path d="M0 518C294 440 536 558 792 492C1048 426 1294 486 1600 382V620H0V518Z" fill="#00FF66" fill-opacity="0.025"/>
+
+  <g>
+    <circle cx="102" cy="91" r="6" fill="#00FF66"/>
+    <circle cx="102" cy="91" r="18" fill="#00FF66" fill-opacity="0.23" filter="url(#glow)"/>
+    <text x="126" y="99" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="3">MERIDIAN PRODUCT SHOWCASE</text>
   </g>
 
-  <text x="88" y="188" fill="#F4FFF7" font-family="Inter, Arial, sans-serif" font-size="82" font-weight="700" letter-spacing="8">MERIDIAN</text>
-  <text x="92" y="244" fill="#00FF66" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="5">AI-NATIVE BUSINESS OPERATING SYSTEM</text>
-  <text x="92" y="310" fill="#B7C8BD" font-family="Inter, Arial, sans-serif" font-size="25">CRM · Work · Intelligence · Automations · Integrations</text>
+  <text x="96" y="222" fill="#F5FFF7" font-family="Inter, Arial, sans-serif" font-size="88" font-weight="780" letter-spacing="9">MERIDIAN</text>
+  <text x="101" y="281" fill="#63FF95" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="720" letter-spacing="5.4">AI-NATIVE BUSINESS OPERATING SYSTEM</text>
+  <text x="101" y="339" fill="#B2C1B7" font-family="Inter, Arial, sans-serif" font-size="25">CRM · Work · Intelligence · Automations · Integrations</text>
+  <text x="101" y="382" fill="#78867D" font-family="Inter, Arial, sans-serif" font-size="18">One workspace. Controlled execution. Real business context.</text>
 
-  <rect x="92" y="366" width="184" height="46" rx="23" fill="#00FF66" fill-opacity="0.10" stroke="#00FF66" stroke-opacity="0.62"/>
-  <circle cx="118" cy="389" r="6" fill="#00FF66"/>
-  <text x="136" y="397" fill="#E7FFEE" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">Active development</text>
+  <g>
+    <rect x="101" y="430" width="192" height="50" rx="25" fill="#00FF66" fill-opacity="0.11" stroke="#00FF66" stroke-opacity="0.55"/>
+    <circle cx="128" cy="455" r="6" fill="#00FF66"/>
+    <text x="147" y="462" fill="#E9FFF0" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="680">Active development</text>
 
-  <rect x="296" y="366" width="196" height="46" rx="23" fill="#FFFFFF" fill-opacity="0.03" stroke="#FFFFFF" stroke-opacity="0.13"/>
-  <text x="326" y="397" fill="#D5DED8" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">Built for modern teams</text>
+    <rect x="310" y="430" width="176" height="50" rx="25" fill="#FFFFFF" fill-opacity="0.035" stroke="#FFFFFF" stroke-opacity="0.11"/>
+    <text x="347" y="462" fill="#D3DDD6" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="650">B2B SaaS</text>
+
+    <rect x="503" y="430" width="212" height="50" rx="25" fill="#FFFFFF" fill-opacity="0.035" stroke="#FFFFFF" stroke-opacity="0.11"/>
+    <text x="542" y="462" fill="#D3DDD6" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="650">Secure multi-tenant</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="880" y="56" width="608" height="450" rx="38" fill="#020302" stroke="#FFFFFF" stroke-opacity="0.11" stroke-width="2"/>
+    <rect x="910" y="86" width="548" height="390" rx="30" fill="url(#screen)"/>
+    <g clip-path="url(#clip)">
+      <rect x="910" y="86" width="548" height="390" fill="#070A08"/>
+      <rect x="910" y="86" width="548" height="390" fill="url(#glowA)" opacity="0.72"/>
+
+      <rect x="910" y="86" width="116" height="390" fill="#050706"/>
+      <circle cx="946" cy="122" r="14" stroke="#00FF66" stroke-opacity="0.85" stroke-width="1.5"/>
+      <path d="M936 129C940 115 952 115 956 129" stroke="#00FF66" stroke-width="2" stroke-linecap="round"/>
+      <line x1="946" y1="108" x2="946" y2="136" stroke="#C1FFD4" stroke-opacity="0.72"/>
+      <text x="970" y="127" fill="#ECFFF2" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">Meridian</text>
+
+      <rect x="930" y="171" width="76" height="31" rx="10" fill="#00FF66" fill-opacity="0.12" stroke="#00FF66" stroke-opacity="0.22"/>
+      <circle cx="945" cy="186" r="4" fill="#00FF66"/>
+      <rect x="956" y="181" width="34" height="8" rx="4" fill="#E7FFEE" fill-opacity="0.82"/>
+
+      <circle cx="946" cy="226" r="4" fill="#FFFFFF" fill-opacity="0.23"/>
+      <rect x="958" y="222" width="39" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.13"/>
+      <circle cx="946" cy="259" r="4" fill="#FFFFFF" fill-opacity="0.23"/>
+      <rect x="958" y="255" width="45" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.13"/>
+      <circle cx="946" cy="292" r="4" fill="#FFFFFF" fill-opacity="0.23"/>
+      <rect x="958" y="288" width="32" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.13"/>
+      <circle cx="946" cy="325" r="4" fill="#FFFFFF" fill-opacity="0.23"/>
+      <rect x="958" y="321" width="41" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.13"/>
+      <circle cx="946" cy="358" r="4" fill="#FFFFFF" fill-opacity="0.23"/>
+      <rect x="958" y="354" width="35" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.13"/>
+
+      <circle cx="946" cy="438" r="15" fill="#00FF66" fill-opacity="0.10" stroke="#00FF66" stroke-opacity="0.25"/>
+      <rect x="971" y="432" width="36" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.17"/>
+
+      <text x="1060" y="126" fill="#F4FFF7" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="740">Business command center</text>
+      <text x="1060" y="150" fill="#88978E" font-family="Inter, Arial, sans-serif" font-size="11">Live workspace overview · AI-assisted operations</text>
+      <rect x="1376" y="107" width="56" height="26" rx="13" fill="#00FF66" fill-opacity="0.11" stroke="#00FF66" stroke-opacity="0.30"/>
+      <circle cx="1391" cy="120" r="4" fill="#00FF66"/>
+      <text x="1401" y="124" fill="#CFFFF0" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700">LIVE</text>
+
+      <rect x="1060" y="180" width="116" height="82" rx="16" fill="#FFFFFF" fill-opacity="0.035" stroke="#FFFFFF" stroke-opacity="0.08"/>
+      <text x="1076" y="204" fill="#85958B" font-family="Inter, Arial, sans-serif" font-size="9">REVENUE</text>
+      <text x="1076" y="238" fill="#F1FFF5" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="740">$48.2K</text>
+      <text x="1129" y="252" fill="#00FF66" font-family="Inter, Arial, sans-serif" font-size="9">+12.4%</text>
+
+      <rect x="1190" y="180" width="116" height="82" rx="16" fill="#FFFFFF" fill-opacity="0.035" stroke="#FFFFFF" stroke-opacity="0.08"/>
+      <text x="1206" y="204" fill="#85958B" font-family="Inter, Arial, sans-serif" font-size="9">ACTIVE DEALS</text>
+      <text x="1206" y="238" fill="#F1FFF5" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="740">24</text>
+      <text x="1245" y="252" fill="#00FF66" font-family="Inter, Arial, sans-serif" font-size="9">+18%</text>
+
+      <rect x="1320" y="180" width="116" height="82" rx="16" fill="#FFFFFF" fill-opacity="0.035" stroke="#FFFFFF" stroke-opacity="0.08"/>
+      <text x="1336" y="204" fill="#85958B" font-family="Inter, Arial, sans-serif" font-size="9">AI ACTIONS</text>
+      <text x="1336" y="238" fill="#F1FFF5" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="740">184</text>
+      <text x="1388" y="252" fill="#00FF66" font-family="Inter, Arial, sans-serif" font-size="9">TODAY</text>
+
+      <rect x="1060" y="278" width="246" height="162" rx="18" fill="#FFFFFF" fill-opacity="0.028" stroke="#FFFFFF" stroke-opacity="0.08"/>
+      <text x="1078" y="305" fill="#DDE9E1" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="660">Growth activity</text>
+      <line x1="1078" y1="404" x2="1288" y2="404" stroke="#FFFFFF" stroke-opacity="0.08"/>
+      <line x1="1078" y1="368" x2="1288" y2="368" stroke="#FFFFFF" stroke-opacity="0.05"/>
+      <line x1="1078" y1="332" x2="1288" y2="332" stroke="#FFFFFF" stroke-opacity="0.05"/>
+      <path d="M1080 395C1102 383 1116 388 1136 364C1153 344 1172 356 1189 337C1208 315 1227 328 1245 309C1260 292 1276 299 1288 286" stroke="#00FF66" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M1080 395C1102 383 1116 388 1136 364C1153 344 1172 356 1189 337C1208 315 1227 328 1245 309C1260 292 1276 299 1288 286V404H1080V395Z" fill="url(#area)"/>
+
+      <rect x="1320" y="278" width="116" height="162" rx="18" fill="#00FF66" fill-opacity="0.07" stroke="#00FF66" stroke-opacity="0.18"/>
+      <text x="1337" y="305" fill="#E0FFEA" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="670">AI Insight</text>
+      <circle cx="1345" cy="335" r="8" fill="#00FF66"/>
+      <rect x="1362" y="329" width="52" height="9" rx="4.5" fill="#FFFFFF" fill-opacity="0.24"/>
+      <rect x="1337" y="355" width="75" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.13"/>
+      <rect x="1337" y="370" width="64" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.10"/>
+      <rect x="1337" y="385" width="71" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.10"/>
+      <rect x="1337" y="413" width="81" height="11" rx="5.5" fill="#00FF66" fill-opacity="0.25"/>
+    </g>
+  </g>
+
+  <rect x="1088" y="506" width="192" height="10" rx="5" fill="#111713"/>
+  <rect x="1042" y="516" width="284" height="8" rx="4" fill="#070A08"/>
 </svg>
