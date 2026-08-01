@@ -3,8 +3,8 @@
 
   <br />
 
+  [![Open Meridian](https://img.shields.io/badge/OPEN-MERIDIAN-00FF66?style=for-the-badge&labelColor=050505)](https://meridian-completo.vercel.app)
   [![Status](https://img.shields.io/badge/STATUS-ACTIVE%20DEVELOPMENT-00FF66?style=for-the-badge&labelColor=050505)](#estado-del-producto)
-  [![Product](https://img.shields.io/badge/PRODUCT-B2B%20SAAS-00FF66?style=for-the-badge&labelColor=050505)](#qué-es-meridian)
   [![Architecture](https://img.shields.io/badge/ARCHITECTURE-MULTI--TENANT-00FF66?style=for-the-badge&labelColor=050505)](#arquitectura)
 
   <h3>Un espacio operativo unificado para trabajo, clientes, datos e inteligencia artificial.</h3>
@@ -83,28 +83,31 @@ La plataforma se diseña como un sistema **multi-tenant**: cada operación sensi
 
 <div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js-16.2.10-050505?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-19-050505?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-050505?style=for-the-badge&logo=typescript&logoColor=3178C6)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-050505?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4)
-![Prisma](https://img.shields.io/badge/Prisma-5-050505?style=for-the-badge&logo=prisma&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-050505?style=for-the-badge&logo=postgresql&logoColor=4169E1)
-![Supabase](https://img.shields.io/badge/Supabase-Data%20Platform-050505?style=for-the-badge&logo=supabase&logoColor=3FCF8E)
-![Vercel](https://img.shields.io/badge/Vercel-Deployment-050505?style=for-the-badge&logo=vercel&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Containers-050505?style=for-the-badge&logo=docker&logoColor=2496ED)
+[![Next.js](https://img.shields.io/badge/Next.js-16.2.10-050505?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-050505?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-050505?style=for-the-badge&logo=typescript&logoColor=3178C6)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-050505?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5-050505?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-050505?style=for-the-badge&logo=postgresql&logoColor=4169E1)](https://www.postgresql.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Data%20Platform-050505?style=for-the-badge&logo=supabase&logoColor=3FCF8E)](https://supabase.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployment-050505?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![Docker](https://img.shields.io/badge/Docker-Containers-050505?style=for-the-badge&logo=docker&logoColor=2496ED)](https://www.docker.com/)
 
 </div>
 
-| Capa | Tecnología | Responsabilidad |
-|---|---|---|
-| Aplicación web | Next.js + React | Interfaz, navegación, renderizado y rutas del producto |
-| Lenguaje | TypeScript | Tipado, contratos y mantenibilidad |
-| Diseño | Tailwind CSS | Sistema visual responsive y tema OLED |
-| Acceso a datos | Prisma ORM | Modelos, consultas y migraciones |
-| Base de datos | PostgreSQL | Persistencia relacional principal |
-| Plataforma de datos | Supabase | PostgreSQL administrado y servicios asociados |
-| Despliegue | Vercel | Construcción y publicación de la aplicación web |
-| IA | AI Gateway | Enrutamiento controlado hacia proveedores externos |
+> Cada insignia es un botón real que abre la documentación o la página oficial de la tecnología.
+
+| Capa | Tecnología | Responsabilidad | Sitio oficial |
+|---|---|---|---|
+| Aplicación web | Next.js + React | Interfaz, navegación, renderizado y rutas | [Next.js](https://nextjs.org/) · [React](https://react.dev/) |
+| Lenguaje | TypeScript | Tipado, contratos y mantenibilidad | [typescriptlang.org](https://www.typescriptlang.org/) |
+| Diseño | Tailwind CSS | Sistema visual responsive y tema OLED | [tailwindcss.com](https://tailwindcss.com/) |
+| Acceso a datos | Prisma ORM | Modelos, consultas y migraciones | [prisma.io](https://www.prisma.io/) |
+| Base de datos | PostgreSQL | Persistencia relacional principal | [postgresql.org](https://www.postgresql.org/) |
+| Plataforma de datos | Supabase | PostgreSQL administrado y servicios asociados | [supabase.com](https://supabase.com/) |
+| Despliegue | Vercel | Construcción y publicación de la aplicación web | [vercel.com](https://vercel.com/) |
+| Contenedores | Docker | Entornos reproducibles y servicios locales | [docker.com](https://www.docker.com/) |
+| IA | AI Gateway | Enrutamiento controlado hacia proveedores externos | Arquitectura propia de Meridian |
 
 ## Seguridad por diseño
 
