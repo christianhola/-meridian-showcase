@@ -1,0 +1,72 @@
+<svg width="1400" height="640" viewBox="0 0 1400 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#010201"/>
+      <stop offset="0.5" stop-color="#07110B"/>
+      <stop offset="1" stop-color="#010201"/>
+    </linearGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" stroke="#00FF66" stroke-opacity="0.07"/>
+    </pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#00FF66"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="640" rx="30" fill="url(#bg)"/>
+  <rect width="1400" height="640" rx="30" fill="url(#grid)"/>
+
+  <text x="70" y="76" fill="#F3FFF6" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700">Arquitectura de alto nivel</text>
+  <text x="70" y="112" fill="#91A99A" font-family="Inter, Arial, sans-serif" font-size="18">Flujo principal de Meridian · sin secretos ni detalles internos sensibles</text>
+
+  <g>
+    <rect x="70" y="220" width="210" height="138" rx="22" fill="#08120C" stroke="#00FF66" stroke-opacity="0.40"/>
+    <circle cx="112" cy="262" r="15" fill="#00FF66" fill-opacity="0.14" stroke="#00FF66"/>
+    <text x="142" y="270" fill="#F3FFF6" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">Usuario</text>
+    <text x="98" y="312" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">Web · móvil · equipo</text>
+  </g>
+
+  <g>
+    <rect x="350" y="190" width="250" height="198" rx="22" fill="#08120C" stroke="#00FF66" stroke-opacity="0.50"/>
+    <text x="382" y="240" fill="#F3FFF6" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Next.js App</text>
+    <text x="382" y="278" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">UI · Auth · Routes</text>
+    <text x="382" y="306" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">CRM · Tasks · Notes</text>
+    <text x="382" y="334" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">Analytics · Billing</text>
+  </g>
+
+  <g>
+    <rect x="680" y="166" width="292" height="246" rx="22" fill="#08120C" stroke="#00FF66" stroke-opacity="0.70"/>
+    <text x="714" y="220" fill="#F3FFF6" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Application Layer</text>
+    <text x="714" y="262" fill="#00FF66" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700">API + AI Gateway</text>
+    <text x="714" y="300" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">Tools con permisos</text>
+    <text x="714" y="328" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">Validación de payloads</text>
+    <text x="714" y="356" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">Aislamiento por workspaceId</text>
+  </g>
+
+  <g>
+    <rect x="1050" y="190" width="280" height="198" rx="22" fill="#08120C" stroke="#00FF66" stroke-opacity="0.50"/>
+    <text x="1084" y="240" fill="#F3FFF6" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Data Layer</text>
+    <text x="1084" y="278" fill="#00FF66" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700">Prisma ORM</text>
+    <text x="1084" y="312" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">PostgreSQL</text>
+    <text x="1084" y="340" fill="#AFC0B5" font-family="Inter, Arial, sans-serif" font-size="16">Supabase</text>
+  </g>
+
+  <path d="M280 289H336" stroke="#00FF66" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M600 289H666" stroke="#00FF66" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M972 289H1036" stroke="#00FF66" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="350" y="480" width="622" height="92" rx="20" fill="#050A07" stroke="#FFFFFF" stroke-opacity="0.12"/>
+    <text x="384" y="520" fill="#F3FFF6" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="700">Proveedores externos autorizados</text>
+    <text x="384" y="551" fill="#9FB0A5" font-family="Inter, Arial, sans-serif" font-size="16">IA · OAuth · APIs · Webhooks · Integraciones empresariales</text>
+  </g>
+
+  <path d="M826 412V466" stroke="#00FF66" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <circle cx="1310" cy="70" r="7" fill="#00FF66" filter="url(#glow)"/>
+  <text x="1244" y="78" fill="#C9D8CE" font-family="Inter, Arial, sans-serif" font-size="15">MERIDIAN</text>
+</svg>
