@@ -1,0 +1,43 @@
+<svg width="1400" height="520" viewBox="0 0 1400 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#000000"/>
+      <stop offset="0.48" stop-color="#061109"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1048 246) rotate(151.5) scale(430 330)">
+      <stop stop-color="#00FF66" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#00FF66" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
+      <path d="M52 0H0V52" stroke="#44FF88" stroke-opacity="0.10"/>
+    </pattern>
+    <filter id="blur" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  <rect width="1400" height="520" rx="32" fill="url(#bg)"/>
+  <rect width="1400" height="520" rx="32" fill="url(#grid)"/>
+  <rect width="1400" height="520" rx="32" fill="url(#glow)"/>
+
+  <g transform="translate(1080 260)">
+    <circle r="126" stroke="#00FF66" stroke-opacity="0.22" stroke-width="2"/>
+    <circle r="84" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2"/>
+    <circle r="7" fill="#00FF66"/>
+    <circle r="16" fill="#00FF66" fill-opacity="0.34" filter="url(#blur)"/>
+    <line x1="0" y1="-84" x2="0" y2="84" stroke="#C7FFD9" stroke-opacity="0.70" stroke-width="2"/>
+    <path d="M-62 44C-45 -14 45 -14 62 44" stroke="#00FF66" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-126 0H-84M84 0H126" stroke="#00FF66" stroke-opacity="0.45"/>
+  </g>
+
+  <text x="88" y="188" fill="#F4FFF7" font-family="Inter, Arial, sans-serif" font-size="82" font-weight="700" letter-spacing="8">MERIDIAN</text>
+  <text x="92" y="244" fill="#00FF66" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="5">AI-NATIVE BUSINESS OPERATING SYSTEM</text>
+  <text x="92" y="310" fill="#B7C8BD" font-family="Inter, Arial, sans-serif" font-size="25">CRM · Work · Intelligence · Automations · Integrations</text>
+
+  <rect x="92" y="366" width="184" height="46" rx="23" fill="#00FF66" fill-opacity="0.10" stroke="#00FF66" stroke-opacity="0.62"/>
+  <circle cx="118" cy="389" r="6" fill="#00FF66"/>
+  <text x="136" y="397" fill="#E7FFEE" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">Active development</text>
+
+  <rect x="296" y="366" width="196" height="46" rx="23" fill="#FFFFFF" fill-opacity="0.03" stroke="#FFFFFF" stroke-opacity="0.13"/>
+  <text x="326" y="397" fill="#D5DED8" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">Built for modern teams</text>
+</svg>
