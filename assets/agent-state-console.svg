@@ -1,0 +1,92 @@
+<svg width="1400" height="360" viewBox="0 0 1400 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="360" rx="22" fill="#090B0A"/>
+  <rect x="1" y="1" width="1398" height="358" rx="21" stroke="#30363D" stroke-width="2"/>
+  <text x="32" y="44" fill="#F5F7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="700">MERIDIAN AGENT STATES // PIXEL INTERFACE CONTRACT</text>
+  <text x="1128" y="44" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">IDLE · THINKING · SUCCESS · ERROR</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <g transform="translate(32 72)">
+      <rect width="314" height="248" rx="10" fill="#0D1110" stroke="#30363D"/>
+      <text x="18" y="30" fill="#8B949E" font-size="12">STATE 01</text>
+      <text x="18" y="56" fill="#F5F7F6" font-size="16" font-weight="700">IDLE</text>
+      <g transform="translate(78 78)">
+        <rect x="24" y="0" width="96" height="16" fill="#F5F7F6"/>
+        <rect x="8" y="16" width="128" height="16" fill="#F5F7F6"/>
+        <rect x="0" y="32" width="144" height="80" fill="#F5F7F6"/>
+        <rect x="16" y="48" width="112" height="48" fill="#090B0A"/>
+        <rect x="40" y="64" width="16" height="16" fill="#F5F7F6"/>
+        <rect x="88" y="64" width="16" height="16" fill="#F5F7F6"/>
+        <rect x="56" y="88" width="32" height="8" fill="#8B949E"/>
+        <rect x="40" y="112" width="64" height="16" fill="#30363D"/>
+      </g>
+      <text x="18" y="224" fill="#8B949E" font-size="12">awaiting context</text>
+    </g>
+
+    <g transform="translate(370 72)">
+      <rect width="314" height="248" rx="10" fill="#0D1110" stroke="#30363D"/>
+      <text x="18" y="30" fill="#8B949E" font-size="12">STATE 02</text>
+      <text x="18" y="56" fill="#F5F7F6" font-size="16" font-weight="700">THINKING</text>
+      <g transform="translate(78 78)">
+        <rect x="24" y="0" width="96" height="16" fill="#F5F7F6"/>
+        <rect x="8" y="16" width="128" height="16" fill="#F5F7F6"/>
+        <rect x="0" y="32" width="144" height="80" fill="#F5F7F6"/>
+        <rect x="16" y="48" width="112" height="48" fill="#090B0A"/>
+        <rect x="32" y="64" width="24" height="8" fill="#F5F7F6"/>
+        <rect x="88" y="64" width="24" height="8" fill="#F5F7F6"/>
+        <rect x="56" y="88" width="32" height="8" fill="#8B949E"/>
+        <rect x="40" y="112" width="64" height="16" fill="#30363D"/>
+        <rect x="148" y="20" width="8" height="8" fill="#8B949E"/>
+        <rect x="164" y="8" width="8" height="8" fill="#8B949E"/>
+        <rect x="180" y="20" width="8" height="8" fill="#8B949E"/>
+      </g>
+      <text x="18" y="224" fill="#8B949E" font-size="12">planning subagents</text>
+    </g>
+
+    <g transform="translate(708 72)">
+      <rect width="314" height="248" rx="10" fill="#0D1110" stroke="#30363D"/>
+      <text x="18" y="30" fill="#8B949E" font-size="12">STATE 03</text>
+      <text x="18" y="56" fill="#F5F7F6" font-size="16" font-weight="700">SUCCESS</text>
+      <g transform="translate(78 78)">
+        <rect x="24" y="0" width="96" height="16" fill="#F5F7F6"/>
+        <rect x="8" y="16" width="128" height="16" fill="#F5F7F6"/>
+        <rect x="0" y="32" width="144" height="80" fill="#F5F7F6"/>
+        <rect x="16" y="48" width="112" height="48" fill="#090B0A"/>
+        <rect x="40" y="64" width="16" height="16" fill="#F5F7F6"/>
+        <rect x="88" y="64" width="16" height="16" fill="#F5F7F6"/>
+        <rect x="48" y="84" width="8" height="8" fill="#8B949E"/>
+        <rect x="56" y="92" width="32" height="8" fill="#8B949E"/>
+        <rect x="88" y="84" width="8" height="8" fill="#8B949E"/>
+        <rect x="40" y="112" width="64" height="16" fill="#30363D"/>
+        <rect x="152" y="40" width="12" height="28" fill="#8B949E"/>
+        <rect x="164" y="56" width="12" height="12" fill="#8B949E"/>
+        <rect x="176" y="44" width="12" height="12" fill="#8B949E"/>
+      </g>
+      <text x="18" y="224" fill="#8B949E" font-size="12">output verified</text>
+    </g>
+
+    <g transform="translate(1046 72)">
+      <rect width="322" height="248" rx="10" fill="#0D1110" stroke="#30363D"/>
+      <text x="18" y="30" fill="#8B949E" font-size="12">STATE 04</text>
+      <text x="18" y="56" fill="#F5F7F6" font-size="16" font-weight="700">ERROR</text>
+      <g transform="translate(82 78)">
+        <rect x="24" y="0" width="96" height="16" fill="#F5F7F6"/>
+        <rect x="8" y="16" width="128" height="16" fill="#F5F7F6"/>
+        <rect x="0" y="32" width="144" height="80" fill="#F5F7F6"/>
+        <rect x="16" y="48" width="112" height="48" fill="#090B0A"/>
+        <rect x="32" y="64" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="48" y="72" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="48" y="64" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="32" y="72" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="88" y="64" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="104" y="72" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="104" y="64" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="88" y="72" width="8" height="8" fill="#F5F7F6"/>
+        <rect x="56" y="92" width="32" height="8" fill="#8B949E"/>
+        <rect x="40" y="112" width="64" height="16" fill="#30363D"/>
+        <rect x="152" y="24" width="36" height="8" fill="#8B949E"/>
+        <rect x="160" y="40" width="20" height="8" fill="#8B949E"/>
+      </g>
+      <text x="18" y="224" fill="#8B949E" font-size="12">blocked safely · retry available</text>
+    </g>
+  </g>
+</svg>
