@@ -1,0 +1,115 @@
+<svg width="1600" height="760" viewBox="0 0 1600 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="760" rx="28" fill="#080A09"/>
+  <rect x="1" y="1" width="1598" height="758" rx="27" stroke="#30363D" stroke-width="2"/>
+
+  <g opacity="0.18" stroke="#30363D">
+    <path d="M0 64H1600M0 128H1600M0 192H1600M0 256H1600M0 320H1600M0 384H1600M0 448H1600M0 512H1600M0 576H1600M0 640H1600M0 704H1600"/>
+    <path d="M64 0V760M128 0V760M192 0V760M256 0V760M320 0V760M384 0V760M448 0V760M512 0V760M576 0V760M640 0V760M704 0V760M768 0V760M832 0V760M896 0V760M960 0V760M1024 0V760M1088 0V760M1152 0V760M1216 0V760M1280 0V760M1344 0V760M1408 0V760M1472 0V760M1536 0V760"/>
+  </g>
+
+  <rect x="32" y="28" width="1536" height="58" rx="8" fill="#0D1110" stroke="#30363D"/>
+  <rect x="52" y="50" width="10" height="10" fill="#F5F7F6"/>
+  <rect x="70" y="50" width="10" height="10" fill="#8B949E"/>
+  <rect x="88" y="50" width="10" height="10" fill="#30363D"/>
+  <text x="124" y="64" fill="#F5F7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20" font-weight="700">MERIDIAN ECOSYSTEM HUB // SPATIAL B2B OPERATING LAYER</text>
+  <text x="1334" y="64" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">BUILD 2026.08</text>
+
+  <rect x="32" y="108" width="410" height="610" rx="12" fill="#0D1110" stroke="#30363D"/>
+  <text x="56" y="144" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">01 / ORIGIN</text>
+  <text x="56" y="186" fill="#F5F7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="32" font-weight="800">MERIDIAN</text>
+  <text x="56" y="216" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">ONE WORKSPACE.</text>
+  <text x="56" y="240" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">MULTIPLE AGENTS.</text>
+  <text x="56" y="264" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">CONTROLLED EXECUTION.</text>
+
+  <g transform="translate(100 310)">
+    <rect x="24" y="0" width="112" height="16" fill="#F5F7F6"/>
+    <rect x="8" y="16" width="144" height="16" fill="#F5F7F6"/>
+    <rect x="0" y="32" width="160" height="96" fill="#F5F7F6"/>
+    <rect x="16" y="48" width="128" height="64" fill="#080A09"/>
+    <rect x="40" y="64" width="16" height="16" fill="#F5F7F6"/>
+    <rect x="104" y="64" width="16" height="16" fill="#F5F7F6"/>
+    <rect x="64" y="88" width="32" height="8" fill="#8B949E"/>
+    <rect x="40" y="128" width="80" height="16" fill="#F5F7F6"/>
+    <rect x="24" y="144" width="112" height="48" fill="#30363D"/>
+    <rect x="8" y="152" width="16" height="40" fill="#8B949E"/>
+    <rect x="136" y="152" width="16" height="40" fill="#8B949E"/>
+    <rect x="40" y="192" width="24" height="24" fill="#F5F7F6"/>
+    <rect x="96" y="192" width="24" height="24" fill="#F5F7F6"/>
+  </g>
+
+  <text x="280" y="344" fill="#F5F7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" font-weight="700">(o_o)</text>
+  <text x="280" y="374" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">MERIDIAN READY.</text>
+  <text x="280" y="398" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">AWAITING CONTEXT.</text>
+
+  <rect x="56" y="560" width="330" height="94" rx="6" fill="#090B0A" stroke="#30363D"/>
+  <text x="72" y="588" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">PRINCIPAL ARCHITECT</text>
+  <text x="72" y="618" fill="#F5F7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" font-weight="700">CHRISTIAN JUNIOR DE JESÚS</text>
+  <text x="72" y="640" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">SANTO DOMINGO // DOMINICAN REPUBLIC</text>
+
+  <rect x="466" y="108" width="1102" height="610" rx="12" fill="#0D1110" stroke="#30363D"/>
+  <text x="490" y="144" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">02 / EXECUTION GRAPH</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <rect x="500" y="176" width="220" height="116" rx="8" fill="#101412" stroke="#30363D"/>
+    <text x="520" y="204" fill="#8B949E" font-size="12">INPUT LAYER</text>
+    <text x="520" y="236" fill="#F5F7F6" font-size="18" font-weight="700">BLOCK EDITOR</text>
+    <text x="520" y="264" fill="#8B949E" font-size="13">docs · tasks · CRM · files</text>
+
+    <rect x="790" y="176" width="250" height="116" rx="8" fill="#101412" stroke="#30363D"/>
+    <text x="810" y="204" fill="#8B949E" font-size="12">COGNITIVE LAYER</text>
+    <text x="810" y="236" fill="#F5F7F6" font-size="18" font-weight="700">AGENT ORCHESTRATOR</text>
+    <text x="810" y="264" fill="#8B949E" font-size="13">plan · delegate · verify</text>
+
+    <rect x="1110" y="176" width="200" height="116" rx="8" fill="#101412" stroke="#30363D"/>
+    <text x="1130" y="204" fill="#8B949E" font-size="12">TOOL LAYER</text>
+    <text x="1130" y="236" fill="#F5F7F6" font-size="18" font-weight="700">MCP + APIS</text>
+    <text x="1130" y="264" fill="#8B949E" font-size="13">Notion · GitHub · Slack</text>
+
+    <rect x="1374" y="176" width="164" height="116" rx="8" fill="#101412" stroke="#30363D"/>
+    <text x="1394" y="204" fill="#8B949E" font-size="12">OUTPUT</text>
+    <text x="1394" y="236" fill="#F5F7F6" font-size="18" font-weight="700">RENDER</text>
+    <text x="1394" y="264" fill="#8B949E" font-size="13">actions · templates</text>
+  </g>
+
+  <path d="M720 234H790M1040 234H1110M1310 234H1374" stroke="#8B949E" stroke-width="2"/>
+  <path d="M778 228L790 234L778 240M1098 228L1110 234L1098 240M1362 228L1374 234L1362 240" stroke="#8B949E" stroke-width="2" fill="none"/>
+
+  <rect x="500" y="330" width="1038" height="156" rx="8" fill="#090B0A" stroke="#30363D"/>
+  <text x="520" y="362" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">AGENT TELEMETRY // VISUAL CONTRACT</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <rect x="520" y="388" width="220" height="70" rx="6" fill="#101412" stroke="#30363D"/>
+    <text x="536" y="414" fill="#F5F7F6" font-size="14" font-weight="700">ORCHESTRATOR</text>
+    <text x="536" y="440" fill="#8B949E" font-size="12">thinking · 3 subagents</text>
+
+    <rect x="760" y="388" width="220" height="70" rx="6" fill="#101412" stroke="#30363D"/>
+    <text x="776" y="414" fill="#F5F7F6" font-size="14" font-weight="700">DESIGN AGENT</text>
+    <text x="776" y="440" fill="#8B949E" font-size="12">rendering · responsive UI</text>
+
+    <rect x="1000" y="388" width="220" height="70" rx="6" fill="#101412" stroke="#30363D"/>
+    <text x="1016" y="414" fill="#F5F7F6" font-size="14" font-weight="700">DATA AGENT</text>
+    <text x="1016" y="440" fill="#8B949E" font-size="12">waiting · scoped by workspace</text>
+
+    <rect x="1240" y="388" width="278" height="70" rx="6" fill="#101412" stroke="#30363D"/>
+    <text x="1256" y="414" fill="#F5F7F6" font-size="14" font-weight="700">VERIFICATION AGENT</text>
+    <text x="1256" y="440" fill="#8B949E" font-size="12">checking · permissions + output</text>
+  </g>
+
+  <text x="490" y="530" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">03 / TECHNICAL VAULT</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <rect x="500" y="554" width="300" height="122" rx="8" fill="#101412" stroke="#30363D"/>
+    <text x="520" y="582" fill="#8B949E" font-size="12">AUTHENTICATION</text>
+    <text x="520" y="612" fill="#F5F7F6" font-size="16" font-weight="700">NEXTAUTH + PRISMA</text>
+    <text x="520" y="638" fill="#8B949E" font-size="12">JWT sessions · bcrypt · workspace scope</text>
+
+    <rect x="820" y="554" width="300" height="122" rx="8" fill="#101412" stroke="#30363D"/>
+    <text x="840" y="582" fill="#8B949E" font-size="12">DATA PLANE</text>
+    <text x="840" y="612" fill="#F5F7F6" font-size="16" font-weight="700">PRISMA + POSTGRES</text>
+    <text x="840" y="638" fill="#8B949E" font-size="12">Supabase-hosted database · typed access</text>
+
+    <rect x="1140" y="554" width="378" height="122" rx="8" fill="#101412" stroke="#30363D"/>
+    <text x="1160" y="582" fill="#8B949E" font-size="12">DELIVERY + COMMUNICATIONS</text>
+    <text x="1160" y="612" fill="#F5F7F6" font-size="16" font-weight="700">VERCEL + RESEND CONTRACT</text>
+    <text x="1160" y="638" fill="#8B949E" font-size="12">Vercel active · Resend documented as target layer</text>
+  </g>
+</svg>
