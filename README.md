@@ -7,6 +7,7 @@
   [![Founder](https://img.shields.io/badge/PRINCIPAL%20ARCHITECT-CHRISTIAN%20DE%20JESÚS-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christiandejesus320-droid)
   [![Design](https://img.shields.io/badge/EXPLORE-MERIDIAN%20DESIGN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christiandejesus320-droid/Meridian-Design-2v1)
   [![Code Agent](https://img.shields.io/badge/READ-CODE%20AGENT-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-CODE-AGENT.md)
+  [![Semantic Routing](https://img.shields.io/badge/READ-SEMANTIC%20ROUTING%20%2B%20MCP-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](./docs/SEMANTIC-ROUTING-MCP.md)
   [![ElevenLabs Voice](https://img.shields.io/badge/VOICE-ELEVENLABS-FFFFFF?style=for-the-badge&logo=elevenlabs&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-VOICE-ENGINE.md)
 
   <h3>Contexto empresarial convertido en decisiones, agentes, herramientas y ejecución controlada.</h3>
@@ -208,7 +209,87 @@ Documentación completa: [`docs/MERIDIAN-VOICE-ENGINE.md`](./docs/MERIDIAN-VOICE
 
 ---
 
-## 05 / MÓDULOS DEL SISTEMA
+## 05 / THE LIBRARIAN — SEMANTIC ROUTING + MCP
+
+<div align="center">
+  <img src="./assets/librarian-semantic-routing.svg" width="100%" alt="Meridian Librarian semantic routing architecture with skill index, workers and MCP server" />
+</div>
+
+> **Construyendo Meridian: el sistema operativo espacial B2B impulsado por orquestación multiagente y Model Context Protocol.**
+
+Meridian no se diseña como un wrapper que inyecta todas sus skills dentro de un único prompt. Su dirección arquitectónica es un sistema cognitivo distribuido con selección semántica, carga bajo demanda y ejecución gobernada por políticas.
+
+### El paradigma del Bibliotecario
+
+El orquestador no memoriza todos los libros. Primero lee el catálogo:
+
+```text
+name · description · version · permissions · cost · risk
+```
+
+Después clasifica la intención, selecciona la skill adecuada y solo entonces carga las instrucciones y referencias necesarias.
+
+```text
+USER INTENT
+    ↓
+SEMANTIC ROUTER
+    ↓
+SKILL INDEX / METADATA
+    ↓
+POLICY + PERMISSION CHECK
+    ↓
+LAZY SKILL LOADER
+    ↓
+SPECIALIZED WORKER
+    ↓
+MCP TOOL PROXY
+    ↓
+VERIFICATION
+    ↓
+PREVIEW → APPROVAL → EXECUTION
+```
+
+Este enfoque busca reducir saturación de contexto, consumo de tokens y conflictos entre instrucciones. No garantiza cero alucinaciones ni precisión absoluta; por eso el sistema exige evidencia, verificación y límites explícitos.
+
+### Workers bajo demanda
+
+```text
+PRIMARY ORCHESTRATOR
+    ├── CODE WORKER
+    ├── DESIGN WORKER
+    ├── RESEARCH WORKER
+    ├── DATA WORKER
+    ├── VOICE WORKER
+    └── VERIFICATION WORKER
+```
+
+Los agentes de código, búsqueda, datos y contexto espacial solo reciben la tarea, tools y permisos indispensables. Terminal y filesystem deben permanecer dentro de un sandbox, una rama y rutas autorizadas.
+
+### MCP como tejido de ejecución
+
+El servidor MCP actúa como proxy y control:
+
+```text
+AGENT TOOL REQUEST
+    ↓
+IDENTITY + WORKSPACE + ALLOWLIST + APPROVAL
+    ↓
+SERVER-SIDE PROVIDER CALL
+    ↓
+NORMALIZED RESULT + AUDIT METADATA
+```
+
+Las API keys de Supabase, Resend, ElevenLabs y proveedores LLM permanecen en el servidor. El patrón preferido es no entregarlas en texto plano a los workers. Cuando una delegación sea inevitable, debe utilizar capacidades o tokens de corta duración, scope mínimo y revocación posible.
+
+### Enrutamiento agnóstico de modelos
+
+Meridian podrá seleccionar modelos por capacidad, latencia, coste, ventana de contexto, privacidad, tools y tipo de tarea. Ser agnóstico requiere adaptadores y contratos comprobables; no significa que cualquier modelo futuro funcionará automáticamente sin integración.
+
+Documentación completa: [`docs/SEMANTIC-ROUTING-MCP.md`](./docs/SEMANTIC-ROUTING-MCP.md).
+
+---
+
+## 06 / MÓDULOS DEL SISTEMA
 
 <table>
   <tr>
@@ -243,7 +324,7 @@ Documentación completa: [`docs/MERIDIAN-VOICE-ENGINE.md`](./docs/MERIDIAN-VOICE
 
 ---
 
-## 06 / LA BÓVEDA TÉCNICA
+## 07 / LA BÓVEDA TÉCNICA
 
 <table>
   <tr>
@@ -276,7 +357,7 @@ Documentación detallada: [`docs/TECHNICAL-VAULT.md`](./docs/TECHNICAL-VAULT.md)
 
 ---
 
-## 07 / ARQUITECTURA
+## 08 / ARQUITECTURA
 
 <div align="center">
   <img src="./assets/architecture.svg" width="100%" alt="Arquitectura de alto nivel de Meridian" />
@@ -300,7 +381,7 @@ Meridian se diseña como un sistema **multi-tenant**. Cada operación sensible d
 
 ---
 
-## 08 / GUÍA DE INTERFAZ
+## 09 / GUÍA DE INTERFAZ
 
 La experiencia combina productividad densa con profundidad espacial controlada.
 
@@ -326,7 +407,7 @@ Consulta [`docs/INTERFACE-GUIDE.md`](./docs/INTERFACE-GUIDE.md).
 
 ---
 
-## 09 / STACK TECNOLÓGICO
+## 10 / STACK TECNOLÓGICO
 
 <div align="center">
 
@@ -352,11 +433,12 @@ Consulta [`docs/INTERFACE-GUIDE.md`](./docs/INTERFACE-GUIDE.md).
 | Database | PostgreSQL on Supabase | Relational persistence |
 | Deployment | Vercel | Build and delivery |
 | Intelligence | AI Gateway + Skills | Controlled provider and tool orchestration |
+| Tool protocol | MCP | Tool discovery, policy and normalized execution contract |
 | Voice target | ElevenLabs | User-controlled speech output and conversation layer |
 
 ---
 
-## 10 / ESTADO DEL PRODUCTO
+## 11 / ESTADO DEL PRODUCTO
 
 | Área | Estado |
 |---|---|
@@ -366,6 +448,7 @@ Consulta [`docs/INTERFACE-GUIDE.md`](./docs/INTERFACE-GUIDE.md).
 | Multi-tenancy y permisos | `PROGRESSIVE HARDENING` |
 | Integraciones OAuth/API | `PROVIDER BY PROVIDER` |
 | Meridian Code Agent | `ARCHITECTURE + EXPERIENCE IN DEVELOPMENT` |
+| Semantic Router / Librarian | `TARGET ARCHITECTURE + DOCUMENTED CONTRACT` |
 | Meridian Voice Engine / ElevenLabs | `IN DEVELOPMENT / NOT VERIFIED LIVE` |
 | Telemetría visual de agentes | `DOCUMENTED CONTRACT` |
 | Resend communications layer | `TARGET / NOT VERIFIED LIVE` |
@@ -375,13 +458,14 @@ Los estados describen la dirección y el avance general; no garantizan disponibi
 
 ---
 
-## 11 / ESTRUCTURA DEL HUB
+## 12 / ESTRUCTURA DEL HUB
 
 ```text
 -meridian-showcase/
 ├── assets/
 │   ├── agent-state-console.svg
 │   ├── architecture.svg
+│   ├── librarian-semantic-routing.svg
 │   ├── meridian-banner.svg
 │   ├── meridian-code-voice.svg
 │   └── meridian-ecosystem-hub.svg
@@ -392,7 +476,10 @@ Los estados describen la dirección y el avance general; no garantizan disponibi
 │   ├── MERIDIAN-CODE-AGENT.md
 │   ├── MERIDIAN-VOICE-ENGINE.md
 │   ├── ROADMAP.md
+│   ├── SEMANTIC-ROUTING-MCP.md
 │   └── TECHNICAL-VAULT.md
+├── .github/
+│   └── ISSUE_TEMPLATE/
 ├── .gitignore
 ├── CONTRIBUTING.md
 ├── README.md
@@ -409,10 +496,12 @@ La colaboración pública se documenta en [`CONTRIBUTING.md`](./CONTRIBUTING.md)
 
 ### MERIDIAN
 
-`BLOCKS → CONTEXT → AGENTS → TOOLS → VERIFIED EXECUTION`
+`METADATA FIRST → CONTEXT ON DEMAND → TOOLS BY PERMISSION → OUTPUTS VERIFIED`
 
 **Christian Junior de Jesús**  
 Founder & Principal Architect  
 Santo Domingo, Dominican Republic
+
+*Building the operating layer of tomorrow. Ecosystem documentation: online.*
 
 </div>
