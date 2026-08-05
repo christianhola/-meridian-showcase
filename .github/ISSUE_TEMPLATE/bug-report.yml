@@ -1,0 +1,39 @@
+name: Documentation bug
+description: Report incorrect, broken, or misleading public documentation
+title: "docs: "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por ayudar a mejorar Meridian Ecosystem Hub. No publiques secretos, credenciales o información privada.
+  - type: input
+    id: location
+    attributes:
+      label: Archivo o sección
+      description: Indica la ruta, encabezado o enlace afectado.
+      placeholder: docs/MERIDIAN-CODE-AGENT.md — Eventos en tiempo real
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema observado
+      description: Explica qué está incorrecto, roto o poco claro.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Corrección esperada
+      description: Describe el resultado correcto o una propuesta concreta.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Confirmación
+      options:
+        - label: Confirmo que este reporte no incluye secretos, tokens, credenciales ni datos privados.
+          required: true
