@@ -1,11 +1,13 @@
 <div align="center">
-  <img src="./assets/meridian-ecosystem-hub.svg" width="100%" alt="Meridian Ecosystem Hub — spatial B2B operating layer" />
+  <img src="./assets/meridian-code-voice.svg" width="100%" alt="Meridian Code Agent and ElevenLabs Voice Engine with red pixel agent MERI" />
 
   <br />
 
   [![Open Meridian](https://img.shields.io/badge/OPEN-MERIDIAN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://meridian-completo.vercel.app)
   [![Founder](https://img.shields.io/badge/PRINCIPAL%20ARCHITECT-CHRISTIAN%20DE%20JESÚS-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christiandejesus320-droid)
   [![Design](https://img.shields.io/badge/EXPLORE-MERIDIAN%20DESIGN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christiandejesus320-droid/Meridian-Design-2v1)
+  [![Code Agent](https://img.shields.io/badge/READ-CODE%20AGENT-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-CODE-AGENT.md)
+  [![ElevenLabs Voice](https://img.shields.io/badge/VOICE-ELEVENLABS-FFFFFF?style=for-the-badge&logo=elevenlabs&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-VOICE-ENGINE.md)
 
   <h3>Contexto empresarial convertido en decisiones, agentes, herramientas y ejecución controlada.</h3>
 </div>
@@ -111,7 +113,102 @@ Consulta el contrato completo en [`docs/AGENT-RUNTIME.md`](./docs/AGENT-RUNTIME.
 
 ---
 
-## 03 / MÓDULOS DEL SISTEMA
+## 03 / MERIDIAN CODE AGENT
+
+> **Estado:** arquitectura y experiencia en desarrollo. La descripción representa el producto objetivo y no presenta capacidades futuras como disponibles actualmente.
+
+**Meridian Code Agent** será un entorno de ingeniería asistida que convierte lenguaje natural, documentos y referencias visuales en aplicaciones verificables.
+
+No estará limitado a devolver código en el chat. Su experiencia central reunirá árbol de archivos, editor, vista de diferencias, preview desktop/tablet/móvil, consola, tareas del agente y una mascota roja conectada al estado real del runtime.
+
+```text
+DESCRIBE → PLAN → DESIGN → CODE → PREVIEW → VERIFY → SHIP
+```
+
+<table>
+  <tr>
+    <td width="25%" valign="top"><strong>PLAN</strong><br /><br />Inspección de repositorio, stack, riesgos, dependencias y archivos afectados sin modificar nada.</td>
+    <td width="25%" valign="top"><strong>AGENT</strong><br /><br />Ejecución de un plan aprobado con cambios multiarquivo, diffs y resumen verificable.</td>
+    <td width="25%" valign="top"><strong>DESIGN</strong><br /><br />Referencias visuales, tokens, responsive, accesibilidad, motion y componentes reutilizables.</td>
+    <td width="25%" valign="top"><strong>DEBUG</strong><br /><br />Reproducción del error, causa raíz, corrección mínima y regresión.</td>
+  </tr>
+</table>
+
+### Red especializada
+
+```text
+ARCHITECT
+    ↓
+DESIGN + FRONTEND + BACKEND
+    ↓
+SECURITY REVIEW
+    ↓
+TYPECHECK + LINT + BUILD
+    ↓
+VISUAL VERIFICATION
+    ↓
+USER APPROVAL
+```
+
+Agentes previstos:
+
+- `architect`;
+- `designEngineer`;
+- `frontendEngineer`;
+- `backendEngineer`;
+- `securityReviewer`;
+- `testEngineer`;
+- `visualVerifier`.
+
+**MERI**, la mascota pixel art roja, representará estados reales como `listening`, `planning`, `coding`, `running`, `testing`, `approval_required`, `success` y `error`. El producto no mostrará actividad falsa.
+
+Documentación completa: [`docs/MERIDIAN-CODE-AGENT.md`](./docs/MERIDIAN-CODE-AGENT.md).
+
+---
+
+## 04 / MERIDIAN VOICE ENGINE
+
+> **Estado:** sistema de voz con ElevenLabs en desarrollo.
+
+**Meridian Voice Engine** será la capa de voz del ecosistema. Permitirá escuchar mensajes extensos, dictar texto, conversar con Meridian y seguir el progreso real del Code Agent sin depender únicamente de la lectura.
+
+<div align="center">
+
+[![ElevenLabs](https://img.shields.io/badge/VOICE%20PROVIDER-ELEVENLABS-FFFFFF?style=for-the-badge&logo=elevenlabs&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](https://elevenlabs.io/)
+
+</div>
+
+```text
+USER ACTION
+    ↓
+MICROPHONE / PLAY BUTTON
+    ↓
+MERIDIAN SERVER ROUTE
+    ↓
+ELEVENLABS
+    ↓
+AUDIO STREAM + CAPTIONS + TRANSCRIPT
+```
+
+Principios obligatorios:
+
+- reproducción solo después de una acción del usuario;
+- **sin autoplay**;
+- botón de voz por mensaje;
+- pausa, detener e interrupción inmediata;
+- texto y subtítulos visibles;
+- API key únicamente en servidor;
+- fallback textual;
+- límites por usuario o workspace;
+- sin almacenamiento de audio por defecto.
+
+MERI mostrará estados de voz como `listening`, `transcribing`, `thinking`, `speaking`, `paused`, `success` y `error`.
+
+Documentación completa: [`docs/MERIDIAN-VOICE-ENGINE.md`](./docs/MERIDIAN-VOICE-ENGINE.md).
+
+---
+
+## 05 / MÓDULOS DEL SISTEMA
 
 <table>
   <tr>
@@ -146,7 +243,7 @@ Consulta el contrato completo en [`docs/AGENT-RUNTIME.md`](./docs/AGENT-RUNTIME.
 
 ---
 
-## 04 / LA BÓVEDA TÉCNICA
+## 06 / LA BÓVEDA TÉCNICA
 
 <table>
   <tr>
@@ -179,7 +276,7 @@ Documentación detallada: [`docs/TECHNICAL-VAULT.md`](./docs/TECHNICAL-VAULT.md)
 
 ---
 
-## 05 / ARQUITECTURA
+## 07 / ARQUITECTURA
 
 <div align="center">
   <img src="./assets/architecture.svg" width="100%" alt="Arquitectura de alto nivel de Meridian" />
@@ -203,7 +300,7 @@ Meridian se diseña como un sistema **multi-tenant**. Cada operación sensible d
 
 ---
 
-## 06 / GUÍA DE INTERFAZ
+## 08 / GUÍA DE INTERFAZ
 
 La experiencia combina productividad densa con profundidad espacial controlada.
 
@@ -215,6 +312,7 @@ La experiencia combina productividad densa con profundidad espacial controlada.
 | `Liquid Glass` | Superficies contextuales con contraste verificable |
 | `React Three Fiber` | Capacidad espacial opcional; no dependencia verificada del runtime actual |
 | `Pixel agent language` | Estados técnicos legibles y personalidad del sistema |
+| `MERI red accent` | Identidad del agente, progreso, foco y acciones principales |
 
 Principios:
 
@@ -228,7 +326,7 @@ Consulta [`docs/INTERFACE-GUIDE.md`](./docs/INTERFACE-GUIDE.md).
 
 ---
 
-## 07 / STACK TECNOLÓGICO
+## 09 / STACK TECNOLÓGICO
 
 <div align="center">
 
@@ -241,6 +339,7 @@ Consulta [`docs/INTERFACE-GUIDE.md`](./docs/INTERFACE-GUIDE.md).
 [![Supabase](https://img.shields.io/badge/Supabase-Data%20Platform-FFFFFF?style=for-the-badge&logo=supabase&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](https://supabase.com/)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployment-FFFFFF?style=for-the-badge&logo=vercel&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](https://vercel.com/)
 [![Docker](https://img.shields.io/badge/Docker-Containers-FFFFFF?style=for-the-badge&logo=docker&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](https://www.docker.com/)
+[![ElevenLabs](https://img.shields.io/badge/ElevenLabs-Voice-FFFFFF?style=for-the-badge&logo=elevenlabs&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](https://elevenlabs.io/)
 
 </div>
 
@@ -253,10 +352,11 @@ Consulta [`docs/INTERFACE-GUIDE.md`](./docs/INTERFACE-GUIDE.md).
 | Database | PostgreSQL on Supabase | Relational persistence |
 | Deployment | Vercel | Build and delivery |
 | Intelligence | AI Gateway + Skills | Controlled provider and tool orchestration |
+| Voice target | ElevenLabs | User-controlled speech output and conversation layer |
 
 ---
 
-## 08 / ESTADO DEL PRODUCTO
+## 10 / ESTADO DEL PRODUCTO
 
 | Área | Estado |
 |---|---|
@@ -265,6 +365,8 @@ Consulta [`docs/INTERFACE-GUIDE.md`](./docs/INTERFACE-GUIDE.md).
 | AI Workspace y AI Gateway | `ACTIVE INTEGRATION` |
 | Multi-tenancy y permisos | `PROGRESSIVE HARDENING` |
 | Integraciones OAuth/API | `PROVIDER BY PROVIDER` |
+| Meridian Code Agent | `ARCHITECTURE + EXPERIENCE IN DEVELOPMENT` |
+| Meridian Voice Engine / ElevenLabs | `IN DEVELOPMENT / NOT VERIFIED LIVE` |
 | Telemetría visual de agentes | `DOCUMENTED CONTRACT` |
 | Resend communications layer | `TARGET / NOT VERIFIED LIVE` |
 | Spatial 3D layer | `OPTIONAL EVOLUTION` |
@@ -273,7 +375,7 @@ Los estados describen la dirección y el avance general; no garantizan disponibi
 
 ---
 
-## 09 / ESTRUCTURA DEL HUB
+## 11 / ESTRUCTURA DEL HUB
 
 ```text
 -meridian-showcase/
@@ -281,19 +383,25 @@ Los estados describen la dirección y el avance general; no garantizan disponibi
 │   ├── agent-state-console.svg
 │   ├── architecture.svg
 │   ├── meridian-banner.svg
+│   ├── meridian-code-voice.svg
 │   └── meridian-ecosystem-hub.svg
 ├── docs/
 │   ├── AGENT-RUNTIME.md
 │   ├── ARCHITECTURE.md
 │   ├── INTERFACE-GUIDE.md
+│   ├── MERIDIAN-CODE-AGENT.md
+│   ├── MERIDIAN-VOICE-ENGINE.md
 │   ├── ROADMAP.md
 │   └── TECHNICAL-VAULT.md
 ├── .gitignore
+├── CONTRIBUTING.md
 ├── README.md
 └── SECURITY.md
 ```
 
 Este repositorio es un **puente público** entre el perfil del fundador y la arquitectura de Meridian. No contiene código privado, credenciales, variables de entorno, esquemas sensibles ni datos de clientes.
+
+La colaboración pública se documenta en [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ---
 
