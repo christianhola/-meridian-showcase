@@ -1,0 +1,47 @@
+name: Documentation improvement
+description: Propose a visual, architectural, accessibility, or documentation improvement
+title: "proposal: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Propón una mejora pública y verificable. No incluyas secretos, datos de clientes ni detalles internos sensibles.
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objetivo
+      description: ¿Qué problema resolvería esta mejora?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Describe el cambio, los archivos afectados y el resultado esperado.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Meridian Code Agent
+        - Meridian Voice Engine
+        - Arquitectura
+        - UI/UX y accesibilidad
+        - Seguridad pública
+        - Diagramas y SVG
+        - README y navegación
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Confirmación
+      options:
+        - label: La propuesta mantiene separadas las capacidades actuales y las funciones futuras.
+          required: true
+        - label: La propuesta no contiene secretos, credenciales ni datos privados.
+          required: true
