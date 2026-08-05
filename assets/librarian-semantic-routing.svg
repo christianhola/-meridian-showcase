@@ -1,0 +1,115 @@
+<svg width="1600" height="620" viewBox="0 0 1600 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="620" rx="28" fill="#070708"/>
+  <rect x="1" y="1" width="1598" height="618" rx="27" stroke="#30363D" stroke-width="2"/>
+  <defs>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#141417"/>
+      <stop offset="1" stop-color="#0B0B0D"/>
+    </linearGradient>
+  </defs>
+
+  <g opacity="0.16" stroke="#30363D">
+    <path d="M0 64H1600M0 128H1600M0 192H1600M0 256H1600M0 320H1600M0 384H1600M0 448H1600M0 512H1600M0 576H1600"/>
+    <path d="M64 0V620M128 0V620M192 0V620M256 0V620M320 0V620M384 0V620M448 0V620M512 0V620M576 0V620M640 0V620M704 0V620M768 0V620M832 0V620M896 0V620M960 0V620M1024 0V620M1088 0V620M1152 0V620M1216 0V620M1280 0V620M1344 0V620M1408 0V620M1472 0V620M1536 0V620"/>
+  </g>
+
+  <rect x="30" y="26" width="1540" height="58" rx="10" fill="#0D0D0F" stroke="#30363D"/>
+  <rect x="52" y="48" width="10" height="10" fill="#FF3347"/>
+  <rect x="70" y="48" width="10" height="10" fill="#8B949E"/>
+  <rect x="88" y="48" width="10" height="10" fill="#30363D"/>
+  <text x="124" y="64" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" font-weight="800">MERIDIAN // THE LIBRARIAN ARCHITECTURE</text>
+  <text x="1220" y="64" fill="#FF3347" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="700">SEMANTIC ROUTING + MCP</text>
+
+  <rect x="30" y="104" width="360" height="486" rx="14" fill="url(#panel)" stroke="#30363D"/>
+  <text x="56" y="140" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">01 / SKILL INDEX</text>
+  <text x="56" y="178" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="23" font-weight="800">READ THE SPINES.</text>
+  <text x="56" y="205" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">Metadata first. Full skill only on demand.</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <rect x="56" y="238" width="46" height="258" rx="4" fill="#FF3347"/>
+    <text x="83" y="470" fill="#08080A" font-size="12" font-weight="800" transform="rotate(-90 83 470)">FRONTEND DESIGN</text>
+    <rect x="110" y="266" width="46" height="230" rx="4" fill="#FFFFFF"/>
+    <text x="137" y="470" fill="#08080A" font-size="12" font-weight="800" transform="rotate(-90 137 470)">CODE REVIEW</text>
+    <rect x="164" y="220" width="46" height="276" rx="4" fill="#8E1724"/>
+    <text x="191" y="470" fill="#FFFFFF" font-size="12" font-weight="800" transform="rotate(-90 191 470)">MCP INTEGRATION</text>
+    <rect x="218" y="284" width="46" height="212" rx="4" fill="#8B949E"/>
+    <text x="245" y="470" fill="#08080A" font-size="12" font-weight="800" transform="rotate(-90 245 470)">WEB RESEARCH</text>
+    <rect x="272" y="248" width="46" height="248" rx="4" fill="#30363D"/>
+    <text x="299" y="470" fill="#FFFFFF" font-size="12" font-weight="800" transform="rotate(-90 299 470)">VOICE ENGINE</text>
+  </g>
+  <rect x="50" y="504" width="286" height="12" fill="#30363D"/>
+  <text x="56" y="550" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">INDEX: name · description · permissions · version</text>
+
+  <rect x="416" y="104" width="408" height="486" rx="14" fill="url(#panel)" stroke="#30363D"/>
+  <text x="442" y="140" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">02 / THE LIBRARIAN</text>
+  <circle cx="620" cy="292" r="116" fill="#FF3347" opacity="0.08" filter="url(#glow)"/>
+  <g transform="translate(518 184)">
+    <rect x="28" y="0" width="148" height="16" fill="#FF3347"/>
+    <rect x="12" y="16" width="180" height="16" fill="#FF3347"/>
+    <rect x="0" y="32" width="204" height="112" fill="#FF3347"/>
+    <rect x="20" y="48" width="164" height="78" fill="#08080A"/>
+    <rect x="52" y="68" width="20" height="20" fill="#FFFFFF"/>
+    <rect x="132" y="68" width="20" height="20" fill="#FFFFFF"/>
+    <rect x="82" y="100" width="40" height="8" fill="#FF3347"/>
+    <rect x="62" y="144" width="80" height="16" fill="#FF3347"/>
+    <rect x="38" y="160" width="128" height="56" fill="#8E1724"/>
+    <rect x="12" y="170" width="26" height="46" fill="#FF3347"/>
+    <rect x="166" y="170" width="26" height="46" fill="#FF3347"/>
+  </g>
+  <text x="458" y="438" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" font-weight="800">(o_o) INTENT CLASSIFIED.</text>
+  <text x="458" y="466" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">Select skill → validate policy → create worker</text>
+  <rect x="458" y="500" width="324" height="58" rx="6" fill="#09090B" stroke="#30363D"/>
+  <text x="478" y="524" fill="#FF3347" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="700">CONTEXT BUDGET</text>
+  <text x="478" y="546" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">LOAD ONLY THE SELECTED SKILL</text>
+
+  <path d="M390 347H416" stroke="#FF3347" stroke-width="3"/>
+  <path d="M404 339L416 347L404 355" stroke="#FF3347" stroke-width="3" fill="none"/>
+
+  <rect x="850" y="104" width="720" height="486" rx="14" fill="url(#panel)" stroke="#30363D"/>
+  <text x="876" y="140" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">03 / MCP EXECUTION FABRIC</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <rect x="876" y="174" width="194" height="98" rx="8" fill="#111114" stroke="#30363D"/>
+    <text x="896" y="202" fill="#8B949E" font-size="11">WORKER 01</text>
+    <text x="896" y="230" fill="#FFFFFF" font-size="15" font-weight="800">CODE AGENT</text>
+    <text x="896" y="252" fill="#8B949E" font-size="11">sandbox · branch · diff</text>
+
+    <rect x="1090" y="174" width="194" height="98" rx="8" fill="#111114" stroke="#30363D"/>
+    <text x="1110" y="202" fill="#8B949E" font-size="11">WORKER 02</text>
+    <text x="1110" y="230" fill="#FFFFFF" font-size="15" font-weight="800">WEB RESEARCH</text>
+    <text x="1110" y="252" fill="#8B949E" font-size="11">search · sources · evidence</text>
+
+    <rect x="1304" y="174" width="238" height="98" rx="8" fill="#111114" stroke="#30363D"/>
+    <text x="1324" y="202" fill="#8B949E" font-size="11">WORKER 03</text>
+    <text x="1324" y="230" fill="#FFFFFF" font-size="15" font-weight="800">SPATIAL AUDIT</text>
+    <text x="1324" y="252" fill="#8B949E" font-size="11">authorized location context</text>
+  </g>
+
+  <path d="M973 292V322H1423V292M1187 292V322" stroke="#30363D" stroke-width="2"/>
+  <rect x="916" y="322" width="586" height="102" rx="8" fill="#09090B" stroke="#FF3347"/>
+  <text x="940" y="350" fill="#FF3347" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="800">MCP SERVER // POLICY + TOOL PROXY</text>
+  <text x="940" y="379" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">TOOLS · ALLOWLISTS · APPROVALS · AUDIT · TENANT SCOPE</text>
+  <text x="940" y="404" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">Long-lived API keys remain server-side.</text>
+
+  <rect x="876" y="454" width="210" height="100" rx="8" fill="#111114" stroke="#30363D"/>
+  <text x="896" y="482" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">SECRET VAULT</text>
+  <text x="896" y="510" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="800">SERVER-SIDE ONLY</text>
+  <text x="896" y="534" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">scoped capability / proxy call</text>
+
+  <rect x="1108" y="454" width="210" height="100" rx="8" fill="#111114" stroke="#30363D"/>
+  <text x="1128" y="482" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">VERIFICATION</text>
+  <text x="1128" y="510" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="800">EVIDENCE FIRST</text>
+  <text x="1128" y="534" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">typecheck · tests · sources</text>
+
+  <rect x="1340" y="454" width="202" height="100" rx="8" fill="#111114" stroke="#30363D"/>
+  <text x="1360" y="482" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">OUTPUT</text>
+  <text x="1360" y="510" fill="#FFFFFF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="800">VERIFIED RESULT</text>
+  <text x="1360" y="534" fill="#8B949E" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">preview → approve → execute</text>
+
+  <path d="M824 347H850" stroke="#FF3347" stroke-width="3"/>
+  <path d="M838 339L850 347L838 355" stroke="#FF3347" stroke-width="3" fill="none"/>
+</svg>
