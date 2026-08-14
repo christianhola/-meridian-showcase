@@ -1,0 +1,6 @@
+interface:
+  display_name: "WILENNY"
+  short_description: "Orquestación segura de investigación, agentes y MCP"
+  default_prompt: "Usa WILENNY para mapear la petición, seleccionar capacidades, verificar fuentes y entregar un resultado reproducible."
+  policy:
+    allow_implicit_invocation: true
