@@ -2,7 +2,6 @@
 
 > **Estado:** arquitectura objetivo y evolución técnica de Meridian. Este documento separa claramente la visión del producto de las capacidades verificadas actualmente.
 
-## Construyendo Meridian
 
 **Meridian se está diseñando como un sistema operativo espacial B2B impulsado por orquestación multiagente y Model Context Protocol (MCP).**
 
