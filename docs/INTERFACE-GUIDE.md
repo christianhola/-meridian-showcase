@@ -1,17 +1,19 @@
 # Interface Guide — Spatial UI
 
-Meridian usa una dirección visual **OLED, estructurada y espacial**. La profundidad no debe convertirse en decoración; debe ayudar a distinguir jerarquía, contexto, estado y acción.
+Meridian usa una dirección visual **white technical editorial, estructurada y espacial**. La profundidad no debe convertirse en decoración; debe ayudar a distinguir jerarquía, contexto, estado y acción. Las superficies oscuras se reservan para consolas, traces, código y contextos de concentración.
 
 ## Principios
 
 ### 1. Capa base
 
-- Fondo principal: negro OLED.
-- Superficies: negro elevado y gris oscuro.
-- Bordes: discretos, de un píxel.
-- Texto principal: blanco suave.
-- Texto secundario: gris muteado.
-- Acento: reservado para estado, foco o acción crítica.
+- Fondo principal: blanco cálido o gris papel de baja saturación.
+- Superficies: blanco limpio con profundidad mínima.
+- Consolas técnicas: carbón casi negro con contraste accesible.
+- Bordes: neutros, discretos, de un píxel.
+- Texto principal: carbón.
+- Texto secundario: gris neutro.
+- Acento MERI rojo: identidad, trace activo y eventos que necesitan atención.
+- Azul/violeta: routing, sistema y estados informativos; no CTA genérico.
 
 ### 2. Espacio
 
@@ -107,11 +109,11 @@ Las superficies translúcidas deben conservar legibilidad y contraste.
 
 ```css
 .liquid-panel {
-  background: color-mix(in srgb, #111 84%, transparent);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, #fff 88%, transparent);
+  border: 1px solid rgba(23, 23, 23, 0.10);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 24px 80px rgba(0, 0, 0, 0.45);
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 24px 80px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(20px) saturate(120%);
 }
 ```
