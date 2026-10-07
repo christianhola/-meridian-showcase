@@ -1,0 +1,17 @@
+{
+  "traceId": "trace_demo_7f31",
+  "kind": "showcase_fixture",
+  "live": false,
+  "workspaceId": "redacted",
+  "input": "Diseñar onboarding enterprise",
+  "steps": [
+    {"type":"intent","status":"success","summary":"Request classified"},
+    {"type":"router","status":"success","summary":"wilenny + design capability selected"},
+    {"type":"policy","status":"success","summary":"workspace scope verified"},
+    {"type":"worker","status":"success","summary":"designEngineer scoped worker"},
+    {"type":"tools","status":"success","summary":"repo, browser, image allowlist"},
+    {"type":"verify","status":"success","summary":"responsive, accessibility, evidence"}
+  ],
+  "externalEffect": false,
+  "note": "Synthetic public fixture. It contains no production prompt, secret or customer data."
+}

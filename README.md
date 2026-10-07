@@ -3,15 +3,36 @@
 
   <br />
 
-  [![Open Meridian](https://img.shields.io/badge/OPEN-MERIDIAN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://meridian-completo.vercel.app)
-  [![Founder](https://img.shields.io/badge/PRINCIPAL%20ARCHITECT-CHRISTIAN%20DE%20JESÚS-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christiandejesus320-droid)
-  [![Design](https://img.shields.io/badge/EXPLORE-MERIDIAN%20DESIGN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christiandejesus320-droid/Meridian-Design-2v1)
+  [![Open Meridian](https://img.shields.io/badge/OPEN-MERIDIAN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://nexviro.art)
+  [![Founder](https://img.shields.io/badge/PRINCIPAL%20ARCHITECT-CHRISTIAN%20DE%20JESÚS-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christianhola)
+  [![Design](https://img.shields.io/badge/EXPLORE-MERIDIAN%20DESIGN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christianhola/Meridian-Design-2v1)
   [![Code Agent](https://img.shields.io/badge/READ-CODE%20AGENT-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-CODE-AGENT.md)
   [![Semantic Routing](https://img.shields.io/badge/READ-SEMANTIC%20ROUTING%20%2B%20MCP-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](./docs/SEMANTIC-ROUTING-MCP.md)
   [![ElevenLabs Voice](https://img.shields.io/badge/VOICE-ELEVENLABS-FFFFFF?style=for-the-badge&logo=elevenlabs&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-VOICE-ENGINE.md)
 
   <h3>Contexto empresarial convertido en decisiones, agentes, herramientas y ejecución controlada.</h3>
 </div>
+
+---
+
+## Showcase 2.0 — experiencia interactiva
+
+Este repositorio incluye ahora una web local e interactiva para explorar Meridian como sistema, no solo como documentación. La experiencia contiene **Proof Layer**, trace de agente claramente marcado como demo, arquitectura navegable, WILENNY Lab y una matriz explícita `LIVE / BETA / BUILDING / CONCEPT`.
+
+```bash
+npm install
+npm run dev
+```
+
+Validación local:
+
+```bash
+npm run check
+npm run evals
+npm run build
+```
+
+La web no necesita backend, credenciales ni Vercel para funcionar. Los traces públicos son fixtures sintéticos y no contienen prompts privados, secretos ni datos de clientes.
 
 ---
 
@@ -49,7 +70,7 @@ Su núcleo combina una experiencia basada en bloques —`Notion-Core` como princ
     <td width="50%" valign="top">
       <h3>PRINCIPAL ARCHITECT</h3>
       <p><strong>Christian Junior de Jesús</strong> dirige la visión del producto, la arquitectura, la dirección creativa y la evolución del ecosistema desde Santo Domingo, República Dominicana.</p>
-      <a href="https://github.com/christiandejesus320-droid"><strong>INSPECCIONAR PERFIL →</strong></a>
+      <a href="https://github.com/christianhola"><strong>INSPECCIONAR PERFIL →</strong></a>
     </td>
   </tr>
 </table>
