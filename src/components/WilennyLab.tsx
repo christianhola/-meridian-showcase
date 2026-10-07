@@ -58,8 +58,8 @@ export function WilennyLab() {
             <ResultRow label="outcome" value={selected.outcome} />
           </div>
           <p>
-            Próximo nivel: convertir estos escenarios en evals reproducibles con fixtures,
-            resultados y métricas versionadas.
+            El repo incluye un eval pack versionado con 12 escenarios de contrato. Las
+            métricas de modelos solo se publicarán cuando existan ejecuciones reproducibles.
           </p>
         </article>
       </div>
