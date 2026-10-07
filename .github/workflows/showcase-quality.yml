@@ -18,4 +18,5 @@ jobs:
           cache-dependency-path: package.json
       - run: npm install --no-audit --no-fund
       - run: npm run check
+      - run: npm run evals
       - run: npm run build
