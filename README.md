@@ -1,3 +1,36 @@
+# Meridian Community
+
+**Un hogar para desarrolladores que construyen con Meridian.** Este repositorio contiene una web de comunidad, documentación pública y propuestas de contratos. **No contiene ni distribuye el backend privado de Meridian.**
+
+> **Estado:** preparación privada antes de apertura pública. La licencia de código aún debe decidirse; no se debe considerar open source licenciado hasta que exista un archivo LICENSE apropiado. Los enlaces públicos estarán disponibles después de que GitHub cambie la visibilidad.
+
+- [Manifiesto](./docs/COMMUNITY-MANIFESTO.md) · [Nomenclatura](./docs/REPOSITORY-NAMING.md) · [Proponer una extensión](./docs/PLUGIN-CONTRACT.md) · [Plan de lanzamiento](./docs/COMMUNITY-OPERATIONS.md)
+- [Contribuir en 3 pasos](./CONTRIBUTING.md) · [Código de conducta](./CODE_OF_CONDUCT.md) · [Seguridad](./SECURITY.md)
+- [Registro de contribuciones](./community/registry.json): comienza vacío, sin proyectos inventados.
+- **Validar:** `npm run check && npm run evals && npm run community:check && npm run build`
+
+
+## Community 3.0 / GitHub organization launch
+
+This is a **private preparation branch**, not yet a public organization.
+
+- [Organization profile blueprint](./blueprints/organization-github/profile/README.md)
+- [Curated awesome-meridian seed](./blueprints/awesome-meridian/README.md)
+- [Repository template](./blueprints/repository-template/README.md)
+- [Governance](./docs/GOVERNANCE.md) · [Discord channel blueprint](./docs/DISCORD-BLUEPRINT.md)
+- [Organization creation and security checklist](./docs/ORG-LAUNCH-CHECKLIST.md)
+- [MCP and plugin contract draft](./docs/PLUGIN-CONTRACT.md)
+
+**Quality checks:** `npm run check && npm run evals && npm run community:check && npm run test && npm run security:check && npm run build`.
+
+The community directory reads `community/registry.json`, approved through GitHub PR review. A scheduled read-only GitHub API check verifies the public repository URLs after launch; **nothing is installed automatically**.
+
+Discord, external documentation and custom domain links must not be advertised before verification. No project may be called open source until its applicable license is selected and published.
+
+---
+
+## Showcase técnico histórico
+
 <div align="center">
   <img src="./assets/meridian-code-voice.svg" width="100%" alt="Meridian Code Agent and ElevenLabs Voice Engine with red pixel agent MERI" />
 
@@ -5,7 +38,6 @@
 
   [![Open Meridian](https://img.shields.io/badge/OPEN-MERIDIAN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://nexviro.art)
   [![Founder](https://img.shields.io/badge/PRINCIPAL%20ARCHITECT-CHRISTIAN%20DE%20JESÚS-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christianhola)
-  [![Design](https://img.shields.io/badge/EXPLORE-MERIDIAN%20DESIGN-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](https://github.com/christianhola/Meridian-Design-2v1)
   [![Code Agent](https://img.shields.io/badge/READ-CODE%20AGENT-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-CODE-AGENT.md)
   [![Semantic Routing](https://img.shields.io/badge/READ-SEMANTIC%20ROUTING%20%2B%20MCP-FFFFFF?style=for-the-badge&labelColor=30363D&color=0D1117)](./docs/SEMANTIC-ROUTING-MCP.md)
   [![ElevenLabs Voice](https://img.shields.io/badge/VOICE-ELEVENLABS-FFFFFF?style=for-the-badge&logo=elevenlabs&logoColor=FFFFFF&labelColor=30363D&color=0D1117)](./docs/MERIDIAN-VOICE-ENGINE.md)
@@ -482,7 +514,7 @@ Los estados describen la dirección y el avance general; no garantizan disponibi
 ## 12 / ESTRUCTURA DEL HUB
 
 ```text
--meridian-showcase/
+meridian-community/
 ├── assets/
 │   ├── agent-state-console.svg
 │   ├── architecture.svg

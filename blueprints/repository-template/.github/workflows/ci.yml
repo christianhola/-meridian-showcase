@@ -1,0 +1,19 @@
+name: Repository quality checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repo-specific quality gate required
+        run: |
+          echo "Replace with a real build + test command for this project's language."
+          exit 1

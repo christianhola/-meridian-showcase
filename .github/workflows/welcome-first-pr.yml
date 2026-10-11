@@ -1,0 +1,23 @@
+name: Welcome new issue authors
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  welcome:
+    if: contains(fromJSON('["FIRST_TIMER","FIRST_TIME_CONTRIBUTOR"]'), github.event.issue.author_association)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: "Welcome to Meridian Community! Thank you for contributing. A maintainer will review your issue. Please do not post private data or credentials. See CONTRIBUTING.md and SECURITY.md."
+            });

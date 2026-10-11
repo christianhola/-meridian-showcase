@@ -1,60 +1,48 @@
-# Contributing to Meridian Ecosystem Hub
+# Contributing to Meridian Community
 
-Este repositorio documenta públicamente la arquitectura, experiencia y evolución de Meridian sin exponer código privado, secretos ni datos de clientes.
+¡Gracias por ayudar a construir Meridian Community! Puedes contribuir con documentación, accesibilidad, diseño, ejemplos reproducibles o propuestas de extensiones.
 
-## Formas de contribuir
+## Entorno local en tres pasos
 
-- Reportar errores de documentación.
-- Proponer mejoras de accesibilidad o claridad visual.
-- Revisar diagramas y contratos técnicos.
-- Sugerir ejemplos de integración sin incluir credenciales.
-- Mejorar traducciones, redacción o navegación.
+Requiere Node.js 22 o superior y Git.
 
-## Flujo recomendado
+1. Clona el repositorio actual (el cambio a meridian-community está pendiente):
+   ~~~bash
+   git clone https://github.com/christianhola/-meridian-showcase.git
+   cd -- -meridian-showcase
+   ~~~
+2. Instala las dependencias:
+   ~~~bash
+   npm install
+   ~~~
+3. Arranca la aplicación:
+   ~~~bash
+   npm run dev
+   ~~~
 
-1. Abra un issue describiendo el problema o propuesta.
-2. Cree una rama específica.
-3. Mantenga el cambio pequeño y verificable.
-4. No agregue claves, tokens, `.env`, datos privados ni capturas sensibles.
-5. Envíe un Pull Request explicando qué cambió y cómo se verificó.
+Antes de proponer un PR ejecuta `npm run check`, `npm run evals`, `npm run community:check`, `npm run test`, `npm run security:check` y `npm run build`.
 
-## Convención de ramas
+## Flujo de contribución
 
-```text
-docs/descripcion-corta
-fix/descripcion-corta
-feat/descripcion-corta
-```
+1. Abre un issue para una funcionalidad nueva, un plugin o un proyecto del showcase.
+2. Crea una rama (`docs/...`, `feat/...` o `fix/...`) y cambios pequeños.
+3. Adjunta al PR el motivo, capturas sin datos personales y pruebas reproducibles.
 
-## Convención de commits
+Para publicar entradas en `community/registry.json` se requiere URL pública válida, licencia explícita, estado `published` y revisión de un maintainer.
 
-```text
-docs: improve agent runtime explanation
-fix: correct architecture diagram label
-feat: add accessible voice engine documentation
-```
+## Calidad y seguridad
 
-## Seguridad
+- No añadas secretos, valores de `.env`, cookies, tokens, datos de clientes, endpoints internos o capturas privadas.
+- No describas APIs futuras como si ya existieran.
+- Comprueba navegación móvil, teclado, etiquetas y contraste en cambios visuales.
+- Los reportes de vulnerabilidades deben seguir [SECURITY.md](./SECURITY.md), nunca issues públicas.
+- Respeta [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
+- El contrato de plugins es todavía un [borrador](./docs/PLUGIN-CONTRACT.md).
 
-No publique:
+Las contribuciones no transfieren por sí solas permisos administrativos ni acceso a servicios privados.
 
-- API keys;
-- secretos OAuth;
-- credenciales de base de datos;
-- información de clientes;
-- rutas internas sensibles;
-- archivos de producción privados.
+## Extensiones y seguridad de la comunidad
 
-Los reportes de seguridad deben seguir [`SECURITY.md`](./SECURITY.md), no un issue público.
+Los plugins, servidores MCP y SDKs nuevos requieren especificación pública de permisos, compatibilidad, límites de uso y proceso para informar vulnerabilidades. Las contribuciones del catálogo se proponen como Issues y se aceptan mediante revisión humana. Lee [Governance](./docs/GOVERNANCE.md).
 
-## Revisión
-
-Un Pull Request debe indicar:
-
-```text
-[ ] El cambio corresponde al alcance público del repositorio.
-[ ] No contiene secretos o datos privados.
-[ ] Los enlaces funcionan.
-[ ] Los SVG y Markdown se renderizan correctamente.
-[ ] La descripción no presenta funciones futuras como disponibles hoy.
-```
+El repositorio actual es privado y la URL de clonación requiere acceso hasta completar el lanzamiento público.

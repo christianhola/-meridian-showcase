@@ -1,5 +1,5 @@
 {
-  "name": "meridian-showcase",
+  "name": "meridian-community",
   "private": true,
   "version": "2.0.0",
   "type": "module",
@@ -8,7 +8,11 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "check": "tsc -b",
-    "evals": "node scripts/validate-wilenny-evals.mjs"
+    "evals": "node scripts/validate-wilenny-evals.mjs",
+    "community:check": "node scripts/validate-community-registry.mjs",
+    "test": "node --test scripts/*.test.mjs",
+    "security:check": "node scripts/audit-public-files.mjs",
+    "community:verify": "node scripts/check-github-repositories.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.4",

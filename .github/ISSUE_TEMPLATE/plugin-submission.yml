@@ -1,0 +1,39 @@
+name: Community plugin proposal
+description: Presentar una idea de plugin o una extensión en desarrollo
+title: "plugin: "
+body:
+  - type: input
+    id: plugin
+    attributes:
+      label: Nombre propuesto
+      placeholder: plugin-task-summary
+    validations:
+      required: true
+  - type: textarea
+    id: functionality
+    attributes:
+      label: Problema que resuelve
+      description: Describe las capacidades y dependencias, sin compartir secretos.
+    validations:
+      required: true
+  - type: textarea
+    id: permissions
+    attributes:
+      label: Datos y permisos
+      description: Detalla el principio de mínimo privilegio, qué información utiliza y sus riesgos.
+    validations:
+      required: true
+  - type: input
+    id: repository
+    attributes:
+      label: Repositorio público (si existe)
+      placeholder: https://github.com/owner/plugin-example
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Seguridad
+      options:
+        - label: Entiendo que el contrato de plugins es un borrador y que esto no instala la extensión.
+          required: true
+        - label: No incluyo secretos, datos de clientes ni credenciales.
+          required: true
