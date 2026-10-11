@@ -88,7 +88,8 @@ export function App() {
               <span>Made to be explored.</span>
             </h1>
             <p>
-              Build with transparent agent interfaces, reproducible starters and portable skills.\n              Explore real code, propose improvements and help shape the Meridian ecosystem.
+              Build with transparent agent interfaces, reproducible starters and portable skills.
+              Explore real code, propose improvements and help shape the Meridian ecosystem.
             </p>
             <div className="hero-actions">
               <a className="button button--primary" href="#playground">

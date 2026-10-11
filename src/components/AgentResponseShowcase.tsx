@@ -1,4 +1,4 @@
-import { ArrowRight, Check, ChevronRight, Circle, Clipboard, Code2, Play, RotateCcw, ShieldCheck, Sparkles, Terminal, WandSparkles } from "lucide-react";
+import { Check, ChevronRight, Circle, Clipboard, Code2, RotateCcw, ShieldCheck, Sparkles, Terminal, WandSparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Scenario = {

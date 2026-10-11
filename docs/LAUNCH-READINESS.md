@@ -1,12 +1,13 @@
 # Meridian Community launch readiness — evidence-driven gate
 
-Updated: 2026-10-10 (UTC publication date to be verified against workflow run).
+Status: private launch candidate; review against the latest GitHub Actions run.
 
 ## Implemented
 - Community website in the existing **private** GitHub repository.
 - Distinct responsive agent-response UI inspired by 21st.dev patterns, with clear simulation labels and reduced-motion behavior.
 - Executable local starter with Node built-ins and HTTP integration tests.
-- Read-only local MCP server with the official v2 SDK and a protocol-level test (CI required to confirm compatibility).\n- Portable WILENNY skill, community contribution docs, Code of Conduct and proposed GitHub organization profile.
+- Read-only local MCP server with the official v2 SDK and a protocol-level test (verified by GitHub Actions).
+- Portable WILENNY skill, community contribution docs, Code of Conduct and proposed GitHub organization profile.
 - Root MIT license text added **subject to rights-holder confirmation before public visibility**.
 - CI for TypeScript, registry, skill evaluations, starter tests, repository tracked-file audit and build.
 
