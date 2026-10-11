@@ -1,36 +1,27 @@
-import { ArrowRight, ArrowUpRight, Boxes, Code2, Github, Puzzle, Workflow } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Boxes, Code2, Github, Puzzle, Workflow, Network } from "lucide-react";
+import { CommunityDirectory } from "./CommunityDirectory";
+import registry from "../../community/registry.json";
 
 const repository = "https://github.com/christianhola/-meridian-showcase";
+const published = registry.plugins.length + registry.templates.length + registry.sdks.length +
+  registry.integrations.length + registry.mcps.length + registry.showcase.length;
 
 const tracks = [
-  {
-    icon: Puzzle,
-    prefix: "plugin-*",
-    title: "Marketplace de plugins",
-    copy: "Extensiones, widgets y herramientas revisadas. Las contribuciones se registran antes de publicarse.",
-    detail: "Extensiones",
-  },
-  {
-    icon: Boxes,
-    prefix: "template-* / starter-*",
-    title: "Plantillas y starters",
-    copy: "Puntos de partida reproducibles, con documentación, pruebas y configuración de ejemplo sin secretos.",
-    detail: "Plantillas",
-  },
-  {
-    icon: Code2,
-    prefix: "sdk-*",
-    title: "SDKs para desarrolladores",
-    copy: "Clientes tipados por lenguaje, versionados según su compatibilidad real con las APIs disponibles.",
-    detail: "Librerías",
-  },
-  {
-    icon: Workflow,
-    prefix: "integrations-*",
-    title: "Integraciones externas",
-    copy: "Conectores de terceros con permisos explícitos, OAuth o webhooks y revisiones de seguridad.",
-    detail: "Conectores",
-  },
+  { icon: Puzzle, prefix: "plugin-*", title: "Plugins & extensions",
+    copy: "Custom tools, widgets, and capabilities built through documented, permission-scoped interfaces.",
+    detail: "Community modules" },
+  { icon: Boxes, prefix: "template-* / starter-*", title: "Templates & starters",
+    copy: "Reproducible examples with documentation, local setup and a verifiable build.",
+    detail: "Starter projects" },
+  { icon: Code2, prefix: "sdk-*", title: "Developer SDKs",
+    copy: "Typed client libraries, published only when the corresponding public APIs are stable.",
+    detail: "Language libraries" },
+  { icon: Network, prefix: "mcp-*", title: "MCP connectors",
+    copy: "Model Context Protocol servers with documented capabilities and security boundaries.",
+    detail: "Protocol connectors" },
+  { icon: Workflow, prefix: "integrations-*", title: "Integrations",
+    copy: "Service integrations with explicit scopes, webhook validation and support policies.",
+    detail: "Third-party systems" },
 ] as const;
 
 export function CommunityHub() {
@@ -38,22 +29,20 @@ export function CommunityHub() {
     <section className="section community-section" id="community" aria-labelledby="community-title">
       <div className="community-intro">
         <div>
-          <span className="eyebrow">03 / Open ecosystem</span>
-          <h2 id="community-title">Construyamos Meridian juntos<span>.</span></h2>
+          <span className="eyebrow">01 / Developer ecosystem</span>
+          <h2 id="community-title">Build something that matters<span>.</span></h2>
           <p>
-            Meridian Community reunirá extensiones, herramientas, plantillas y proyectos de
-            desarrolladores. El catálogo comienza vacío: solo mostraremos proyectos reales,
-            publicados y revisados.
+            Explore Meridian's open ecosystem plans: extensions, MCP connectors, starter kits,
+            client SDKs and a curated directory of real community projects.
           </p>
         </div>
         <a className="button button--primary" href={repository} target="_blank" rel="noreferrer">
           <Github size={17} aria-hidden="true" />
-          Explorar el repositorio
+          Explore on GitHub
           <ArrowUpRight size={15} aria-hidden="true" />
         </a>
       </div>
-
-      <div className="community-grid" aria-label="Cuatro categorías de contribución">
+      <div className="community-grid" aria-label="Five paths to contribute">
         {tracks.map(({ icon: Icon, prefix, title, copy, detail }, index) => (
           <article className="community-card" key={prefix}>
             <div className="community-card__top">
@@ -61,39 +50,35 @@ export function CommunityHub() {
               <span className="community-card__number">0{index + 1}</span>
             </div>
             <span className="community-card__prefix">{prefix}</span>
-            <h3>{title}</h3>
-            <p>{copy}</p>
-            <span className="community-card__foot">{detail} · Convocatoria abierta próximamente</span>
+            <h3>{title}</h3><p>{copy}</p>
+            <span className="community-card__foot">{detail} · Proposals welcome after launch</span>
           </article>
         ))}
       </div>
-
+      <CommunityDirectory />
       <div className="community-showcase" id="built-with-meridian">
         <div>
           <span className="eyebrow eyebrow--dark">Built with Meridian</span>
-          <h3>Hecho por la comunidad<span>.</span></h3>
+          <h3>Made by builders<span>.</span></h3>
           <p>
-            Este espacio mostrará aplicaciones y herramientas enviadas por sus creadores.
-            Aún no hay proyectos comunitarios verificados en el catálogo.
+            Share a working project with a public repository and clear documentation.
+            We review submissions before adding them to our curated directory.
           </p>
-          <span className="community-showcase__state">0 publicaciones verificadas · Registro inicial</span>
+          <span className="community-showcase__state">{published} curated listings · Independent verification required</span>
         </div>
         <div className="community-showcase__actions">
-          <span>¿Estás construyendo algo con Meridian?</span>
+          <span>Have something worth sharing?</span>
           <a href={repository + "/issues/new?template=showcase-submission.yml"} target="_blank" rel="noreferrer">
-            Proponer un proyecto <ArrowRight size={16} aria-hidden="true" />
-          </a>
-          <a href={repository + "/blob/main/docs/COMMUNITY-MANIFESTO.md"} target="_blank" rel="noreferrer">
-            Leer nuestro manifiesto <ArrowUpRight size={15} aria-hidden="true" />
-          </a>
+            Submit your project <ArrowRight size={16} aria-hidden="true" /></a>
+          <a href={repository + "/blob/feat/meridian-community-foundation/docs/COMMUNITY-MANIFESTO.md"} target="_blank" rel="noreferrer">
+            Read our manifesto <ArrowUpRight size={15} aria-hidden="true" /></a>
         </div>
       </div>
-
       <div className="community-next">
-        <span>Empieza aquí</span>
-        <p>Una comunidad confiable empieza con normas claras, código revisable y documentación honesta.</p>
-        <a href={repository + "/blob/main/CONTRIBUTING.md"} target="_blank" rel="noreferrer">
-          Guía para contribuir <ArrowRight size={15} aria-hidden="true" />
+        <span>Getting started</span>
+        <p>Healthy ecosystems grow through secure defaults, excellent documentation and helpful maintainers.</p>
+        <a href={repository + "/blob/feat/meridian-community-foundation/CONTRIBUTING.md"} target="_blank" rel="noreferrer">
+          Contributing guide <ArrowRight size={15} aria-hidden="true" />
         </a>
       </div>
     </section>

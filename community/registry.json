@@ -1,8 +1,9 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "plugins": [],
   "templates": [],
   "sdks": [],
   "integrations": [],
+  "mcps": [],
   "showcase": []
 }

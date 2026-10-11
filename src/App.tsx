@@ -34,8 +34,9 @@ export function App() {
           <span>MERIDIAN / COMMUNITY</span>
         </a>
 
-        <nav className="topnav" aria-label="Principal">
+        <nav className="topnav" aria-label="Primary navigation">
           <a href="#community">Community</a>
+          <a href="#directory">Directory</a>
           <a href="#proof">Proof</a>
           <a href="#architecture">Architecture</a>
           <a href="#wilenny">WILENNY</a>
@@ -57,9 +58,10 @@ export function App() {
       </header>
 
       {mobileOpen ? (
-        <nav className="mobile-nav" aria-label="Principal móvil">
+        <nav className="mobile-nav" aria-label="Mobile navigation">
           {[
             ["Community", "#community"],
+            ["Directory", "#directory"],
             ["Proof", "#proof"],
             ["Architecture", "#architecture"],
             ["WILENNY", "#wilenny"],
@@ -84,8 +86,8 @@ export function App() {
               <span>Powered by Meridian.</span>
             </h1>
             <p>
-              Explora la arquitectura de Meridian y participa en una comunidad de extensiones,
-              SDKs, integraciones y proyectos creados por desarrolladores.
+              An open collaboration space for plugin authors, MCP developers, SDK maintainers
+              and people building useful software around Meridian.
             </p>
             <div className="hero-actions">
               <a className="button button--primary" href="#community">

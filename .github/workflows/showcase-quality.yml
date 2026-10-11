@@ -1,14 +1,22 @@
-name: Showcase quality
+name: Community quality gates
 
 on:
   pull_request:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: community-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  validate:
+    name: Typecheck, contracts, tests and build
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,4 +26,6 @@ jobs:
       - run: npm run check
       - run: npm run evals
       - run: npm run community:check
+      - run: npm run test
+      - run: npm run security:check
       - run: npm run build

@@ -9,6 +9,24 @@
 - [Registro de contribuciones](./community/registry.json): comienza vacío, sin proyectos inventados.
 - **Validar:** `npm run check && npm run evals && npm run community:check && npm run build`
 
+
+## Community 3.0 / GitHub organization launch
+
+This is a **private preparation branch**, not yet a public organization.
+
+- [Organization profile blueprint](./blueprints/organization-github/profile/README.md)
+- [Curated awesome-meridian seed](./blueprints/awesome-meridian/README.md)
+- [Repository template](./blueprints/repository-template/README.md)
+- [Governance](./docs/GOVERNANCE.md) · [Discord channel blueprint](./docs/DISCORD-BLUEPRINT.md)
+- [Organization creation and security checklist](./docs/ORG-LAUNCH-CHECKLIST.md)
+- [MCP and plugin contract draft](./docs/PLUGIN-CONTRACT.md)
+
+**Quality checks:** `npm run check && npm run evals && npm run community:check && npm run test && npm run security:check && npm run build`.
+
+The community directory reads `community/registry.json`, approved through GitHub PR review. A scheduled read-only GitHub API check verifies the public repository URLs after launch; **nothing is installed automatically**.
+
+Discord, external documentation and custom domain links must not be advertised before verification. No project may be called open source until its applicable license is selected and published.
+
 ---
 
 ## Showcase técnico histórico

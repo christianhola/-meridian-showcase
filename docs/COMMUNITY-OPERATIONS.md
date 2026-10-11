@@ -35,3 +35,15 @@ Empezar con retos de documentación, starters y plugins de prueba sin acceso al 
 5. Validar acciones y build en la rama de comunidad.
 6. Renombrar a `meridian-community` y cambiar visibilidad con autorización del propietario.
 7. Publicar el enlace oficial solo cuando exista acceso público real.
+
+
+## Community 3.0: implementación en esta rama
+
+- Estructura detallada de Discord: [DISCORD-BLUEPRINT.md](./DISCORD-BLUEPRINT.md).
+- Modelo de derechos y revisión: [GOVERNANCE.md](./GOVERNANCE.md).
+- Lanzamiento de GitHub Organization: [ORG-LAUNCH-CHECKLIST.md](./ORG-LAUNCH-CHECKLIST.md).
+- Plantillas copiables: [blueprints](../blueprints/).
+- El directorio se genera desde el registro aprobado en el repositorio y se valida en CI.
+- Un workflow semanal podrá consultar la API de GitHub en modo solo lectura al pasar a público; no publica ni fusiona contenido de terceros.
+
+**Métricas de salud previstas:** tiempo de primera respuesta, PRs revisados, porcentaje de contribuciones verificadas, errores de links del catálogo y tiempo de resolución de vulnerabilidades. No existe todavía una línea de base pública comprobada.

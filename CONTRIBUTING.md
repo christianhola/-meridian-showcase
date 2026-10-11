@@ -20,7 +20,7 @@ Requiere Node.js 22 o superior y Git.
    npm run dev
    ~~~
 
-Antes de proponer un PR ejecuta `npm run check`, `npm run evals`, `npm run community:check` y `npm run build`.
+Antes de proponer un PR ejecuta `npm run check`, `npm run evals`, `npm run community:check`, `npm run test`, `npm run security:check` y `npm run build`.
 
 ## Flujo de contribución
 
@@ -40,3 +40,9 @@ Para publicar entradas en `community/registry.json` se requiere URL pública vá
 - El contrato de plugins es todavía un [borrador](./docs/PLUGIN-CONTRACT.md).
 
 Las contribuciones no transfieren por sí solas permisos administrativos ni acceso a servicios privados.
+
+## Extensiones y seguridad de la comunidad
+
+Los plugins, servidores MCP y SDKs nuevos requieren especificación pública de permisos, compatibilidad, límites de uso y proceso para informar vulnerabilidades. Las contribuciones del catálogo se proponen como Issues y se aceptan mediante revisión humana. Lee [Governance](./docs/GOVERNANCE.md).
+
+El repositorio actual es privado y la URL de clonación requiere acceso hasta completar el lanzamiento público.

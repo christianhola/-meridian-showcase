@@ -9,6 +9,7 @@ Un nombre debe indicar claramente el tipo de proyecto. Se utilizarán minúscula
 | `starter-*` | Proyectos demostrativos completos | `starter-crm-vite` |
 | `sdk-*` | Librerías cliente por lenguaje | `sdk-python` |
 | `integrations-*` | Conectores de proveedores | `integrations-slack` |
+| `mcp-*` | Conectores Model Context Protocol con permisos documentados | `mcp-github` |
 
 **Repositorio raíz:** `meridian-community` (pendiente de renombrar en GitHub).
 
