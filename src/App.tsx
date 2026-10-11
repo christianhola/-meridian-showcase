@@ -10,6 +10,7 @@ import { WilennyLab } from "./components/WilennyLab";
 
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("playground");
 
   useEffect(() => {
     const reveal = new IntersectionObserver(
@@ -26,8 +27,35 @@ export function App() {
     return () => reveal.disconnect();
   }, []);
 
+  useEffect(() => {
+    const ids = ["playground", "start", "community", "directory", "architecture", "wilenny", "status"];
+    const sections = ids.map(id => document.getElementById(id)).filter((node): node is HTMLElement => Boolean(node));
+    const observer = new IntersectionObserver(entries => {
+      const mostVisible = entries.filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (mostVisible) setActiveSection(mostVisible.target.id);
+    }, { rootMargin: "-15% 0px -55% 0px", threshold: [0, 0.15, 0.5] });
+    sections.forEach(section => observer.observe(section));
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onEscape);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("keydown", onEscape);
+    };
+  }, []);
+
+  const navigation = [
+    { label: "Playground", href: "#playground", id: "playground" },
+    { label: "Get started", href: "#start", id: "start" },
+    { label: "Ecosystem", href: "#community", id: "community" },
+    { label: "Directory", href: "#directory", id: "directory" },
+  ] as const;
+
   return (
     <div className="site-shell">
+      <a className="skip-link" href="#playground">Skip to interactive demo</a>
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Meridian Community">
           <span className="brand-mark">M</span>
@@ -35,15 +63,15 @@ export function App() {
         </a>
 
         <nav className="topnav" aria-label="Primary navigation">
-          <a href="#community">Community</a>
-          <a href="#playground">Playground</a>
-          <a href="#directory">Directory</a>
-          <a href="#proof">Proof</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#wilenny">WILENNY</a>
-          <a href="#status">Status</a>
-          <a className="nav-pill" href="https://github.com/christianhola/-meridian-showcase">
-            GitHub <Github size={14} />
+          {navigation.map(link => (
+            <a key={link.id} href={link.href}
+              aria-current={activeSection === link.id ? "location" : undefined}>
+              {link.label}
+            </a>
+          ))}
+          <a className="nav-pill" href="https://github.com/christianhola/-meridian-showcase"
+            target="_blank" rel="noreferrer" aria-label="Open Meridian Community on GitHub (requires repository access)">
+            GitHub <Github size={14} aria-hidden="true" />
           </a>
         </nav>
 
@@ -52,6 +80,7 @@ export function App() {
           className="menu-button"
           aria-label={mobileOpen ? "Cerrar navegación" : "Abrir navegación"}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
           onClick={() => setMobileOpen((value) => !value)}
         >
           {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -59,20 +88,19 @@ export function App() {
       </header>
 
       {mobileOpen ? (
-        <nav className="mobile-nav" aria-label="Mobile navigation">
-          {[
-            ["Community", "#community"],
-            ["Playground", "#playground"],
-            ["Directory", "#directory"],
-            ["Proof", "#proof"],
-            ["Architecture", "#architecture"],
-            ["WILENNY", "#wilenny"],
-            ["Status", "#status"],
-          ].map(([label, href]) => (
-            <a key={href} href={href} onClick={() => setMobileOpen(false)}>
-              {label}<ArrowRight size={15} />
+        <nav id="mobile-menu" className="mobile-nav" aria-label="Mobile navigation">
+          {navigation.map(link => (
+            <a key={link.id} href={link.href}
+              aria-current={activeSection === link.id ? "location" : undefined}
+              onClick={() => setMobileOpen(false)}>
+              {link.label}<ArrowRight size={15} aria-hidden="true" />
             </a>
           ))}
+          <div className="mobile-nav__divider" role="separator" />
+          <a href="https://github.com/christianhola/-meridian-showcase" target="_blank" rel="noreferrer"
+            onClick={() => setMobileOpen(false)}>
+            Open on GitHub <Github size={15} aria-hidden="true"/>
+          </a>
         </nav>
       ) : null}
 
@@ -110,7 +138,7 @@ export function App() {
           </div>
         </section>
 
-        <section className="developer-start" aria-labelledby="dev-start-title" data-reveal>
+        <section className="developer-start" id="start" aria-labelledby="dev-start-title" data-reveal>
           <div className="developer-start__heading">
             <span className="eyebrow">Explore · learn · contribute</span>
             <h2 id="dev-start-title">Your first build starts here<span>.</span></h2>
@@ -173,7 +201,7 @@ export function App() {
           <span className="brand-mark brand-mark--small">M</span>
           <strong>MERIDIAN</strong>
         </div>
-        <p>Building an auditable operating layer for intelligent work.</p>
+        <p>Private community preview · Examples are local-first, with clear simulation boundaries.</p>
         <span>© 2026</span>
       </footer>
     </div>

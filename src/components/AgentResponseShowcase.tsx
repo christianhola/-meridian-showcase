@@ -43,7 +43,7 @@ export function AgentResponseShowcase() {
   const [selected, setSelected] = useState(0);
   const [progress, setProgress] = useState(3);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "manual">("idle");
   const example = examples[selected];
 
   useEffect(() => {
@@ -60,25 +60,22 @@ export function AgentResponseShowcase() {
     setSelected(index);
     setProgress(3);
     setIsPlaying(false);
-    setCopied(false);
+    setCopyStatus("idle");
   };
 
   const replay = () => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setProgress(3);
-      setIsPlaying(false);
-      return;
-    }
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setProgress(0);
-    setIsPlaying(true);
+    setCopyStatus("idle");
+    setIsPlaying(!reducedMotion);
   };
 
   const copyCommand = async () => {
     try {
       await navigator.clipboard.writeText(example.command);
-      setCopied(true);
+      setCopyStatus("copied");
     } catch {
-      setCopied(false);
+      setCopyStatus("manual");
     }
   };
 
@@ -125,8 +122,13 @@ export function AgentResponseShowcase() {
               <div className="agent-response__terminal"><Code2 size={14} aria-hidden="true" />
                 <code>{example.command}</code>
                 <button type="button" onClick={copyCommand} aria-label="Copy example command" title="Copy command">
-                  {copied ? <Check size={15}/> : <Clipboard size={15}/>}</button>
+                  {copyStatus === "copied" ? <Check size={15}/> : <Clipboard size={15}/>}</button>
               </div>
+              <span className="agent-response__copy-note" aria-live="polite">
+                {copyStatus === "copied" ? "Command copied." : copyStatus === "manual" ?
+                  "Clipboard access is unavailable. Select the command above to copy it manually." :
+                  "Run commands locally from the repository root."}
+              </span>
             </div> : <p className="agent-response__waiting" role="status">Playing the UI sequence — no network or AI request is made.</p>}
           </div>
         </div>
@@ -135,6 +137,17 @@ export function AgentResponseShowcase() {
         <span><ShieldCheck size={13} aria-hidden="true" /> Simulated UI · not a live AI service</span>
         <div>
           <button type="button" onClick={replay}><RotateCcw size={14} aria-hidden="true" /> Replay</button>
+          {progress < 3 ? (
+            <>
+              <button type="button" onClick={() => setIsPlaying(value => !value)}>
+                {isPlaying ? "Pause" : "Resume"}
+              </button>
+              <button type="button" onClick={() => {
+                setIsPlaying(false);
+                setProgress(value => Math.min(value + 1, 3));
+              }}>Next step</button>
+            </>
+          ) : null}
           <a href="#directory">Explore <ChevronRight size={15} aria-hidden="true" /></a>
         </div>
       </div>
