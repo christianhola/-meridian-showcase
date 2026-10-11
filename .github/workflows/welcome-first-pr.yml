@@ -1,0 +1,23 @@
+name: Welcome first-time contributors
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  welcome:
+    if: contains(fromJSON('["FIRST_TIMER","FIRST_TIME_CONTRIBUTOR"]'), github.event.pull_request.author_association)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: "¡Gracias por contribuir a Meridian Community! Revisaremos las pruebas, la documentación y el alcance público antes de integrar el cambio. Consulta CONTRIBUTING.md y SECURITY.md. No publiques credenciales ni información privada."
+            });

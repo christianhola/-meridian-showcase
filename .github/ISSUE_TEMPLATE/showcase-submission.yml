@@ -1,0 +1,34 @@
+name: Built with Meridian — showcase submission
+description: Proponer una aplicación o herramienta real para el directorio de proyectos
+title: "showcase: "
+body:
+  - type: input
+    id: project
+    attributes:
+      label: Nombre del proyecto
+      placeholder: Nombre público
+    validations:
+      required: true
+  - type: input
+    id: repository
+    attributes:
+      label: Repositorio público
+      placeholder: https://github.com/owner/repo
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Qué construiste
+      description: Explica cómo se relaciona con Meridian y qué se puede probar actualmente.
+    validations:
+      required: true
+  - type: checkboxes
+    id: declaration
+    attributes:
+      label: Confirmaciones
+      options:
+        - label: Tengo permiso para publicar este proyecto y sus materiales.
+          required: true
+        - label: No incluyo datos personales, secretos ni capacidades inventadas.
+          required: true

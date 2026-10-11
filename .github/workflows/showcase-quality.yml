@@ -14,9 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: package.json
       - run: npm install --no-audit --no-fund
       - run: npm run check
       - run: npm run evals
+      - run: npm run community:check
       - run: npm run build
