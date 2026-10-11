@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ecosystemUrl from "../assets/meridian-ecosystem-hub.svg";
 import { ArchitectureMap } from "./components/ArchitectureMap";
 import { CommunityHub } from "./components/CommunityHub";
-import { LiveTrace } from "./components/LiveTrace";
+import { AgentResponseShowcase } from "./components/AgentResponseShowcase";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
 import { WilennyLab } from "./components/WilennyLab";
@@ -36,6 +36,7 @@ export function App() {
 
         <nav className="topnav" aria-label="Primary navigation">
           <a href="#community">Community</a>
+          <a href="#playground">Playground</a>
           <a href="#directory">Directory</a>
           <a href="#proof">Proof</a>
           <a href="#architecture">Architecture</a>
@@ -61,6 +62,7 @@ export function App() {
         <nav className="mobile-nav" aria-label="Mobile navigation">
           {[
             ["Community", "#community"],
+            ["Playground", "#playground"],
             ["Directory", "#directory"],
             ["Proof", "#proof"],
             ["Architecture", "#architecture"],
@@ -79,32 +81,50 @@ export function App() {
           <div className="hero-copy" data-reveal>
             <span className="hero-kicker">
               <span className="pulse-dot" />
-              Evidence-first AI operating layer
+              Meridian Community / Developer preview
             </span>
             <h1>
-              Built by builders.
-              <span>Powered by Meridian.</span>
+              Tools for builders.
+              <span>Made to be explored.</span>
             </h1>
             <p>
-              An open collaboration space for plugin authors, MCP developers, SDK maintainers
-              and people building useful software around Meridian.
+              Build with transparent agent interfaces, reproducible starters and portable skills.\n              Explore real code, propose improvements and help shape the Meridian ecosystem.
             </p>
             <div className="hero-actions">
-              <a className="button button--primary" href="#community">
-                Explore the community <ArrowRight size={15} />
+              <a className="button button--primary" href="#playground">
+                Try the interactive demo <ArrowRight size={15} />
               </a>
-              <a className="button button--secondary" href="#wilenny">
-                Explore WILENNY
+              <a className="button button--secondary" href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/agent-response-starter" target="_blank" rel="noreferrer">
+                Get the starter
               </a>
             </div>
             <div className="hero-meta">
-              <span><Sparkles size={13} /> agent orchestration</span>
-              <span><PauseCircle size={13} /> preview-first execution</span>
+              <span><Sparkles size={13} /> open-source building blocks</span>
+              <span><PauseCircle size={13} /> demo data, zero secrets</span>
             </div>
           </div>
 
           <div className="hero-visual" data-reveal>
-            <LiveTrace />
+            <AgentResponseShowcase />
+          </div>
+        </section>
+
+        <section className="developer-start" aria-labelledby="dev-start-title" data-reveal>
+          <div className="developer-start__heading">
+            <span className="eyebrow">Explore · learn · contribute</span>
+            <h2 id="dev-start-title">Your first build starts here<span>.</span></h2>
+            <p>Local-first tutorials and transparent demos. No fictional SDK imports, no production tokens, no hidden setup.</p>
+          </div>
+          <div className="developer-start__steps">
+            <a href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/agent-response-starter" target="_blank" rel="noreferrer">
+              <span>01 / RUN</span><strong>Agent response starter</strong><small>A real local HTTP API, browser UI and tests.</small><ArrowRight size={18} aria-hidden="true"/>
+            </a>
+            <a href="https://github.com/christianhola/-meridian-showcase/blob/main/skills/wilenny/SKILL.md" target="_blank" rel="noreferrer">
+              <span>02 / LEARN</span><strong>Portable WILENNY skill</strong><small>Review capability routing, safety and evaluations.</small><ArrowRight size={18} aria-hidden="true"/>
+            </a>
+            <a href="https://github.com/christianhola/-meridian-showcase/blob/main/CONTRIBUTING.md" target="_blank" rel="noreferrer">
+              <span>03 / CONTRIBUTE</span><strong>Make your first contribution</strong><small>Guidelines, reviews and documented boundaries.</small><ArrowRight size={18} aria-hidden="true"/>
+            </a>
           </div>
         </section>
 
@@ -131,10 +151,9 @@ export function App() {
 
         <section className="cta" data-reveal>
           <span className="eyebrow eyebrow--dark">Next frontier</span>
-          <h2>Del manifiesto a la evidencia reproducible.</h2>
+          <h2>Open collaboration, built responsibly.</h2>
           <p>
-            El siguiente paso del showcase es conectar demos seguras, evals versionados y
-            traces anonimizados del runtime real sin publicar secretos ni datos de clientes.
+            The first examples are here. The public organization, verified community catalog and full launch security review are still being prepared.
           </p>
           <div className="cta-actions">
             <a className="button button--light" href="https://github.com/christianhola/-meridian-showcase/blob/main/README.md">Read the technical hub</a>

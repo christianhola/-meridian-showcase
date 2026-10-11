@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="A runnable, dependency-free Meridian agent-response UI example">
+<title>Meridian — Agent Response Starter</title><link rel="stylesheet" href="/styles.css"></head>
+<body><main class="layout">
+  <header><span class="brand"><span class="monogram">M</span> Meridian / Community</span><span class="tag">LOCAL DEMO · NO AI</span></header>
+  <section class="intro"><p class="overline">DEVELOPER PLAYGROUND / 001</p>
+    <h1>Make agent responses <em>feel useful.</em></h1>
+    <p>Runnable local example with a real HTTP route, accessible UI states and deterministic data. No tokens or external services required.</p>
+  </section>
+  <section class="window" aria-label="Demo agent reply">
+    <div class="toolbar"><span class="dot"></span> Agent response preview <span class="tag">SIMULATION</span></div>
+    <div class="choices" role="group" aria-label="Choose a scenario">
+      <button data-scenario="starter" aria-pressed="true">Starter</button>
+      <button data-scenario="permissions" aria-pressed="false">Permissions</button>
+      <button data-scenario="security" aria-pressed="false">Security</button>
+    </div>
+    <article id="output" aria-live="polite" aria-atomic="true">
+      <div class="avatar">✦</div><div><h2 id="title">Loading the example…</h2><p id="answer"></p><ol id="steps"></ol></div>
+    </article>
+    <footer><span>Responses are sourced from the local /api/demo endpoint.</span><button id="reload" type="button">↻ Reload</button></footer>
+  </section>
+  <div class="fineprint">Built for safe local learning. Do not connect provider credentials to a browser demo.</div>
+</main><script type="module" src="/app.js"></script></body></html>

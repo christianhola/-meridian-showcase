@@ -46,3 +46,16 @@ Las contribuciones no transfieren por sí solas permisos administrativos ni acce
 Los plugins, servidores MCP y SDKs nuevos requieren especificación pública de permisos, compatibilidad, límites de uso y proceso para informar vulnerabilidades. Las contribuciones del catálogo se proponen como Issues y se aceptan mediante revisión humana. Lee [Governance](./docs/GOVERNANCE.md).
 
 El repositorio actual es privado y la URL de clonación requiere acceso hasta completar el lanzamiento público.
+
+## An example that actually runs
+
+Start with [Agent Response Starter](./examples/agent-response-starter/README.md). Its local HTTP server requires Node.js 20+, does not use provider tokens and has standalone integration tests:
+
+```bash
+node --test examples/agent-response-starter/test/*.test.mjs
+node examples/agent-response-starter/server.mjs
+```
+
+See [design references](./docs/DESIGN-REFERENCES-21ST.md), including the requested 21st.dev patterns. All visual designs are implemented independently.
+
+**Before opening the repository publicly:** community owner approval is still required for the publication/license policy and full-history privacy review.

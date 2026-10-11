@@ -1,7 +1,7 @@
 {
   "name": "meridian-community",
   "private": true,
-  "version": "2.0.0",
+  "version": "4.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,8 @@
     "community:check": "node scripts/validate-community-registry.mjs",
     "test": "node --test scripts/*.test.mjs",
     "security:check": "node scripts/audit-public-files.mjs",
-    "community:verify": "node scripts/check-github-repositories.mjs"
+    "community:verify": "node scripts/check-github-repositories.mjs",
+    "starter:test": "node --test examples/agent-response-starter/test/*.test.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.4",

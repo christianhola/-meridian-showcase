@@ -1,0 +1,6 @@
+# Initial code ownership; enable required reviews separately in GitHub repository settings.
+* @christianhola
+/.github/ @christianhola
+/community/ @christianhola
+/scripts/ @christianhola
+/docs/ @christianhola
