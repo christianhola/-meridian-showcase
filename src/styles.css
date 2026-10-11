@@ -401,3 +401,10 @@ a:focus-visible,button:focus-visible { outline: 3px solid var(--blue); outline-o
 @media(max-width:1100px){.hero {grid-template-columns:1fr}.hero-visual{max-width:780px;width:100%;margin:auto}}
 @media(max-width:760px){.developer-start{width:min(100% - 24px,1480px);padding:52px 0 64px}.developer-start__heading{display:block}.developer-start__heading h2{margin-top:14px}.developer-start__steps{grid-template-columns:1fr}.developer-start__steps a{min-height:175px}.agent-response__thread{padding:18px 12px 20px}.agent-response__bar{padding:15px 12px}.agent-response__tabs{padding:12px 12px 0}.agent-response__reply{gap:8px}.agent-response__prompt{max-width:94%}.agent-response__footer{padding:12px}.agent-response__result{padding:11px}.agent-response__response-top span{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.agent-response__pulse{animation:none}}
+
+/* Four supported on-ramps: local UI, protocol, skill, contribution */
+.developer-start__steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+.developer-start__steps a{padding:21px;min-height:209px}
+.developer-start__steps strong{font-size:19px}
+@media(max-width:1120px){.developer-start__steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.developer-start__steps{grid-template-columns:1fr}.developer-start__steps a{min-height:167px}}

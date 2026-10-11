@@ -23,6 +23,18 @@ Open `http://127.0.0.1:4173`. Switch between sample responses delivered by a loc
 
 [Starter source and documentation](./examples/agent-response-starter/README.md) · [Design references: 21st.dev](./docs/DESIGN-REFERENCES-21ST.md)
 
+### Run the read-only MCP server
+
+Official [MCP TypeScript SDK v2](https://github.com/modelcontextprotocol/typescript-sdk), a single permission-free tool and an end-to-end protocol test:
+
+```bash
+npm install --prefix examples/mcp-readonly
+npm test --prefix examples/mcp-readonly
+npm start --prefix examples/mcp-readonly
+```
+
+Its `stdio` transport waits for an MCP host. This is not an HTTP API or an LLM. See the [MCP example docs](./examples/mcp-readonly/README.md).
+
 ### Run the community site
 
 ```bash
@@ -44,7 +56,7 @@ The community portal uses React 19, Vite and TypeScript. The local starter is se
 | Area | Purpose | Release status |
 | --- | --- | --- |
 | `plugin-*` | Extensible capabilities | Contract proposals |
-| `mcp-*` | Secure Model Context Protocol server integrations | No verified public connector yet |
+| `mcp-*` | Secure Model Context Protocol server integrations | Read-only local example included; no external integration published |
 | `template-*` / `starter-*` | Reusable, runnable starters | Local agent-response starter available in this repo |
 | `sdk-*` | Public API client libraries | Awaiting stable public API contracts |
 | `integrations-*` | Third-party service connectors | Planned |

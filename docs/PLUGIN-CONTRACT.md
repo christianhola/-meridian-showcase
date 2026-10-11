@@ -32,3 +32,9 @@ El manifiesto anterior es exclusivamente ilustrativo. No se ha verificado aún u
 - Revisión automatizada y manual antes de incluir una extensión en el catálogo.
 
 **Regla:** ninguna extensión externa recibirá secretos de servidor ni acceso por defecto a datos de clientes.
+
+## Working minimum MCP transport example
+
+The [read-only MCP v2 example](../examples/mcp-readonly/README.md) is a real stdio server using the current official SDK, not a fictional API endpoint. It exposes a single enum-validated, deterministic tool and a protocol integration test. It has no Meridian backend integration and no credential or filesystem access.
+
+A production connector must add explicit permission scoping, authorization, rate limits, cancellation, logging redaction, tool result validation and owner approval for any sensitive action.

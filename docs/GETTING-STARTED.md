@@ -26,3 +26,16 @@ La interfaz y las respuestas del starter son demostraciones deterministas, no ll
 
 ## Before sharing links publicly / Antes de publicar
 Review [launch readiness](./LAUNCH-READINESS.md), confirm license ownership, audit the Git history and Actions artifacts, and establish the public organization and confidential vulnerability reporting.
+
+## MCP v2 / Protocolo MCP
+
+To try a genuine local MCP server (not a cloud integration):
+
+```bash
+npm install --prefix examples/mcp-readonly
+npm test --prefix examples/mcp-readonly
+```
+
+The test exercises official SDK `tools/list` and `tools/call` via stdio. See [the read-only MCP tutorial](../examples/mcp-readonly/README.md).
+
+En español: el ejemplo MCP usa el SDK oficial v2, valida entradas y no ejecuta acciones externas ni requiere credenciales. El test prueba la comunicación real entre cliente y servidor.

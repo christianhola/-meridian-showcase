@@ -119,11 +119,14 @@ export function App() {
             <a href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/agent-response-starter" target="_blank" rel="noreferrer">
               <span>01 / RUN</span><strong>Agent response starter</strong><small>A real local HTTP API, browser UI and tests.</small><ArrowRight size={18} aria-hidden="true"/>
             </a>
+            <a href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/mcp-readonly" target="_blank" rel="noreferrer">
+              <span>02 / CONNECT</span><strong>Read-only MCP server</strong><small>Official SDK v2, typed tool and protocol tests.</small><ArrowRight size={18} aria-hidden="true"/>
+            </a>
             <a href="https://github.com/christianhola/-meridian-showcase/blob/main/skills/wilenny/SKILL.md" target="_blank" rel="noreferrer">
-              <span>02 / LEARN</span><strong>Portable WILENNY skill</strong><small>Review capability routing, safety and evaluations.</small><ArrowRight size={18} aria-hidden="true"/>
+              <span>03 / LEARN</span><strong>Portable WILENNY skill</strong><small>Capability routing, safety and evaluations.</small><ArrowRight size={18} aria-hidden="true"/>
             </a>
             <a href="https://github.com/christianhola/-meridian-showcase/blob/main/CONTRIBUTING.md" target="_blank" rel="noreferrer">
-              <span>03 / CONTRIBUTE</span><strong>Make your first contribution</strong><small>Guidelines, reviews and documented boundaries.</small><ArrowRight size={18} aria-hidden="true"/>
+              <span>04 / CONTRIBUTE</span><strong>Make your first contribution</strong><small>Guidelines, reviews and documented boundaries.</small><ArrowRight size={18} aria-hidden="true"/>
             </a>
           </div>
         </section>

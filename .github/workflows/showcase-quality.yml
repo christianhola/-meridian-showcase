@@ -28,5 +28,7 @@ jobs:
       - run: npm run community:check
       - run: npm run test
       - run: npm run starter:test
+      - run: npm install --prefix examples/mcp-readonly --no-audit --no-fund
+      - run: npm test --prefix examples/mcp-readonly
       - run: npm run security:check
       - run: npm run build
