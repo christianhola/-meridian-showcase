@@ -70,14 +70,14 @@ export function CommunityHub() {
           <span>Have something worth sharing?</span>
           <a href={repository + "/issues/new?template=showcase-submission.yml"} target="_blank" rel="noreferrer">
             Submit your project <ArrowRight size={16} aria-hidden="true" /></a>
-          <a href={repository + "/blob/feat/meridian-community-foundation/docs/COMMUNITY-MANIFESTO.md"} target="_blank" rel="noreferrer">
+          <a href={repository + "/blob/main/docs/COMMUNITY-MANIFESTO.md"} target="_blank" rel="noreferrer">
             Read our manifesto <ArrowUpRight size={15} aria-hidden="true" /></a>
         </div>
       </div>
       <div className="community-next">
         <span>Getting started</span>
         <p>Healthy ecosystems grow through secure defaults, excellent documentation and helpful maintainers.</p>
-        <a href={repository + "/blob/feat/meridian-community-foundation/CONTRIBUTING.md"} target="_blank" rel="noreferrer">
+        <a href={repository + "/blob/main/CONTRIBUTING.md"} target="_blank" rel="noreferrer">
           Contributing guide <ArrowRight size={15} aria-hidden="true" />
         </a>
       </div>
