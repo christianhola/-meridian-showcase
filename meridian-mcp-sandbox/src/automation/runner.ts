@@ -262,10 +262,10 @@ async function main(): Promise<void> {
     const summary = await runBrowserDemo();
     if (summary.status === "READY") {
       logger.success("demo de automatización completada", { status: summary.status });
-      return;
+    } else {
+      logger.error("demo de automatización con fallos", { status: summary.status });
+      if (hasFlag(parseFlags(), "strict")) process.exitCode = 1;
     }
-    logger.error("demo de automatización con fallos", { status: summary.status });
-    if (hasFlag(parseFlags(), "strict")) process.exitCode = 1;
   } catch (error) {
     if (error instanceof BrowserNotInstalledError) {
       // Zero Config: no rompemos la ejecución, indicamos exactamente qué falta.
@@ -284,6 +284,10 @@ async function main(): Promise<void> {
     }
     logger.error("la demo de navegador falló", { error });
     process.exitCode = 1;
+  } finally {
+    // Los artefactos ya están en disco: no dejamos que un proceso hijo de
+    // Chromium retenga el event loop (evita ejecuciones "colgadas" en CI).
+    process.exit(process.exitCode ?? 0);
   }
 }
 

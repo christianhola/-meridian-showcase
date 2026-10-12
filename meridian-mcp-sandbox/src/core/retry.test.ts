@@ -143,6 +143,28 @@ describe("withTimeout", () => {
   });
 });
 
+describe("isRetryableStatus (política de navegación)", () => {
+  it("reintenta 5xx, 408 y 429 por defecto", async () => {
+    const { DEFAULT_RETRY_STATUS, isRetryableStatus } = await import("../automation/playwright-agent.js");
+    for (const status of [500, 502, 503, 504, 408, 429]) {
+      assert.equal(isRetryableStatus(status, DEFAULT_RETRY_STATUS), true, `status ${status} debería reintentarse`);
+    }
+  });
+
+  it("acepta 2xx/3xx y no reintenta 404 por defecto", async () => {
+    const { DEFAULT_RETRY_STATUS, isRetryableStatus } = await import("../automation/playwright-agent.js");
+    for (const status of [200, 204, 301, 404, 403]) {
+      assert.equal(isRetryableStatus(status, DEFAULT_RETRY_STATUS), false, `status ${status} no debería reintentarse`);
+    }
+    assert.equal(isRetryableStatus(null, DEFAULT_RETRY_STATUS), false);
+  });
+
+  it("permite desactivar la política pasando []", async () => {
+    const { isRetryableStatus } = await import("../automation/playwright-agent.js");
+    assert.equal(isRetryableStatus(503, []), false);
+  });
+});
+
 describe("sleep", () => {
   it("se cancela al abortar", async () => {
     const controller = new AbortController();

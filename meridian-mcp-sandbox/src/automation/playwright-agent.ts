@@ -38,6 +38,16 @@ export class BrowserNotInstalledError extends Error {
   }
 }
 
+export class RetryableHttpError extends Error {
+  override readonly name = "RetryableHttpError";
+  constructor(
+    readonly status: number,
+    readonly url: string,
+  ) {
+    super(`La respuesta de ${url} fue HTTP ${status} (considerado fallo recuperable)`);
+  }
+}
+
 export class NavigationAbortedError extends Error {
   override readonly name = "AbortError";
   constructor(
@@ -68,6 +78,12 @@ export interface BrowserAgentOptions {
   logger?: Logger;
   /** Argumentos extra de lanzamiento de Chromium. */
   launchArgs?: string[];
+  /**
+   * Ruta a un binario de Chromium/Chrome propio (sistema, CI o build serverless).
+   * Si se omite, se usa `MERIDIAN_CHROMIUM_EXECUTABLE` y, en su defecto, el
+   * navegador que gestiona Playwright.
+   */
+  executablePath?: string;
 }
 
 export interface NavigateOptions {
@@ -76,6 +92,12 @@ export interface NavigateOptions {
   /** Timeout del intento, en ms. */
   timeoutMs?: number;
   retries?: number;
+  /**
+   * Códigos HTTP que se tratan como fallo recuperable y disparan el backoff.
+   * Por defecto: cualquier 5xx más 408 y 429. Pasa `[]` para aceptar cualquier
+   * respuesta HTTP como navegación exitosa.
+   */
+  retryOnStatus?: number[];
   /** Guarda el HTML final del documento. */
   captureHtml?: boolean;
   /** Guarda un screenshot full-page. */
@@ -151,6 +173,36 @@ function normalizeText(value: string): string {
   return value.replace(/\s+/g, " ").trim();
 }
 
+/** 5xx + 408 + 429: errores de servidor/red que sí merecen reintento. */
+export const DEFAULT_RETRY_STATUS = [408, 429, 500, 502, 503, 504, 507, 522, 524];
+
+export function isRetryableStatus(status: number | null, retryOnStatus: number[]): boolean {
+  if (status === null) return false;
+  return retryOnStatus.includes(status) || (status >= 500 && retryOnStatus.some((code) => code >= 500));
+}
+
+/** Espera como máximo `ms` sin propagar el rechazo: usado en cierres defensivos. */
+async function settleWithin(promise: Promise<unknown> | undefined, ms: number): Promise<boolean> {
+  if (!promise) return true;
+  let settled = false;
+  const timer = setTimeout(() => {
+    if (!settled) settled = true;
+  }, ms);
+  try {
+    await Promise.race([
+      promise.then(() => {
+        settled = true;
+      }, () => {
+        settled = true;
+      }),
+      new Promise<void>((resolve) => setTimeout(resolve, ms)),
+    ]);
+    return settled;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export class BrowserAgent {
   private browser?: Browser;
   private context?: BrowserContext;
@@ -183,15 +235,26 @@ export class BrowserAgent {
     throwIfAborted(signal);
 
     const availability = detectBrowserAvailability();
+    const externalBinary = this.options.executablePath ?? readEnv("MERIDIAN_CHROMIUM_EXECUTABLE");
+    if (!availability.installed && !externalBinary) {
+      // Falla antes de intentar lanzar: mensaje accionable en lugar de un stack crudo.
+      throw new BrowserNotInstalledError(availability.cachePath, availability.hint);
+    }
     this.logger.step("lanzando Chromium", {
       headless: this.options.headless,
       cache: availability.cachePath,
       browsers: availability.detected.join(",") || "(ninguno detectado)",
     });
 
+    const executablePath = this.options.executablePath ?? readEnv("MERIDIAN_CHROMIUM_EXECUTABLE");
+    if (executablePath) {
+      this.logger.info("usando binario de Chromium externo", { executablePath });
+    }
+
     try {
       this.browser = await chromium.launch({
         headless: this.options.headless,
+        executablePath,
         args: this.options.launchArgs ?? ["--no-sandbox", "--disable-dev-shm-usage"],
       });
     } catch (error) {
@@ -234,21 +297,31 @@ export class BrowserAgent {
     const startedAt = Date.now();
     const backoffDelaysMs: number[] = [];
 
+    const retryOnStatus = options.retryOnStatus ?? DEFAULT_RETRY_STATUS;
+
     const result = await withRetry<{ status: number | null; attempts: number }>(
       async ({ attempt, signal }) => {
         if (attempt > 1) this.logger.warn("reintentando navegación", { url, attempt });
         const response = await page.goto(url, {
           waitUntil: options.waitUntil ?? "domcontentloaded",
           timeout: options.timeoutMs ?? this.options.defaultTimeoutMs,
-          // Playwright no acepta AbortSignal nativamente: lo conectamos manualmente.
+          // Playwright lanza AbortError al abortar la señal: lo normalizamos.
           signal,
         }).catch((error: unknown) => {
-          if (isAbortError(error) || signal.aborted) {
+          if (signal.aborted && !isAbortError(error)) {
             throw new NavigationAbortedError(`Navegación a ${url} cancelada por AbortSignal`, url);
           }
+          if (isAbortError(error) && !signal.aborted && !options.signal?.aborted) throw error; // timeout del intento
+          if (isAbortError(error)) throw new NavigationAbortedError(`Navegación a ${url} cancelada por AbortSignal`, url);
           throw error;
         });
-        return { status: response ? response.status() : null, attempts: attempt };
+
+        const status = response ? response.status() : null;
+        // `page.goto` NO falla con 4xx/5xx: el fallo recuperable se decide aquí.
+        if (isRetryableStatus(status, retryOnStatus)) {
+          throw new RetryableHttpError(status!, url);
+        }
+        return { status, attempts: attempt };
       },
       {
         retries: options.retries ?? this.options.retries,
@@ -478,7 +551,11 @@ export class BrowserAgent {
     }
   }
 
-  /** Cierra todo lo que esté abierto. Seguro de llamar múltiples veces. */
+  /**
+   * Cierra todo lo que esté abierto. Seguro de llamar múltiples veces y
+   * ACOTADO en el tiempo: si el navegador no responde a `close()` dentro del
+   * presupuesto, se mata el proceso hijo con SIGKILL para no dejar nada colgado.
+   */
   async close(): Promise<void> {
     const page = this.page;
     const context = this.context;
@@ -486,9 +563,26 @@ export class BrowserAgent {
     this.page = undefined;
     this.context = undefined;
     this.browser = undefined;
-    await page?.close().catch(() => undefined);
-    await context?.close().catch(() => undefined);
-    await browser?.close().catch(() => undefined);
+
+    // `process()` es propio de Chromium (no está en el tipo común `Browser`).
+    const child = (browser as unknown as { process?: () => import("node:child_process").ChildProcess | null })?.process?.() ?? null;
+
+    await settleWithin(page?.close(), 5_000);
+    await settleWithin(context?.close(), 5_000);
+
+    if (browser) {
+      const closed = await settleWithin(browser.close(), 8_000);
+      if (!closed) this.logger.warn("el navegador no respondió a close(); se fuerza la terminación");
+    }
+
+    if (child && child.exitCode === null && !child.killed) {
+      try {
+        child.kill("SIGKILL");
+        this.logger.debug("proceso de Chromium terminado con SIGKILL", { pid: child.pid });
+      } catch (error) {
+        this.logger.debug("no se pudo terminar el proceso de Chromium", { error });
+      }
+    }
     this.logger.debug("navegador cerrado");
   }
 

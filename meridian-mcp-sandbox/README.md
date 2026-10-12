@@ -178,6 +178,28 @@ npm run test:web -- --live          # + https://example.com
 npm run test:web -- --url=https://meridian.example --strict
 ```
 
+Comportamiento verificado en vivo (Chromium 153 real, salida resumida del runner):
+
+```text
+✔ scraping declarativo (fixture local)           448ms  5/6 campos · status=200
+✔ exponential backoff (ruta flaky 503 -> 200)    173ms  intentos=2 · delays=[132]ms · status=200
+✔ AbortController (corte inmediato < 2s)         250ms  cancelada vía AbortSignal en 250ms
+```
+
+#### Entornos sin salida a internet o con navegador propio
+
+Si tu red bloquea la descarga de navegadores de Playwright (CDN) — frecuente en
+contenedores corporativos o serverless — apunta el agente a cualquier binario de
+Chromium ya presente:
+
+```bash
+MERIDIAN_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:web
+```
+
+El runner además aborta de forma acotada: el cierre de la sesión está limitado en
+tiempo y, si el navegador no responde, el proceso hijo se termina con `SIGKILL`
+(la demo **nunca** se queda colgada).
+
 ### 3.3 Medios hiperrealistas (imagen + vídeo)
 
 `src/media/generator.ts` construye el **payload exacto** de cada proveedor y lo documenta, sin gastar un céntimo si no hay claves:
@@ -237,6 +259,7 @@ Copia `.env.example` a `.env` **solo si** quieres activar el modo live. Nada de 
 | `MERIDIAN_LOG_FORMAT` | `json` para logs estructurados | pretty |
 | `MEMORY_FILE_PATH` | Ruta del grafo MCP | `output/memory/meridian-memory.json` |
 | `MERIDIAN_HEADLESS` | `false` para ver el navegador | `true` |
+| `MERIDIAN_CHROMIUM_EXECUTABLE` | Usa un Chromium/Chrome propio (sistema, CI o build serverless) | navegador gestionado por Playwright |
 | `FAL_KEY` / `REPLICATE_API_TOKEN` | Imágenes FLUX | — |
 | `RUNWAY_API_KEY` / `LUMAAI_API_KEY` | Vídeo cinemático | — |
 | `GITHUB_PERSONAL_ACCESS_TOKEN` | Conector MCP de GitHub | — |
