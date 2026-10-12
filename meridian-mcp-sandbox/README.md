@@ -305,7 +305,16 @@ output/
 
 ## 9. Publicar como repositorio independiente
 
-Este directorio está diseñado para ser su propio repositorio. Instrucciones exactas en [`docs/PUBLISHING.md`](./docs/PUBLISHING.md):
+Este directorio está diseñado para ser su propio repositorio. Instrucciones exactas en [`docs/PUBLISHING.md`](./docs/PUBLISHING.md).
+
+**Opción rápida (un comando):** el script extrae solo los archivos versionados (sin `output/`, sin `node_modules`, sin `.env`), valida que no haya secretos y crea un repositorio git limpio:
+
+```bash
+bash scripts/publish.sh --out=/tmp/meridian-mcp-sandbox   # prepara el repo local
+bash scripts/publish.sh --create                          # + crea y publica el repo remoto
+```
+
+**Opción manual:**
 
 ```bash
 cd meridian-mcp-sandbox

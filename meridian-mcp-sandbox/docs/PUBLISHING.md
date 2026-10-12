@@ -25,9 +25,25 @@ git status --porcelain           # output/ y .env NO deben aparecer (están igno
 grep -rn "output/" .gitignore
 ```
 
+Verificación de independencia ya realizada sobre el paquete extraído
+(`/tmp/publish-test`): `npm install` + `tsc --noEmit` + 23 tests + `npm run dev`
+⇒ **READY**, sin monorepo alrededor.
+
 ---
 
 ## 2. Crear el repositorio (GitHub CLI)
+
+### Opción automatizada
+
+```bash
+bash scripts/publish.sh --out=/tmp/meridian-mcp-sandbox   # extrae solo lo versionado y commitea
+bash scripts/publish.sh --create                          # crea el remoto y empuja (requiere permiso createRepository)
+```
+
+El script aborta si detecta `.env`, `node_modules`, `output/` o `dist/` dentro del
+paquete (salvaguarda anti-secretos) y exige que `.env.example` esté presente.
+
+### Opción manual
 
 Desde dentro de `meridian-mcp-sandbox`:
 
