@@ -5,6 +5,17 @@
 > Estado: **READY**. `npm run dev` funciona con Node.js 20+ sin `.env`, sin claves de API y sin servicios de pago.
 > El sandbox degrada con elegancia (nunca revienta) cuando falta red, credenciales o binarios de navegador.
 
+## FounderOS / Startup School
+
+Incluye un núcleo local para fundadores y empresarios: `PitchCoachBot`,
+`TechArchitectBot`, `GrowthBot` y un simulador determinista de tracción.
+Funciona sin claves en modo simulación y está documentado en
+[`docs/FOUNDEROS-BLUEPRINT.md`](../docs/FOUNDEROS-BLUEPRINT.md).
+
+```bash
+npm run test:startup-school
+```
+
 ```text
   ███  MERIDIAN · MCP SANDBOX
   Playground ejecutable: MCP + Playwright + medios hiperrealistas
@@ -40,6 +51,7 @@ Salida esperada (resumen):
 | `npm test` | 20 pruebas del núcleo (backoff, aborto, payloads, PNG) | No | No |
 | `npm run test:media` | Genera payloads y artefactos de imagen/vídeo | No (modo simulación) | Solo para modo live |
 | `npm run test:web` | Automatización Playwright con backoff y aborto | No (fixture local) | No |
+| `npm run test:startup-school` | Mentores de pitch, arquitectura, growth y simulador | No | No |
 | `npm run test:tools -- --server=everything` | Inspecciona cualquier servidor MCP | Sí (`npx`) | Solo GitHub |
 | `npm run setup:browsers` | Instala Chromium para el motor Playwright | Sí | No |
 | `npm run typecheck` / `npm run build` | Verificación de tipos / compilación a `dist/` | No | No |

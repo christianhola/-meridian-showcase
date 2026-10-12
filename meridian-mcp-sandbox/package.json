@@ -22,6 +22,7 @@
     "test:web": "tsx src/automation/runner.ts",
     "test:media": "tsx src/media/generator.ts",
     "test:tools": "tsx src/tools/inspector.ts",
+    "test:startup-school": "tsx --test src/startup-school/startup-school.test.ts",
     "smoke": "npm run dev && npm run test:media && npm run test:web",
     "setup:browsers": "playwright install chromium",
     "test": "tsx --test src/**/*.test.ts",

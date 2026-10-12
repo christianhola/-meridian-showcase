@@ -20,6 +20,7 @@ import { MemoryClient, MEMORY_PACKAGE, type EntityInput, type KnowledgeGraph, ty
 import { readinessMatrix } from "./mcp/public-servers.js";
 import { inspectServer, renderInspection, renderServerMatrix, summarizeTools, type InspectionReport, type ToolSummary } from "./tools/inspector.js";
 import { providerMatrix } from "./media/generator.js";
+import { GrowthBot, PitchCoachBot, TechArchitectBot, simulateTraction } from "./startup-school/index.js";
 import { detectBrowserAvailability, ensureDir, hasFlag, parseFlags, readEnv, runtimeInfo, DEFAULT_ARTIFACT_DIR } from "./core/config.js";
 import { isAbortError, toError } from "./core/retry.js";
 
@@ -232,6 +233,24 @@ async function main(): Promise<void> {
   const browsers = detectBrowserAvailability();
   const providers = providerMatrix();
   const liveProviders = providers.filter((provider) => provider.configured);
+  const startupSchool = {
+    pitch: new PitchCoachBot().evaluateIdea({
+      name: "Meridian FounderOS",
+      problem: "Los fundadores pierden tiempo saltando entre investigación, decisiones y herramientas desconectadas.",
+      solution: "Un decision loop con mentores locales y conectores MCP con permisos explícitos.",
+      targetAudience: "Fundadores y equipos pequeños que necesitan validar y ejecutar con menos fricción.",
+      evidence: ["MCP sandbox local con pruebas deterministas"],
+      businessModel: "Suscripción por workspace con conectores opcionales.",
+    }),
+    architecture: new TechArchitectBot().advise({
+      product: "Meridian FounderOS",
+      users: "fundadores y equipos pequeños",
+      coreWorkflow: "investigar, decidir, ejecutar y verificar",
+      sensitivity: "internal",
+    }),
+    growth: new GrowthBot().plan({ product: "Meridian FounderOS", audience: "fundadores", goal: "activation" }),
+    traction: simulateTraction({ visitors: 1000, activationRate: 0.35, retentionRate: 0.45, conversionRate: 0.08, months: 6 }),
+  };
 
   process.stdout.write(
     `${table([
@@ -294,6 +313,7 @@ async function main(): Promise<void> {
           browsers,
           mediaProviders: providers,
           mcpServers: readinessMatrix(),
+          startupSchool,
         },
       },
       null,
