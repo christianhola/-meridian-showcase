@@ -65,6 +65,7 @@ export interface MemoryClientOptions {
 export interface MemoryConnectionInfo {
   serverName: string;
   serverVersion: string;
+  /** Versión de protocolo soportada por el SDK con la que se negoció el handshake. */
   protocolVersion: string;
   capabilities: string[];
   pid: number | null;

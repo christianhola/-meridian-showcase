@@ -213,7 +213,7 @@ export function renderInspection(report: InspectionReport): string {
   const lines: string[] = [];
   lines.push("");
   lines.push(colorize(`MCP Inspector · ${report.label}`, ANSI.cyan, ANSI.bold));
-  lines.push(`  servidor      ${report.serverName} v${report.serverVersion} (protocolo ${report.protocolVersion})`);
+  lines.push(`  servidor      ${report.serverName} v${report.serverVersion} (protocolo SDK ${report.protocolVersion})`);
   lines.push(`  transporte    stdio · ${report.commandLine}`);
   lines.push(`  cero-config   ${report.zeroConfig ? "sí" : "no (requiere credenciales)"}`);
   lines.push(`  handshake     ${report.durationMs}ms${report.pid ? ` · pid ${report.pid}` : ""}`);
