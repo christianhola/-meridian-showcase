@@ -1,0 +1,26 @@
+# Dependencias
+node_modules/
+
+# Build
+dist/
+*.tsbuildinfo
+
+# Secretos (jamás versionar credenciales)
+.env
+.env.*
+!.env.example
+
+# Artefactos generados por el sandbox (grafo MCP, PNG de simulación, informes, screenshots)
+output/
+
+# Playwright
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# Logs y temporales
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

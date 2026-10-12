@@ -35,6 +35,17 @@ npm start --prefix examples/mcp-readonly
 
 Its `stdio` transport waits for an MCP host. This is not an HTTP API or an LLM. See the [MCP example docs](./examples/mcp-readonly/README.md).
 
+### Run the MCP + automation sandbox
+
+[`meridian-mcp-sandbox`](./meridian-mcp-sandbox/README.md) is a self-contained playground: MCP memory client, resilient browser automation with Playwright (AbortController + exponential backoff) and hyperrealistic media payloads (FLUX / Runway / Luma). Requires Node.js 20+ and **no API keys** — without credentials everything runs in simulation mode and writes real local artifacts.
+
+```bash
+npm install --prefix meridian-mcp-sandbox
+npm run dev --prefix meridian-mcp-sandbox        # MCP memory + tool discovery => READY
+npm run test:media --prefix meridian-mcp-sandbox # simulation artifacts in output/media
+npm run test:web --prefix meridian-mcp-sandbox   # needs: npm run setup:browsers --prefix meridian-mcp-sandbox
+```
+
 ### Run the community site
 
 ```bash
@@ -60,6 +71,7 @@ The community portal uses React 19, Vite and TypeScript. The local starter is se
 | `template-*` / `starter-*` | Reusable, runnable starters | Local agent-response starter available in this repo |
 | `sdk-*` | Public API client libraries | Awaiting stable public API contracts |
 | `integrations-*` | Third-party service connectors | Planned |
+| `meridian-mcp-sandbox/` | Zero-config playground: MCP, Playwright resilience and hyperrealistic media | Runnable in this repo (`npm install && npm run dev`); independent repository pending publication |
 | Built with Meridian | Curated developer projects | No verified external submissions yet |
 
 The [community registry](./community/registry.json) intentionally starts empty. It only lists **reviewed public projects**, never placeholder packages.
