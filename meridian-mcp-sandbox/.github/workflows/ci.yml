@@ -1,0 +1,78 @@
+name: Sandbox quality gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sandbox-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Typecheck, tests and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    env:
+      # El sandbox es Zero Config: en CI corre en modo simulación, sin claves.
+      MERIDIAN_MODE: simulation
+      MERIDIAN_LOG_LEVEL: info
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests (backoff, aborto, payloads, PNG)
+        run: npm test
+
+      - name: Media pipeline (modo simulación)
+        run: npm run test:media
+
+      - name: Build
+        run: npm run build
+
+  mcp-smoke:
+    name: MCP smoke test (servidor de memoria)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Arranque del sandbox (handshake MCP + grafo + informe)
+        run: npm run dev
+
+      - name: Inspección del servidor Everything
+        run: npm run test:tools -- --server=everything
+
+      - name: Subir informe de readiness
+        uses: actions/upload-artifact@v4
+        with:
+          name: sandbox-readiness-report
+          path: output/artifacts/
+          if-no-files-found: warn
+          retention-days: 14
