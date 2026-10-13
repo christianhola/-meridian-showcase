@@ -30,3 +30,13 @@ Status: private launch candidate; review against the latest GitHub Actions run.
 
 ## Quality policy
 Never fabricate a passing test, public availability, platform compatibility or a security audit. CI's regex audit only inspects tracked working-tree files; it is not a full history audit or proof of absence of secrets.
+
+## Additional checks for the AI documentation and diagrams
+
+The English AI guide, pseudocode examples and AI contribution policy are added as educational resources, **not** as evidence of an installed autonomous agent.
+
+- [ ] Verify actual GitHub rendering for Mermaid diagrams, remote icons, mobile and dark mode.
+- [ ] Validate all refs, full Git history, Actions logs and artifacts for secrets and private data.
+- [ ] Confirm third-party asset and brand rights; ensure external logos do not imply sponsorship.
+- [ ] Verify the founder's first-person experiences and authorize publication.
+- [ ] Commit the missing root lockfile, confirm reproducible CI and enable protected reviews.

@@ -59,3 +59,7 @@ node examples/agent-response-starter/server.mjs
 See [design references](./docs/DESIGN-REFERENCES-21ST.md), including the requested 21st.dev patterns. All visual designs are implemented independently.
 
 **Before opening the repository publicly:** community owner approval is still required for the publication/license policy and full-history privacy review.
+
+## Working with AI
+
+AI-assisted contributions are welcome when a person reads and verifies the result. Disclose substantial assistance in the PR and never allow an agent to publish or merge without authorization. See our [AI development and pseudocode guide](./docs/AI-ASSISTED-DEVELOPMENT.md), [copy-ready agent instructions](./docs/AI-AGENT-WORKFLOW.md) and [responsible AI contribution policy](./docs/AI-CONTRIBUTION-POLICY.md).

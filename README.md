@@ -76,6 +76,16 @@ The community portal uses React 19, Vite and TypeScript. The local starter is se
 
 The [community registry](./community/registry.json) intentionally starts empty. It only lists **reviewed public projects**, never placeholder packages.
 
+## AI-assisted development for humans 🧠
+
+Read our new English-language community guide on **pseudocode, ASTs, safe Git worktrees, compiler feedback, bytecode, human review, and real Supabase/Vercel lessons**.
+
+- [**Human-first AI development and pseudocode guide**](./docs/AI-ASSISTED-DEVELOPMENT.md) — detailed explanations, official sources, platform icons, and GitHub-native Mermaid concept maps.
+- [**Safe agent workflow for Codex and other tools**](./docs/AI-AGENT-WORKFLOW.md) — practical instructions to copy and adapt.
+- [**Responsible AI contribution policy**](./docs/AI-CONTRIBUTION-POLICY.md) — informed by LLVM's policy, but independently written for our community.
+
+The diagrams are educational; they do not imply this repository operates live autonomous agents or is affiliated with the platforms shown.
+
 ## Architecture, governance and moderation
 
 - [Manifesto](./docs/COMMUNITY-MANIFESTO.md)
