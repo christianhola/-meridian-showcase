@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="560" viewBox="0 0 1600 560" role="img" aria-labelledby="title desc">
+<title id="title">Meridian Community — editorial documentation</title>
+<desc id="desc">Minimalist blue and white editorial cover with Meridian headline and a conceptual documentation dashboard.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#EDF3FF"/></linearGradient>
+  <linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#F9FBFF"/></linearGradient>
+  <linearGradient id="accent" x1="0" x2="1"><stop stop-color="#2563EB"/><stop offset="1" stop-color="#7A9DFB"/></linearGradient>
+  <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#C5D2E8" opacity=".52"/></pattern>
+  <filter id="shadow" x="-30%" y="-40%" width="160%" height="180%"><feDropShadow dx="0" dy="20" stdDeviation="26" flood-color="#132C58" flood-opacity=".11"/></filter>
+  <clipPath id="rounded"><rect width="1600" height="560" rx="24"/></clipPath>
+</defs>
+<g clip-path="url(#rounded)">
+  <rect width="1600" height="560" fill="url(#bg)"/>
+  <rect width="1600" height="560" fill="url(#dots)"/>
+  <circle cx="1502" cy="30" r="264" fill="#DBE6FF" opacity=".75"/>
+  <circle cx="1300" cy="575" r="260" fill="#E8EDFF"/>
+  <rect x="68" y="58" width="43" height="43" rx="11" fill="#152239"/>
+  <path d="M80 87V70h5l6 8 6-8h5v17h-6v-8l-5 7-5-7v8Z" fill="#FFFFFF"/>
+  <circle cx="103" cy="67" r="3" fill="#83A9FF"/>
+  <text x="124" y="86" fill="#27354B" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700">Meridian</text>
+  <rect x="68" y="160" width="252" height="38" rx="19" fill="#E7EDFD"/>
+  <circle cx="89" cy="179" r="5" fill="#2563EB"/>
+  <text x="104" y="185" fill="#2347A0" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" letter-spacing="1.1">COMMUNITY / DOCS</text>
+  <text x="66" y="281" fill="#14233B" font-family="Inter,Arial,sans-serif" font-size="80" font-weight="700" letter-spacing="-4">Ideas que se</text>
+  <text x="66" y="372" fill="#14233B" font-family="Inter,Arial,sans-serif" font-size="80" font-weight="700" letter-spacing="-4">convierten en</text>
+  <text x="66" y="463" fill="#2563EB" font-family="Inter,Arial,sans-serif" font-size="80" font-weight="700" letter-spacing="-4">sistemas.</text>
+  <rect x="908" y="90" width="610" height="392" rx="23" fill="url(#card)" stroke="#DBE3F0" stroke-width="2" filter="url(#shadow)"/>
+  <path d="M931 90h564q23 0 23 23v32H908v-32q0-23 23-23" fill="#F2F6FF"/>
+  <circle cx="937" cy="118" r="6" fill="#F2ABA5"/><circle cx="959" cy="118" r="6" fill="#F3D39D"/><circle cx="981" cy="118" r="6" fill="#9AD6BD"/>
+  <rect x="1057" y="103" width="330" height="28" rx="9" fill="#FFFFFF" stroke="#E3EAF6"/>
+  <text x="1153" y="123" fill="#8491A4" font-family="Inter,Arial,sans-serif" font-size="13">Meridian / Documentación</text>
+  <path d="M1103 145V482" stroke="#E4EAF5" stroke-width="2"/>
+  <text x="937" y="180" fill="#8791A3" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.4">EXPLORAR</text>
+  <rect x="924" y="194" width="162" height="36" rx="8" fill="#E8EFFF"/>
+  <circle cx="944" cy="212" r="5" fill="#316BEA"/>
+  <text x="960" y="218" fill="#214A9F" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700">Inicio</text>
+  <text x="940" y="266" fill="#526277" font-family="Inter,Arial,sans-serif" font-size="16">Visión</text>
+  <text x="940" y="309" fill="#526277" font-family="Inter,Arial,sans-serif" font-size="16">Arquitectura</text>
+  <text x="940" y="352" fill="#526277" font-family="Inter,Arial,sans-serif" font-size="16">Agentes de IA</text>
+  <text x="940" y="395" fill="#526277" font-family="Inter,Arial,sans-serif" font-size="16">Comunidad</text>
+  <text x="1134" y="185" fill="#5375AE" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.6">MERIDIAN / KNOWLEDGE</text>
+  <text x="1134" y="231" fill="#172743" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="700">Construir con criterio.</text>
+  <rect x="1134" y="250" width="342" height="8" rx="4" fill="#E6ECF4"/>
+  <rect x="1134" y="267" width="295" height="8" rx="4" fill="#E6ECF4"/>
+  <rect x="1134" y="305" width="154" height="66" rx="12" fill="#E9F0FF" stroke="#D9E5FF"/>
+  <rect x="1304" y="305" width="172" height="66" rx="12" fill="#EFF5FB" stroke="#DDE6F1"/>
+  <path d="M1155 344l9-10 9 7 12-16" fill="none" stroke="#2C6DE8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1198" y="345" fill="#315C9F" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">Guías</text>
+  <circle cx="1329" cy="337" r="10" fill="#9BAEDF"/>
+  <text x="1347" y="345" fill="#526A8D" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">Comunidad</text>
+  <rect x="1134" y="393" width="342" height="58" rx="11" fill="#17243B"/>
+  <text x="1155" y="418" fill="#B7CEF9" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700">BUILD BEYOND THE PLATFORM</text>
+  <text x="1155" y="438" fill="#FFFFFF" font-family="Inter,Arial,sans-serif" font-size="14">Documentación abierta para creadores.</text>
+  <rect x="908" y="503" width="610" height="3" rx="1.5" fill="url(#accent)" opacity=".55"/>
+</g>
+</svg>

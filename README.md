@@ -1,16 +1,85 @@
+<p align="center">
+  <img src="./assets/meridian-editorial-cover.svg" alt="Meridian Community: Ideas que se convierten en sistemas. Portada editorial con una vista de la documentación." width="100%" />
+</p>
+
+<div align="center">
+
 # Meridian Community
 
 **Build beyond the platform.**
 
-An evolving developer community for reproducible agent interfaces, portable skills, documented contracts, and contributions around the Meridian / Nexviro ecosystem.
+Un espacio para aprender, diseñar y compartir mejores experiencias de inteligencia artificial.
 
-> **Launch status:** PUBLIC REPOSITORY · COMMUNITY PREVIEW. The documentation website is built with VitePress; GitHub Pages must be enabled in the repository settings before the live URL works. The independent GitHub organization, custom domain and Discord have not been verified or created. Do not treat demo results as live agent execution.
+**[Explorar la web de documentación](https://christianhola.github.io/-meridian-showcase/)** · **[Comenzar aquí](./docs/GETTING-STARTED.md)** · **[Participar](./docs/community.md)**
 
-## Documentation website
+<sub>Documentación abierta · Diseño editorial · Desarrollo asistido por IA</sub>
 
-The editorial, searchable VitePress documentation lives in [`docs/`](./docs/) and is built automatically by [GitHub Actions](./.github/workflows/docs-pages.yml). Once GitHub Pages is enabled with **Source: GitHub Actions**, it will publish at <https://christianhola.github.io/-meridian-showcase/>.
+</div>
 
-To view and build the same site locally:
+---
+
+> [!NOTE]
+> **Comunidad en desarrollo.** El repositorio es público y la documentación está publicada. Algunos diagramas y ejemplos ilustran propuestas o prototipos; no representan necesariamente funciones disponibles en producción.
+
+## Descubre Meridian
+
+Una biblioteca de ideas, documentación y herramientas para construir sistemas de IA de manera comprensible, verificable y colaborativa.
+
+| **01 / Comienza aquí** | **02 / Arquitectura** |
+| :--- | :--- |
+| **[Introducción a Meridian](./docs/GETTING-STARTED.md)**<br/>Conoce el propósito del proyecto, los conceptos principales y cómo explorar sus recursos. | **[Diseño del sistema](./docs/ARCHITECTURE.md)**<br/>Explora los componentes, principios de arquitectura y flujos de agentes. |
+| **03 / Inteligencia artificial** | **04 / Comunidad** |
+| **[Desarrollo asistido por IA](./docs/AI-ASSISTED-DEVELOPMENT.md)**<br/>Pseudocódigo, AST, revisión humana y bucles de validación de código. | **[Construir juntos](./docs/community.md)**<br/>Propuestas, contribuciones y colaboración abierta dentro de GitHub. |
+
+## La visión
+
+> **La tecnología más avanzada también puede ser clara.**
+>
+> Meridian Community busca reunir conocimientos, ejemplos y buenas prácticas para crear herramientas inteligentes que las personas puedan entender, probar y mejorar.
+
+**[Leer la visión completa](./docs/vision.md)** · **[Ver la hoja de ruta](./docs/ROADMAP.md)**
+
+## Un vistazo al ecosistema
+
+<p align="center">
+  <a href="./docs/dashboard.md"><img src="./assets/meridian-ecosystem-hub.svg" alt="Ilustración conceptual del ecosistema Meridian" width="96%" /></a>
+</p>
+
+| Interfaces y agentes | Conocimiento y arquitectura |
+| :---: | :---: |
+| [![Concepto visual de consola y estados de agentes](./assets/agent-state-console.svg)](./docs/dashboard.md) | [![Concepto visual de búsqueda y enrutamiento semántico](./assets/librarian-semantic-routing.svg)](./docs/SEMANTIC-ROUTING-MCP.md) |
+| [**Interfaces de agentes**](./docs/INTERFACE-GUIDE.md) | [**Búsqueda semántica**](./docs/SEMANTIC-ROUTING-MCP.md) |
+
+<sub>Las imágenes anteriores son ilustraciones conceptuales incluidas en este repositorio; no son capturas verificadas de un dashboard de producción.</sub>
+
+## Documentación, ordenada por temas
+
+| Aprende | Construye | Colabora |
+| :--- | :--- | :--- |
+| [Primeros pasos](./docs/GETTING-STARTED.md) | [Arquitectura](./docs/ARCHITECTURE.md) | [Comunidad](./docs/community.md) |
+| [Pseudocódigo e IA](./docs/AI-ASSISTED-DEVELOPMENT.md) | [Runtime de agentes](./docs/AGENT-RUNTIME.md) | [Gobernanza](./docs/GOVERNANCE.md) |
+| [Agentes con IA](./docs/AI-AGENT-WORKFLOW.md) | [Protocolos MCP](./docs/PLUGIN-CONTRACT.md) | [Cómo contribuir](./CONTRIBUTING.md) |
+| [Guía de interfaz](./docs/INTERFACE-GUIDE.md) | [Motor de voz](./docs/MERIDIAN-VOICE-ENGINE.md) | [Código de conducta](./CODE_OF_CONDUCT.md) |
+
+### ¿Quieres explorar como en Notion?
+
+La **[versión web de Meridian](https://christianhola.github.io/-meridian-showcase/)** reúne el mismo contenido en páginas con navegación lateral, búsqueda y tema claro/oscuro. La portada que estás viendo aquí se muestra automáticamente **dentro del propio repositorio GitHub**.
+
+## Participa en Meridian
+
+¿Encontraste un error o tienes una idea? Puedes colaborar directamente en GitHub, sin otras cuentas.
+
+**[Proponer una idea](https://github.com/christianhola/-meridian-showcase/issues/new/choose)** · **[Ver propuestas](https://github.com/christianhola/-meridian-showcase/issues)** · **[Enviar cambios](https://github.com/christianhola/-meridian-showcase/pulls)**
+
+> [!IMPORTANT]
+> No publiques credenciales, claves API, datos privados ni información confidencial en contribuciones, ejemplos o capturas.
+
+---
+
+<details>
+<summary><b>Para desarrolladores: ejecutar, probar y consultar la estructura técnica</b></summary>
+
+### Documentación local con VitePress
 
 ```bash
 npm install
@@ -18,107 +87,47 @@ npm run docs:dev
 npm run docs:build
 ```
 
-The existing Vite/React community app is preserved separately (`npm run dev`). Pages serves only the generated documentation; no external hosting account is required.
+### Portal React existente
 
-## Start here
+```bash
+npm install
+npm run check
+npm run test
+npm run security:check
+npm run build
+npm run dev
+```
 
-[English & Español — Getting started](./docs/GETTING-STARTED.md) · [Contribute](./CONTRIBUTING.md) · [Code of Conduct](./CODE_OF_CONDUCT.md) · [Security](./SECURITY.md) · [License](./LICENSE)
+### Ejemplos locales
 
-### Run the first real starter
-
-Requires Node.js 20+. Uses only built-in Node modules — **no API keys, npm packages or external services**.
+El repositorio incluye ejemplos reproducibles. No requieren credenciales para los modos de demostración.
 
 ```bash
 node --test examples/agent-response-starter/test/*.test.mjs
 node examples/agent-response-starter/server.mjs
 ```
 
-Open `http://127.0.0.1:4173`. Switch between sample responses delivered by a local HTTP endpoint. Everything is deterministic; no model provider calls.
+Para los contratos, requisitos, dependencias y otros comandos, consulta **[la referencia técnica completa](./REPOSITORY-REFERENCE.md)** y los documentos de la carpeta [`docs/`](./docs/).
 
-[Starter source and documentation](./examples/agent-response-starter/README.md) · [Design references: 21st.dev](./docs/DESIGN-REFERENCES-21ST.md)
+</details>
 
-### Run the read-only MCP server
+<details>
+<summary><b>Licencia, seguridad y estado de publicación</b></summary>
 
-Official [MCP TypeScript SDK v2](https://github.com/modelcontextprotocol/typescript-sdk), a single permission-free tool and an end-to-end protocol test:
+- **[Licencia MIT](./LICENSE):** revisa los términos antes de reutilizar el código.
+- **[Marcas](./TRADEMARKS.md):** la licencia del código no implica derechos sobre marcas y logos.
+- **[Seguridad](./SECURITY.md):** informa de vulnerabilidades mediante los mecanismos indicados, no en issues públicos.
+- **[Estado de lanzamiento](./docs/LAUNCH-READINESS.md):** consulta los elementos pendientes y la distinción entre propuestas y funciones verificadas.
+- El backend privado de Meridian y sus credenciales no forman parte de este repositorio.
 
-```bash
-npm install --prefix examples/mcp-readonly
-npm test --prefix examples/mcp-readonly
-npm start --prefix examples/mcp-readonly
-```
+</details>
 
-Its `stdio` transport waits for an MCP host. This is not an HTTP API or an LLM. See the [MCP example docs](./examples/mcp-readonly/README.md).
+---
 
-### Run the MCP + automation sandbox
-
-[`meridian-mcp-sandbox`](./meridian-mcp-sandbox/README.md) is a self-contained playground: MCP memory client, resilient browser automation with Playwright (AbortController + exponential backoff) and hyperrealistic media payloads (FLUX / Runway / Luma). Requires Node.js 20+ and **no API keys** — without credentials everything runs in simulation mode and writes real local artifacts.
-
-```bash
-npm install --prefix meridian-mcp-sandbox
-npm run dev --prefix meridian-mcp-sandbox        # MCP memory + tool discovery => READY
-npm run test:media --prefix meridian-mcp-sandbox # simulation artifacts in output/media
-npm run test:web --prefix meridian-mcp-sandbox   # needs: npm run setup:browsers --prefix meridian-mcp-sandbox
-```
-
-### Run the community site
-
-```bash
-npm install
-npm run check
-npm run evals
-npm run community:check
-npm run test
-npm run starter:test
-npm run security:check
-npm run build
-npm run dev
-```
-
-The community portal uses React 19, Vite and TypeScript. The local starter is separate and dependency-free. **A committed lockfile is still pending**; the current root install is not yet fully reproducible.
-
-## Ecosystem tracks
-
-| Area | Purpose | Release status |
-| --- | --- | --- |
-| `plugin-*` | Extensible capabilities | Contract proposals |
-| `mcp-*` | Secure Model Context Protocol server integrations | Read-only local example included; no external integration published |
-| `template-*` / `starter-*` | Reusable, runnable starters | Local agent-response starter available in this repo |
-| `sdk-*` | Public API client libraries | Awaiting stable public API contracts |
-| `integrations-*` | Third-party service connectors | Planned |
-| `meridian-mcp-sandbox/` | Zero-config playground: MCP, Playwright resilience and hyperrealistic media | Runnable in this repo (`npm install && npm run dev`); independent repository pending publication |
-| Built with Meridian | Curated developer projects | No verified external submissions yet |
-
-The [community registry](./community/registry.json) intentionally starts empty. It only lists **reviewed public projects**, never placeholder packages.
-
-## AI-assisted development for humans 🧠
-
-Read our new English-language community guide on **pseudocode, ASTs, safe Git worktrees, compiler feedback, bytecode, human review, and real Supabase/Vercel lessons**.
-
-- [**Human-first AI development and pseudocode guide**](./docs/AI-ASSISTED-DEVELOPMENT.md) — detailed explanations, official sources, platform icons, and GitHub-native Mermaid concept maps.
-- [**Safe agent workflow for Codex and other tools**](./docs/AI-AGENT-WORKFLOW.md) — practical instructions to copy and adapt.
-- [**Responsible AI contribution policy**](./docs/AI-CONTRIBUTION-POLICY.md) — informed by LLVM's policy, but independently written for our community.
-
-The diagrams are educational; they do not imply this repository operates live autonomous agents or is affiliated with the platforms shown.
-
-## Architecture, governance and moderation
-
-- [Manifesto](./docs/COMMUNITY-MANIFESTO.md)
-- [Repository naming](./docs/REPOSITORY-NAMING.md)
-- [Plugin contract proposal](./docs/PLUGIN-CONTRACT.md)
-- [Governance](./docs/GOVERNANCE.md)
-- [Security and moderation plan](./docs/DISCORD-BLUEPRINT.md)
-- [GitHub organization profile blueprint](./blueprints/organization-github/profile/README.md)
-- [Organization launch checklist](./docs/ORG-LAUNCH-CHECKLIST.md)
-- [Release readiness / **public launch blockers**](./docs/LAUNCH-READINESS.md)
-
-The private Meridian backend and its production credentials are **not** part of this community project. Historical technical docs in this repository must be reviewed for sensitivity before public visibility is enabled.
-
-## License
-
-MIT (subject to owner confirmation of rights to all included materials prior to public publication). Brand names and logos are covered separately by [TRADEMARKS.md](./TRADEMARKS.md). See [LICENSE](./LICENSE).
-
-## Contributing
-
-Start small: report a reproducible issue, improve documentation, run the starter, or add tests. Share only code and data you have permission to publish. Never put API keys or private infrastructure details into issues or PRs.
-
-**Meridian Community is under development.** External URLs and community participation claims will be added only after verification.
+<p align="center">
+  <strong>MERIDIAN · COMMUNITY & DOCUMENTATION</strong><br/>
+  Construir. Aprender. Compartir.<br/><br/>
+  <a href="https://christianhola.github.io/-meridian-showcase/">Documentación web</a> ·
+  <a href="./docs/community.md">Comunidad</a> ·
+  <a href="./docs/vision.md">Visión</a>
+</p>
