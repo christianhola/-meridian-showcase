@@ -2,19 +2,19 @@
   <img src="./assets/meridian-editorial-cover.svg" alt="Meridian Community: Ideas que se convierten en sistemas. Portada editorial con una vista de la documentación." width="100%" />
 </p>
 
-<div align="center">
+<h1 align="center">Meridian Community</h1>
 
-# Meridian Community
+<p align="center"><strong>Build beyond the platform.</strong></p>
 
-**Build beyond the platform.**
+<p align="center">Un espacio para aprender, diseñar y compartir mejores experiencias de inteligencia artificial.</p>
 
-Un espacio para aprender, diseñar y compartir mejores experiencias de inteligencia artificial.
+<p align="center">
+  <a href="https://christianhola.github.io/-meridian-showcase/"><strong>Explorar la documentación</strong></a> ·
+  <a href="./docs/GETTING-STARTED.md">Comenzar aquí</a> ·
+  <a href="./docs/community.md">Participar</a>
+</p>
 
-**[Explorar la web de documentación](https://christianhola.github.io/-meridian-showcase/)** · **[Comenzar aquí](./docs/GETTING-STARTED.md)** · **[Participar](./docs/community.md)**
-
-<sub>Documentación abierta · Diseño editorial · Desarrollo asistido por IA</sub>
-
-</div>
+<p align="center"><sub>Documentación abierta · Diseño editorial · Desarrollo asistido por IA</sub></p>
 
 ---
 
