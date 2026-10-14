@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="120" height="120" shape-rendering="crispEdges">
+  <g>
+    <rect x="8" y="6" width="16" height="16" fill="#FF3347" rx="2"/>
+    <rect x="10" y="8" width="12" height="10" fill="#0B0B0D"/>
+    <!-- Eyes (thinking - looking up) -->
+    <rect x="12" y="9" width="2" height="2" fill="#FFFFFF"/>
+    <rect x="18" y="9" width="2" height="2" fill="#FFFFFF"/>
+    <rect x="13" y="9" width="1" height="1" fill="#FF3347"/>
+    <rect x="19" y="9" width="1" height="1" fill="#FF3347"/>
+    <!-- Mouth (hmm) -->
+    <rect x="14" y="14" width="4" height="1" fill="#8E1724"/>
+    <!-- Antenna -->
+    <rect x="15" y="3" width="2" height="3" fill="#FF3347"/>
+    <rect x="14" y="2" width="4" height="2" fill="#FF3347" rx="1"/>
+    <!-- Thought dots -->
+    <rect x="26" y="6" width="2" height="2" fill="#FF3347" opacity="0.7"/>
+    <rect x="28" y="4" width="1" height="1" fill="#FF3347" opacity="0.4"/>
+    <rect x="29" y="2" width="1" height="1" fill="#FF3347" opacity="0.2"/>
+    <!-- Legs -->
+    <rect x="10" y="22" width="3" height="4" fill="#FF3347"/>
+    <rect x="19" y="22" width="3" height="4" fill="#FF3347"/>
+    <rect x="9" y="26" width="5" height="2" fill="#8E1724" rx="1"/>
+    <rect x="18" y="26" width="5" height="2" fill="#8E1724" rx="1"/>
+    <!-- Arms (one on chin) -->
+    <rect x="4" y="12" width="4" height="2" fill="#FF3347" rx="1"/>
+    <rect x="24" y="14" width="4" height="2" fill="#FF3347" rx="1"/>
+    <rect x="14" y="18" width="4" height="2" fill="#8E1724" rx="1"/>
+    <rect x="15" y="18" width="2" height="2" fill="#FF3347"/>
+  </g>
+</svg>

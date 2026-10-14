@@ -1,85 +1,63 @@
-<p align="center">
-  <img src="./assets/meridian-editorial-cover.svg" alt="Meridian Community: Ideas que se convierten en sistemas. Portada editorial con una vista de la documentación." width="100%" />
-</p>
+# Meridian · Biblioteca de la comunidad
 
-<h1 align="center">Meridian Community</h1>
+**Personas, personajes, agentes de voz y documentación**, organizados como colecciones independientes **dentro de este mismo repositorio**.
 
-<p align="center"><strong>Build beyond the platform.</strong></p>
-
-<p align="center">Un espacio para aprender, diseñar y compartir mejores experiencias de inteligencia artificial.</p>
-
-<p align="center">
-  <a href="https://christianhola.github.io/-meridian-showcase/"><strong>Explorar la documentación</strong></a> ·
-  <a href="./docs/GETTING-STARTED.md">Comenzar aquí</a> ·
-  <a href="./docs/community.md">Participar</a>
-</p>
-
-<p align="center"><sub>Documentación abierta · Diseño editorial · Desarrollo asistido por IA</sub></p>
+**[Personas](./00-personas/)** · **[Personajes](./01-personajes/)** · **[Agentes de voz](./02-agentes-de-voz/)** · **[Documentación](./03-documentacion/)** · **[Comunidad](./04-comunidad/)**
 
 ---
+
+## Dos portadas, dos colecciones
+
+<table>
+<tr>
+<td align="center" valign="top" width="50%">
+<a href="./00-personas/"><img src="./00-personas/imagenes/retrato-github.webp" alt="Retrato fotográfico original del perfil presentado" width="275" /></a>
+<h3>Personas</h3>
+<p>Fotografías normales y perfiles de la comunidad, sin versiones generadas.</p>
+<a href="./00-personas/"><strong>Explorar personas →</strong></a>
+</td>
+<td align="center" valign="top" width="50%">
+<a href="./01-personajes/"><img src="./01-personajes/imagenes/personaje-github.webp" alt="Ilustración original de un personaje con sudadera verde" width="205" /></a>
+<h3>Personajes</h3>
+<p>Ilustraciones originales y recursos de identidad visual.</p>
+<a href="./01-personajes/"><strong>Explorar personajes →</strong></a>
+</td>
+</tr>
+</table>
+
+## Explora las colecciones
+
+| Espacio | Contenido |
+| :--- | :--- |
+| [**00 · Personas**](./00-personas/) | Retratos, biografías autorizadas y colaboradores |
+| [**01 · Personajes**](./01-personajes/) | Mascotas, personajes y arte |
+| [**02 · Agentes de voz**](./02-agentes-de-voz/) | Galería de Meri, referencias de Aria y documentación |
+| [**03 · Documentación**](./03-documentacion/) | Guías técnicas, arquitectura, MCP, pseudocódigo e IA |
+| [**04 · Comunidad**](./04-comunidad/) | Contribuir, gobernanza, ideas y propuestas |
+
+## Agentes e ilustraciones de voz
+
+<p align="center">
+<a href="./02-agentes-de-voz/"><img src="./02-agentes-de-voz/imagenes/meri-idle.svg" alt="Meri en espera" width="110" /><img src="./02-agentes-de-voz/imagenes/meri-listening.svg" alt="Meri escuchando" width="110" /><img src="./02-agentes-de-voz/imagenes/meri-thinking.svg" alt="Meri pensando" width="110" /></a>
+</p>
+
+Las ilustraciones de Meri proceden de recursos reales del proyecto. No deben confundirse con retratos individuales de voces o modelos.
+
+## Documentación completa
+
+La documentación técnica existente sigue en [`docs/`](./docs/). Puedes leerla [directamente en GitHub](./03-documentacion/) o en [GitHub Pages](https://christianhola.github.io/-meridian-showcase/). No se ha eliminado ni sustituido el portal anterior.
 
 > [!NOTE]
-> **Comunidad en desarrollo.** El repositorio es público y la documentación está publicada. Algunos diagramas y ejemplos ilustran propuestas o prototipos; no representan necesariamente funciones disponibles en producción.
-
-## Descubre Meridian
-
-Una biblioteca de ideas, documentación y herramientas para construir sistemas de IA de manera comprensible, verificable y colaborativa.
-
-| **01 / Comienza aquí** | **02 / Arquitectura** |
-| :--- | :--- |
-| **[Introducción a Meridian](./docs/GETTING-STARTED.md)**<br/>Conoce el propósito del proyecto, los conceptos principales y cómo explorar sus recursos. | **[Diseño del sistema](./docs/ARCHITECTURE.md)**<br/>Explora los componentes, principios de arquitectura y flujos de agentes. |
-| **03 / Inteligencia artificial** | **04 / Comunidad** |
-| **[Desarrollo asistido por IA](./docs/AI-ASSISTED-DEVELOPMENT.md)**<br/>Pseudocódigo, AST, revisión humana y bucles de validación de código. | **[Construir juntos](./docs/community.md)**<br/>Propuestas, contribuciones y colaboración abierta dentro de GitHub. |
-
-## La visión
-
-> **La tecnología más avanzada también puede ser clara.**
->
-> Meridian Community busca reunir conocimientos, ejemplos y buenas prácticas para crear herramientas inteligentes que las personas puedan entender, probar y mejorar.
-
-**[Leer la visión completa](./docs/vision.md)** · **[Ver la hoja de ruta](./docs/ROADMAP.md)**
-
-## Un vistazo al ecosistema
-
-<p align="center">
-  <a href="./docs/dashboard.md"><img src="./assets/meridian-ecosystem-hub.svg" alt="Ilustración conceptual del ecosistema Meridian" width="96%" /></a>
-</p>
-
-| Interfaces y agentes | Conocimiento y arquitectura |
-| :---: | :---: |
-| [![Concepto visual de consola y estados de agentes](./assets/agent-state-console.svg)](./docs/dashboard.md) | [![Concepto visual de búsqueda y enrutamiento semántico](./assets/librarian-semantic-routing.svg)](./docs/SEMANTIC-ROUTING-MCP.md) |
-| [**Interfaces de agentes**](./docs/INTERFACE-GUIDE.md) | [**Búsqueda semántica**](./docs/SEMANTIC-ROUTING-MCP.md) |
-
-<sub>Las imágenes anteriores son ilustraciones conceptuales incluidas en este repositorio; no son capturas verificadas de un dashboard de producción.</sub>
-
-## Documentación, ordenada por temas
-
-| Aprende | Construye | Colabora |
-| :--- | :--- | :--- |
-| [Primeros pasos](./docs/GETTING-STARTED.md) | [Arquitectura](./docs/ARCHITECTURE.md) | [Comunidad](./docs/community.md) |
-| [Pseudocódigo e IA](./docs/AI-ASSISTED-DEVELOPMENT.md) | [Runtime de agentes](./docs/AGENT-RUNTIME.md) | [Gobernanza](./docs/GOVERNANCE.md) |
-| [Agentes con IA](./docs/AI-AGENT-WORKFLOW.md) | [Protocolos MCP](./docs/PLUGIN-CONTRACT.md) | [Cómo contribuir](./CONTRIBUTING.md) |
-| [Guía de interfaz](./docs/INTERFACE-GUIDE.md) | [Motor de voz](./docs/MERIDIAN-VOICE-ENGINE.md) | [Código de conducta](./CODE_OF_CONDUCT.md) |
-
-### ¿Quieres explorar como en Notion?
-
-La **[versión web de Meridian](https://christianhola.github.io/-meridian-showcase/)** reúne el mismo contenido en páginas con navegación lateral, búsqueda y tema claro/oscuro. La portada que estás viendo aquí se muestra automáticamente **dentro del propio repositorio GitHub**.
-
-## Participa en Meridian
-
-¿Encontraste un error o tienes una idea? Puedes colaborar directamente en GitHub, sin otras cuentas.
-
-**[Proponer una idea](https://github.com/christianhola/-meridian-showcase/issues/new/choose)** · **[Ver propuestas](https://github.com/christianhola/-meridian-showcase/issues)** · **[Enviar cambios](https://github.com/christianhola/-meridian-showcase/pulls)**
-
-> [!IMPORTANT]
-> No publiques credenciales, claves API, datos privados ni información confidencial en contribuciones, ejemplos o capturas.
-
----
+> En GitHub no se puede reemplazar la cabecera ni la lista de archivos por una interfaz personalizada tipo Notion. Por eso las colecciones están como carpetas numeradas —visibles arriba— y esta portada nativa aparece justo debajo del explorador de archivos.
 
 <details>
-<summary><b>Para desarrolladores: ejecutar, probar y consultar la estructura técnica</b></summary>
+<summary><strong>Desarrollo, licencia y documentación anterior</strong></summary>
 
-### Documentación local con VitePress
+- [Referencia técnica completa](./REPOSITORY-REFERENCE.md)
+- [Código de conducta](./CODE_OF_CONDUCT.md)
+- [Seguridad](./SECURITY.md)
+- [Cómo contribuir](./CONTRIBUTING.md)
+- [Licencia](./LICENSE)
 
 ```bash
 npm install
@@ -87,47 +65,4 @@ npm run docs:dev
 npm run docs:build
 ```
 
-### Portal React existente
-
-```bash
-npm install
-npm run check
-npm run test
-npm run security:check
-npm run build
-npm run dev
-```
-
-### Ejemplos locales
-
-El repositorio incluye ejemplos reproducibles. No requieren credenciales para los modos de demostración.
-
-```bash
-node --test examples/agent-response-starter/test/*.test.mjs
-node examples/agent-response-starter/server.mjs
-```
-
-Para los contratos, requisitos, dependencias y otros comandos, consulta **[la referencia técnica completa](./REPOSITORY-REFERENCE.md)** y los documentos de la carpeta [`docs/`](./docs/).
-
 </details>
-
-<details>
-<summary><b>Licencia, seguridad y estado de publicación</b></summary>
-
-- **[Licencia MIT](./LICENSE):** revisa los términos antes de reutilizar el código.
-- **[Marcas](./TRADEMARKS.md):** la licencia del código no implica derechos sobre marcas y logos.
-- **[Seguridad](./SECURITY.md):** informa de vulnerabilidades mediante los mecanismos indicados, no en issues públicos.
-- **[Estado de lanzamiento](./docs/LAUNCH-READINESS.md):** consulta los elementos pendientes y la distinción entre propuestas y funciones verificadas.
-- El backend privado de Meridian y sus credenciales no forman parte de este repositorio.
-
-</details>
-
----
-
-<p align="center">
-  <strong>MERIDIAN · COMMUNITY & DOCUMENTATION</strong><br/>
-  Construir. Aprender. Compartir.<br/><br/>
-  <a href="https://christianhola.github.io/-meridian-showcase/">Documentación web</a> ·
-  <a href="./docs/community.md">Comunidad</a> ·
-  <a href="./docs/vision.md">Visión</a>
-</p>
