@@ -32,12 +32,12 @@ AI agents may assist locally, but must not merge, publish releases, post communi
 
 ## Protect security, privacy and copyright
 
-Do not submit private keys, user data, internal infrastructure details or third-party material you cannot legally distribute. AI generation does not make copyrighted content free to use. Follow [SECURITY.md](../SECURITY.md) for private reporting of vulnerabilities.
+Do not submit private keys, user data, internal infrastructure details or third-party material you cannot legally distribute. AI generation does not make copyrighted content free to use. Follow [SECURITY.md](https://github.com/christianhola/-meridian-showcase/blob/main/SECURITY.md) for private reporting of vulnerabilities.
 
 ## Help beginners learn
 
 Contributors are welcome to use assistants for explanations and learning. Maintainers may mark specific issues as human-first exercises to protect educational value. LLVM has its own additional rules for beginner issues; we do not claim those rules apply automatically here.
 
-**Explore:** [Full human-first guide](./AI-ASSISTED-DEVELOPMENT.md) · [Agent instructions](./AI-AGENT-WORKFLOW.md) · [Contributing](../CONTRIBUTING.md).
+**Explore:** [Full human-first guide](./AI-ASSISTED-DEVELOPMENT.md) · [Agent instructions](./AI-AGENT-WORKFLOW.md) · [Contributing](https://github.com/christianhola/-meridian-showcase/blob/main/CONTRIBUTING.md).
 
 **Official references:** [LLVM AI Tool Use Policy](https://llvm.org/docs/AIToolPolicy.html) · [GitHub repository security](https://docs.github.com/en/code-security/getting-started/quickstart-for-securing-your-repository) · [GitHub repository visibility](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility).

@@ -6,7 +6,7 @@
 
 This guide is for developers, students, community contributors, maintainers, and anyone who wants to understand what an AI coding assistant did. You do not need to be an expert to start. You do need curiosity, a little patience, and a willingness to verify things.
 
-[Copy the agent workflow](./AI-AGENT-WORKFLOW.md) · [Read the community AI contribution policy](./AI-CONTRIBUTION-POLICY.md) · [Contribute](../CONTRIBUTING.md)
+[Copy the agent workflow](./AI-AGENT-WORKFLOW.md) · [Read the community AI contribution policy](./AI-CONTRIBUTION-POLICY.md) · [Contribute](https://github.com/christianhola/-meridian-showcase/blob/main/CONTRIBUTING.md)
 
 ## A personal note from Christian 💬
 
@@ -255,6 +255,6 @@ The following original sources support the technical and governance material:
 
 Have a question or a better example? Make a small contribution, share the evidence, and help someone else learn. That's the kind of technical community worth building.
 
-**Meridian Community × Christian** · [Explore our repository](https://github.com/christianhola/-meridian-showcase) · [Join the contribution process](../CONTRIBUTING.md)
+**Meridian Community × Christian** · [Explore our repository](https://github.com/christianhola/-meridian-showcase) · [Join the contribution process](https://github.com/christianhola/-meridian-showcase/blob/main/CONTRIBUTING.md)
 
 *Independent community publication. GitHub, LLVM, TypeScript, Supabase and Vercel do not sponsor or endorse this guide.*

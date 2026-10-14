@@ -28,6 +28,6 @@ Este repositorio de comunidad **no concede acceso** al código del producto prin
 
 ## Cómo participar
 
-Consulta [CONTRIBUTING.md](../CONTRIBUTING.md) y las [reglas de nomenclatura](./REPOSITORY-NAMING.md). Cuando el repositorio sea público, podrás proponer proyectos mediante GitHub Issues y código mediante Pull Requests.
+Consulta [CONTRIBUTING.md](https://github.com/christianhola/-meridian-showcase/blob/main/CONTRIBUTING.md) y las [reglas de nomenclatura](./REPOSITORY-NAMING.md). Cuando el repositorio sea público, podrás proponer proyectos mediante GitHub Issues y código mediante Pull Requests.
 
 **Estado:** manifiesto propuesto. La apertura pública y la elección de licencia están pendientes de aprobación.

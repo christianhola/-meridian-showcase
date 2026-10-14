@@ -35,6 +35,6 @@ El manifiesto anterior es exclusivamente ilustrativo. No se ha verificado aún u
 
 ## Working minimum MCP transport example
 
-The [read-only MCP v2 example](../examples/mcp-readonly/README.md) is a real stdio server using the current official SDK, not a fictional API endpoint. It exposes a single enum-validated, deterministic tool and a protocol integration test. It has no Meridian backend integration and no credential or filesystem access.
+The [read-only MCP v2 example](https://github.com/christianhola/-meridian-showcase/blob/main/examples/mcp-readonly/README.md) is a real stdio server using the current official SDK, not a fictional API endpoint. It exposes a single enum-validated, deterministic tool and a protocol integration test. It has no Meridian backend integration and no credential or filesystem access.
 
 A production connector must add explicit permission scoping, authorization, rate limits, cancellation, logging redaction, tool result validation and owner approval for any sensitive action.
