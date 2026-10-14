@@ -4,7 +4,21 @@
 
 An evolving developer community for reproducible agent interfaces, portable skills, documented contracts, and contributions around the Meridian / Nexviro ecosystem.
 
-> **Launch status:** PRIVATE REPOSITORY · COMMUNITY PREVIEW. The independent GitHub organization, public domain and Discord have not been verified or created. Do not treat demo results as live agent execution.
+> **Launch status:** PUBLIC REPOSITORY · COMMUNITY PREVIEW. The documentation website is built with VitePress; GitHub Pages must be enabled in the repository settings before the live URL works. The independent GitHub organization, custom domain and Discord have not been verified or created. Do not treat demo results as live agent execution.
+
+## Documentation website
+
+The editorial, searchable VitePress documentation lives in [`docs/`](./docs/) and is built automatically by [GitHub Actions](./.github/workflows/docs-pages.yml). Once GitHub Pages is enabled with **Source: GitHub Actions**, it will publish at <https://christianhola.github.io/-meridian-showcase/>.
+
+To view and build the same site locally:
+
+```bash
+npm install
+npm run docs:dev
+npm run docs:build
+```
+
+The existing Vite/React community app is preserved separately (`npm run dev`). Pages serves only the generated documentation; no external hosting account is required.
 
 ## Start here
 
