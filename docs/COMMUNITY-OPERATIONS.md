@@ -42,7 +42,7 @@ Empezar con retos de documentación, starters y plugins de prueba sin acceso al 
 - Estructura detallada de Discord: [DISCORD-BLUEPRINT.md](./DISCORD-BLUEPRINT.md).
 - Modelo de derechos y revisión: [GOVERNANCE.md](./GOVERNANCE.md).
 - Lanzamiento de GitHub Organization: [ORG-LAUNCH-CHECKLIST.md](./ORG-LAUNCH-CHECKLIST.md).
-- Plantillas copiables: [blueprints](../blueprints/).
+- Plantillas copiables: [blueprints](https://github.com/christianhola/-meridian-showcase/tree/main/blueprints).
 - El directorio se genera desde el registro aprobado en el repositorio y se valida en CI.
 - Un workflow semanal podrá consultar la API de GitHub en modo solo lectura al pasar a público; no publica ni fusiona contenido de terceros.
 
