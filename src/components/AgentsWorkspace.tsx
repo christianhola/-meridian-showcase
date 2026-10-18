@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ArrowUp, Check, ChevronDown, Copy, FilePlus2, Menu, MessageSquarePlus, Mic, MoreHorizontal, Paperclip, Pencil, RotateCcw, X } from "lucide-react";
+import { ArrowUp, Check, ChevronDown, Copy, FilePlus2, Menu, MessageSquarePlus, Mic, Paperclip, Pencil, X } from "lucide-react";
 import "./AgentsWorkspace.css";
 
 type Turn = { id: number; text: string; agent: string };
