@@ -4,6 +4,7 @@ import ecosystemUrl from "../assets/meridian-ecosystem-hub.svg";
 import { ArchitectureMap } from "./components/ArchitectureMap";
 import { CommunityHub } from "./components/CommunityHub";
 import { AgentResponseShowcase } from "./components/AgentResponseShowcase";
+import { AgentStudio } from "./components/AgentStudio";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
 import { WilennyLab } from "./components/WilennyLab";
@@ -28,7 +29,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const ids = ["playground", "start", "community", "directory", "architecture", "wilenny", "status"];
+    const ids = ["playground", "agents", "start", "community", "directory", "architecture", "wilenny", "status"];
     const sections = ids.map(id => document.getElementById(id)).filter((node): node is HTMLElement => Boolean(node));
     const observer = new IntersectionObserver(entries => {
       const mostVisible = entries.filter(entry => entry.isIntersecting)
@@ -48,6 +49,7 @@ export function App() {
 
   const navigation = [
     { label: "Playground", href: "#playground", id: "playground" },
+    { label: "Agents", href: "#agents", id: "agents" },
     { label: "Get started", href: "#start", id: "start" },
     { label: "Ecosystem", href: "#community", id: "community" },
     { label: "Directory", href: "#directory", id: "directory" },
@@ -137,6 +139,8 @@ export function App() {
             <AgentResponseShowcase />
           </div>
         </section>
+
+        <AgentStudio />
 
         <section className="developer-start" id="start" aria-labelledby="dev-start-title" data-reveal>
           <div className="developer-start__heading">
