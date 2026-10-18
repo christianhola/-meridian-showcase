@@ -4,6 +4,10 @@ on:
     branches: [main]
     paths:
       - 'docs/**'
+      - 'src/**'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'tsconfig*.json'
       - 'assets/**'
       - 'package.json'
       - 'package-lock.json'
@@ -34,6 +38,10 @@ jobs:
           cp assets/*.svg docs/public/
       - name: Build documentation
         run: npm run docs:build
+      - name: Build interactive agents site for GitHub Pages
+        run: npm run build -- --base=/-meridian-showcase/app/
+      - name: Include interactive site in Pages artifact
+        run: mkdir -p docs/.vitepress/dist/app && cp -R dist/. docs/.vitepress/dist/app/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
