@@ -64,7 +64,7 @@ export function App() {
 
   return (
     <div className="site-shell">
-      <a className="skip-link" href={agentsOpen ? "#agents" : "#playground"}>Skip to content</a>
+      <a className="skip-link" href={agentsOpen ? "#agents" : "#playground"}>Skip to interactive demo</a>
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Meridian Community">
           <span className="brand-mark">M</span>
