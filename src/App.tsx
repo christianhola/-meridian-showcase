@@ -12,12 +12,11 @@ import { WilennyLab } from "./components/WilennyLab";
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("playground");
-  const [agentsOpen, setAgentsOpen] = useState(() => window.location.hash === "#agents");
-
+  // Preserve old /app/#agents bookmarks while moving chat to its own page.
   useEffect(() => {
-    const onHash = () => setAgentsOpen(window.location.hash === "#agents");
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    if (window.location.hash === "#agents") {
+      window.location.replace("/-meridian-showcase/agents/");
+    }
   }, []);
 
   useEffect(() => {
@@ -56,15 +55,20 @@ export function App() {
 
   const navigation = [
     { label: "Playground", href: "#playground", id: "playground" },
-    { label: "Agentes", href: "#agents", id: "agents" },
+    { label: "Agentes", href: "/-meridian-showcase/agents/", id: "agents" },
     { label: "Get started", href: "#start", id: "start" },
     { label: "Ecosystem", href: "#community", id: "community" },
     { label: "Directory", href: "#directory", id: "directory" },
   ] as const;
 
+  // Dedicated agents website: no Community navigation, marketing sections or footer.
+  if (window.location.pathname.replace(/\\/+$|\\/$/g, "").endsWith("/agents")) {
+    return <div className="agents-standalone"><AgentsWorkspace /></div>;
+  }
+
   return (
     <div className="site-shell">
-      <a className="skip-link" href={agentsOpen ? "#agents" : "#playground"}>Skip to interactive demo</a>
+      <a className="skip-link" href="#playground">Skip to interactive demo</a>
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Meridian Community">
           <span className="brand-mark">M</span>
@@ -74,7 +78,7 @@ export function App() {
         <nav className="topnav" aria-label="Primary navigation">
           {navigation.map(link => (
             <a key={link.id} href={link.href}
-              aria-current={(link.id === "agents" ? agentsOpen : !agentsOpen && activeSection === link.id) ? "location" : undefined}>
+              aria-current={activeSection === link.id ? "location" : undefined}>
               {link.label}
             </a>
           ))}
@@ -114,7 +118,7 @@ export function App() {
       ) : null}
 
       <main id="top">
-        {agentsOpen ? <AgentsWorkspace /> : <>
+
         <section className="hero">
           <div className="hero-copy" data-reveal>
             <span className="hero-kicker">
@@ -205,17 +209,16 @@ export function App() {
             </a>
           </div>
         </section>
-        </>}
       </main>
 
-      {!agentsOpen && <footer className="footer">
+      <footer className="footer">
         <div>
           <span className="brand-mark brand-mark--small">M</span>
           <strong>MERIDIAN</strong>
         </div>
         <p>Private community preview · Examples are local-first, with clear simulation boundaries.</p>
         <span>© 2026</span>
-      </footer>}
+      </footer>
     </div>
   );
 }
