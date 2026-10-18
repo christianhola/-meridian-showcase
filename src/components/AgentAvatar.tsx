@@ -1,0 +1,8 @@
+import { useId } from "react";
+export function AgentAvatar({name,size=36,active=false}:{name:string;size?:number;active?:boolean}) {
+ const uid=useId().replace(/:/g,""); const palette:Record<string,[string,string,string]>={Architect:["#fac0dc","#72b5ff","#9e94e8"],Coder:["#d3ffcb","#4ed7c4","#83b8c8"],Researcher:["#f7b4f5","#aa8cff","#8275cc"],Growth:["#ffe58c","#ffa66c","#ef73af"],Browser:["#a4fff4","#67d9ff","#9475dd"],Reviewer:["#f6f7fc","#c3cad8","#9faec8"]}; const p=palette[name]??palette.Architect;
+ return <svg className={"agent-avatar"+(active?" agent-avatar--active":"")} width={size} height={size} viewBox="0 0 100 100" role="img" aria-label={"Avatar de "+name} xmlns="http://www.w3.org/2000/svg">
+ <defs><radialGradient id={uid+"g"} cx=".78" cy=".18" r="1"><stop stopColor={p[1]}/><stop offset=".56" stopColor={p[0]}/><stop offset="1" stopColor={p[2]}/></radialGradient><linearGradient id={uid+"d"} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#fff" stopOpacity=".25"/><stop offset="1" stopColor="#292b64" stopOpacity=".14"/></linearGradient></defs>
+ <ellipse cx="50" cy="91" rx="29" ry="4" fill="#83909d" opacity=".13"/><path d="M50 7 C69 10 83 18 88 37 C94 55 83 76 73 85 C62 93 35 88 22 80 C8 71 5 54 15 34 C25 14 37 6 50 7Z" fill={"url(#"+uid+"g)"}/><path d="M12 49 C30 63 46 75 67 70 C81 68 89 53 89 41 C93 63 78 86 64 89 C40 94 18 80 12 67Z" fill={"url(#"+uid+"d)"}/><path d="M34 17 C44 18 53 30 53 41" stroke="#fff" opacity=".16" strokeWidth="2" fill="none"/><path d="M48 54v5M66 54v5" stroke="#222139" strokeWidth="2.4" strokeLinecap="round"/><path d="M54 64h8" stroke="#2b243e" strokeWidth="2.3" strokeLinecap="round"/>
+ </svg>;
+}
