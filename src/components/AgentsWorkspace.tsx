@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Check, ChevronDown, Copy, FilePlus2, Menu, MessageSquarePlus, Mic, Paperclip, Pencil, X } from "lucide-react";
 import "./AgentsWorkspace.css";
+import { AgentAvatar } from "./AgentAvatar";
 
 type Turn = { id: number; text: string; agent: string };
 const agents = [
@@ -22,6 +23,14 @@ export function AgentsWorkspace() {
   const [sideOpen, setSideOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [files, setFiles] = useState<string[]>([]);
+  const [preview, setPreview] = useState(false);
+  const [phase, setPhase] = useState(0);
+  const phrases = ["Analizando la solicitud", "Revisando el contexto", "Organizando el plan", "Preparando la respuesta"];
+  useEffect(() => {
+    if (!preview) return;
+    const timer = window.setInterval(() => setPhase(value => (value + 1) % phrases.length), 1850);
+    return () => window.clearInterval(timer);
+  }, [preview]);
   const fileInput = useRef<HTMLInputElement>(null);
   const nextId = useRef(0);
   const selected = agents.find(a => a.name === agent) ?? agents[1];
@@ -41,10 +50,10 @@ export function AgentsWorkspace() {
     <section className="agents-workspace" id="agents" aria-label="Agentes de Meridian">
       <aside className={"agents-sidebar" + (sideOpen ? " open" : "")}>
         <div className="agents-sidebar-top"><span>MERIDIAN <span className="agents-slash">/</span> AGENTES</span><button type="button" aria-label="Cerrar panel" className="agents-side-close" onClick={() => setSideOpen(false)}><X size={18}/></button></div>
-        <button className="agents-new" type="button" onClick={() => { setTurns([]); setDraft(""); setFiles([]); setEditId(null); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
+        <button className="agents-new" type="button" onClick={() => { setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
         <span className="agents-side-label">AGENTES</span>
         <div className="agents-list">
-          {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><span className="agents-symbol" style={{ color: a.tone }}>{a.symbol}</span>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
+          {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><AgentAvatar name={a.name} size={35}/>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
         </div>
         <div className="agents-sidebar-foot">Vista de diseño · Sin conexión al modelo</div>
       </aside>
@@ -52,13 +61,13 @@ export function AgentsWorkspace() {
         <header className="agents-toolbar">
           <button type="button" className="agents-icon agents-hamburger" aria-label="Mostrar agentes" onClick={() => setSideOpen(true)}><Menu size={19}/></button>
           <div className="agents-selector">
-            <button type="button" onClick={() => setAgentMenu(!agentMenu)} aria-expanded={agentMenu} className="agents-agent-btn"><span className="agents-symbol" style={{ color: selected.tone }}>{selected.symbol}</span><strong>{agent}</strong><ChevronDown size={15}/></button>
-            {agentMenu && <div className="agents-popup agents-agent-menu" role="menu">{agents.map(a => <button type="button" key={a.name} role="menuitem" onClick={() => { setAgent(a.name); setAgentMenu(false); }}><span style={{ color: a.tone }}>{a.symbol}</span>{a.name}{a.name === agent && <Check size={14}/>}</button>)}</div>}
+            <button type="button" onClick={() => setAgentMenu(!agentMenu)} aria-expanded={agentMenu} className="agents-agent-btn"><AgentAvatar name={selected.name} size={29}/><strong>{agent}</strong><ChevronDown size={15}/></button>
+            {agentMenu && <div className="agents-popup agents-agent-menu" role="menu">{agents.map(a => <button type="button" key={a.name} role="menuitem" onClick={() => { setAgent(a.name); setAgentMenu(false); }}><AgentAvatar name={a.name} size={26}/>{a.name}{a.name === agent && <Check size={14}/>}</button>)}</div>}
           </div>
-          <span className="agents-toolbar-status">Diseño</span>
+          <button type="button" className="agents-preview-button" aria-pressed={preview} onClick={() => { setPreview(!preview); setPhase(0); }}>{preview ? "Cerrar animación" : "Ver animación"}</button><span className="agents-toolbar-status">Diseño</span>
         </header>
         <div className={"agents-conversation" + (turns.length ? " has-turns" : "")}>
-          {turns.length === 0 ? <div className="agents-hello"><div className="agents-hero-symbol" style={{ color: selected.tone }}>{selected.symbol}</div><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{turns.map(t => <div className="agents-turn" key={t.id}><div className="agents-turn-meta">{t.agent}</div><div className="agents-user-bubble">{t.text}</div><div className="agents-turn-actions"><button type="button" aria-label="Copiar mensaje" onClick={() => navigator.clipboard?.writeText(t.text)}><Copy size={15}/></button><button type="button" aria-label="Editar mensaje" onClick={() => { setDraft(t.text); setEditId(t.id); }}><Pencil size={15}/></button></div></div>)}<div className="agents-unavailable" role="status"><span className="agents-unavailable-dot"/> Los mensajes están guardados solo en esta vista. El modelo todavía no está conectado.</div></div>}
+          {turns.length === 0 && !preview ? <div className="agents-hello"><AgentAvatar name={selected.name} size={84} active={preview}/><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{turns.map(t => <div className="agents-turn" key={t.id}><div className="agents-turn-meta">{t.agent}</div><div className="agents-user-bubble">{t.text}</div><div className="agents-turn-actions"><button type="button" aria-label="Copiar mensaje" onClick={() => navigator.clipboard?.writeText(t.text)}><Copy size={15}/></button><button type="button" aria-label="Editar mensaje" onClick={() => { setDraft(t.text); setEditId(t.id); }}><Pencil size={15}/></button></div></div>)}{preview && <div className="agent-reasoning-preview"><div className="agent-reasoning-heading"><AgentAvatar name={agent} size={48} active/><div><strong>{agent}</strong><small>Vista previa de animación · Sin ejecución real</small></div></div><div className="agent-reasoning-status" role="status"><span className="agent-reasoning-loader" aria-hidden="true"/> <span key={phase} className="agent-reasoning-shimmer">{phrases[phase]}…</span></div><div className="agent-plan-preview"><div className="agent-plan-title">Plan de trabajo <small>Ejemplo visual</small></div>{phrases.map((step,i) => <div key={step} className="agent-plan-step"><span className={i < phase ? "complete" : i === phase ? "working" : ""}>{i < phase ? "✓" : i === phase ? "◌" : "○"}</span><span>{step}</span></div>)}</div><div className="agent-reasoning-example"><AgentAvatar name={agent} size={35}/><span>El avatar aparecerá aquí junto a la respuesta cuando se conecte un modelo real.</span></div></div>}<div className="agents-unavailable" role="status"><span className="agents-unavailable-dot"/> Los mensajes están guardados solo en esta vista. El modelo todavía no está conectado.</div></div>}
         </div>
         <div className="agents-compose-area">
           {files.length > 0 && <div className="agents-file-names">{files.map((name,i) => <span key={i}><Paperclip size={12}/>{name}</span>)}</div>}
