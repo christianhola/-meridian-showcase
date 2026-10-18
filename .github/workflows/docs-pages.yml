@@ -40,8 +40,14 @@ jobs:
         run: npm run docs:build
       - name: Build interactive agents site for GitHub Pages
         run: npm run build -- --base=/-meridian-showcase/app/
-      - name: Include interactive site in Pages artifact
-        run: mkdir -p docs/.vitepress/dist/app && cp -R dist/. docs/.vitepress/dist/app/
+      - name: Include Community app and dedicated Agents website
+        run: |
+          mkdir -p docs/.vitepress/dist/app docs/.vitepress/dist/agents
+          cp -R dist/. docs/.vitepress/dist/app/
+          # Standalone HTML reuses hashed Vite assets under /app/assets.
+          # JavaScript renders only the agents workspace for the /agents/ path.
+          cp dist/index.html docs/.vitepress/dist/agents/index.html
+          sed -i 's/Meridian Community — Tools for Builders/Meridian Agents — Chat gratuito/g' docs/.vitepress/dist/agents/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

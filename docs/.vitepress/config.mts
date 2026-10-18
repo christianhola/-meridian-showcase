@@ -25,7 +25,7 @@ export default defineConfig({
     sidebarMenuLabel: 'Menú',
     nav: [
       { text: 'Inicio', link: '/' },
-      { text: 'Agentes', link: '/app/#agents' },
+      { text: 'Agentes', link: '/agents/' },
       { text: 'Documentación', link: '/GETTING-STARTED' },
       { text: 'Visión', link: '/vision' },
       { text: 'Comunidad', link: '/community' },

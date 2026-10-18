@@ -23,7 +23,12 @@ export async function streamFreeAnswer(
     response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ agent, messages: messages.slice(-8) }),
+      // Each historical reply can be much longer than the server's 1200-char message limit.
+      // Keep the latest conversation turns without sending oversized payloads.
+      body: JSON.stringify({ agent, messages: messages.slice(-8).map(message => ({
+        role: message.role,
+        content: message.content.slice(0, 1200),
+      })) }),
       signal,
     });
   } catch (error) {
