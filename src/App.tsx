@@ -62,7 +62,7 @@ export function App() {
   ] as const;
 
   // Dedicated agents website: no Community navigation, marketing sections or footer.
-  if (window.location.pathname.replace(/\\/+$|\\/$/g, "").endsWith("/agents")) {
+  if (window.location.pathname.replace(/\/+$/, "").endsWith("/agents")) {
     return <div className="agents-standalone"><AgentsWorkspace /></div>;
   }
 
