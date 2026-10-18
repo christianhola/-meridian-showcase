@@ -55,7 +55,16 @@ export async function streamFreeAnswer(
       onDelta(payload.text);
     } else if (eventName === "error") {
       const status = typeof payload.status === "number" ? payload.status : 503;
-      throw new Error(friendlyError(status));
+      const code = typeof payload.code === "string" ? payload.code : "";
+      const explanations: Record<string, string> = {
+        reasoning_limit: "El modelo gratuito consumió su límite de generación sin escribir una respuesta. Inténtalo más tarde.",
+        empty_response: "El modelo gratuito no produjo texto esta vez. Puedes volver a intentarlo.",
+        incomplete_response: "Se interrumpió la transmisión del modelo gratuito. Puede que la respuesta esté incompleta.",
+        output_limit: "El modelo llegó al límite de longitud. La respuesta que ves puede estar incompleta.",
+        free_model_unavailable: "Los modelos gratuitos están temporalmente ocupados. Prueba de nuevo más tarde.",
+        upstream_unavailable: "No se pudo contactar con OpenRouter. Inténtalo más tarde.",
+      };
+      throw new Error(explanations[code] ?? friendlyError(status));
     } else if (eventName === "done") {
       completed = true;
     }
@@ -78,5 +87,6 @@ export async function streamFreeAnswer(
   } finally {
     reader.releaseLock();
   }
-  if (!completed || !receivedText) throw new Error("La respuesta del modelo gratuito quedó incompleta. Inténtalo de nuevo.");
+  if (!receivedText) throw new Error("El modelo gratuito finalizó sin producir texto. Puedes volver a intentarlo más tarde.");
+  if (!completed) throw new Error("La conexión terminó antes de completar la respuesta. Se conservó el texto recibido.");
 }
