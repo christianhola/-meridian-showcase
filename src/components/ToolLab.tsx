@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, CirclePause, CirclePlay, LockKeyhole, RotateCcw, ShieldCheck, Sparkles, X } from "lucide-react";
 import { AgentAvatar } from "./AgentAvatar";
+import { LiveDemoPanel } from "./LiveDemoPanel";
+import type { AgentRole } from "../engine/types";
 import "./ToolLab.css";
 
 const ROLES = ["Architect", "Coder", "Researcher", "Growth", "Browser", "Reviewer"] as const;
@@ -207,6 +209,8 @@ export function ToolLab({ initialAgent, onClose, onUsePrompt }: {
         <div className="tool-lab-proof"><LockKeyhole size={15}/><span>0 llamadas externas · 0 archivos creados · 0 cambios en Railway</span></div>
       </aside>
     </div>
+
+    <LiveDemoPanel role={role as AgentRole} />
 
     <footer className="tool-lab-footer">
       <span><ShieldCheck size={15}/> Esta simulación no otorga permisos a los agentes.</span>
