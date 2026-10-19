@@ -9,3 +9,5 @@ Auth: Authorization: Bearer DESKTOP_ACCESS_TOKEN, supplied from the browser and 
 Run npm test for contract tests. Live E2E requires actual Daytona credentials. OSWorld is a separate agent benchmark, not a desktop runtime SDK.
 
 Source: https://www.daytona.io/docs/en/computer-use/ and https://github.com/xlang-ai/OSWorld
+
+The agent planner uses OPENROUTER_API_KEY and optionally DESKTOP_VISION_MODEL. It sends a real Daytona screenshot to the model only with explicit UI confirmation, returns one validated action and cannot execute it. The operator must approve a second, distinct action. No model private reasoning is exposed or persisted.
