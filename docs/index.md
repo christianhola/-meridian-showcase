@@ -20,6 +20,10 @@ hero:
       link: https://github.com/christianhola/-meridian-showcase/issues
 
 features:
+  - icon: 🖥️
+    title: Laptop virtual con Daytona
+    details: Acceso autenticado a un escritorio Linux real. Requiere credenciales de servicio.
+    link: /desktop/
   - icon: 📚
     title: Conocimiento que permanece
     details: Guías técnicas, ejemplos claros y documentación fácil de explorar.

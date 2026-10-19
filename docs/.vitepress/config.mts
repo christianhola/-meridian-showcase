@@ -26,6 +26,7 @@ export default defineConfig({
     nav: [
       { text: 'Inicio', link: '/' },
       { text: 'Agentes', link: '/agents/' },
+      { text: 'Laptop virtual', link: '/desktop/' },
       { text: 'Documentación', link: '/GETTING-STARTED' },
       { text: 'Visión', link: '/vision' },
       { text: 'Comunidad', link: '/community' },
@@ -42,6 +43,7 @@ export default defineConfig({
         { text: 'Arquitectura', link: '/ARCHITECTURE' },
         { text: 'Flujo de agentes IA', link: '/AI-AGENT-WORKFLOW' },
         { text: 'Runtime de agentes', link: '/AGENT-RUNTIME' },
+        { text: 'Daytona Desktop', link: '/AGENT-VIRTUAL-DESKTOP' },
         { text: 'Desarrollo con IA', link: '/AI-ASSISTED-DEVELOPMENT' },
         { text: 'Enrutamiento semántico', link: '/SEMANTIC-ROUTING-MCP' },
         { text: 'Contratos de plugins', link: '/PLUGIN-CONTRACT' }

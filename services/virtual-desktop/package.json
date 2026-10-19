@@ -1,0 +1,16 @@
+{
+  "name": "meridian-virtual-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@daytona/sdk": "^0.225.0"
+  }
+}
