@@ -62,7 +62,7 @@ original Meridian implementation informed by the sources below.
 | Repository | What it actually covers | Meridian choice |
 | --- | --- | --- |
 | [vibe-coding-toolkit](https://github.com/soumatheusgomes/vibe-coding-toolkit) | Existing-project adaptation, subagent scope, quality gates, context files and clear verification | Adopt progressive, scoped changes and documented evidence; **not** its machine installation scripts or Next.js bootstrap |
-| [anthropic/prompt-engineering-interactive-tutorial](https://github.com/anthropic/prompt-engineering-interactive-tutorial) | User-provided reference was not reachable through connected GitHub (404 at review time) | No unattributed instructions copied; additional source verification required |
+| [Anthropic interactive prompt tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial) | Official nine-chapter training in role instructions, separating data from instructions, examples, output formats and avoiding unsupported claims; user's original URL was misspelled | Apply role/goal/context separation and keep untrusted text out of tool permissions; do not copy course text |
 | [vllm](https://github.com/vllm-project/vllm) | LLM inference serving and throughput | Not installed: no local GPU serving requirement for the existing OpenRouter stack |
 | [aider](https://github.com/Aider-AI/aider) | Terminal-based assisted coding and Git editing | Adopt reversible edits and tests conceptually; do not enable terminal or Git writes in public website |
 | [Fabric](https://github.com/danielmiessler/Fabric) | Task-focused community prompt patterns | Adapt modular skill selection without importing prompts |
