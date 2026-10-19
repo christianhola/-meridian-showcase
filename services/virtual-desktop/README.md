@@ -11,3 +11,9 @@ Run npm test for contract tests. Live E2E requires actual Daytona credentials. O
 Source: https://www.daytona.io/docs/en/computer-use/ and https://github.com/xlang-ai/OSWorld
 
 The agent planner uses OPENROUTER_API_KEY and optionally DESKTOP_VISION_MODEL. It sends a real Daytona screenshot to the model only with explicit UI confirmation, returns one validated action and cannot execute it. The operator must approve a second, distinct action. No model private reasoning is exposed or persisted.
+
+## Snapshot and regional capacity
+
+Do not pin an obsolete snapshot version. With DAYTONA_DESKTOP_SNAPSHOT unset, Daytona SDK selects its default snapshot. Set this variable only to a snapshot confirmed available to your organization. If the Daytona dashboard says **no regions available**, check Snapshots and Limits, or contact Daytona support: a code deployment cannot manufacture regional capacity. Public GitHub Pages does not mean public sandbox previews: the sandbox remains authenticated and ephemeral, with a 30-minute hard TTL. Manual sandbox lifecycle settings in the Daytona dashboard apply to manually created sandboxes, not to this service.
+
+Official troubleshooting: https://www.daytona.io/docs/en/troubleshooting/

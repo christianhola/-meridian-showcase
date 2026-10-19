@@ -2,6 +2,18 @@ import { createServer } from 'node:http';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
 
 const TTL = 30 * 60_000;
+export function sandboxCreateParams(id, snapshotName = process.env.DAYTONA_DESKTOP_SNAPSHOT) {
+  return {
+    ...(snapshotName?.trim() ? { snapshot: snapshotName.trim() } : {}),
+    name: 'meridian-' + id.slice(0,8),
+    public: false,
+    ephemeral: true,
+    autoStopInterval: 15,
+    ttlMinutes: 30,
+    envVars: { VNC_RESOLUTION: '1280x800' }
+  };
+}
+
 const PACKAGE = Object.freeze({ editor: 'mousepad', office: 'libreoffice-writer', drawing: 'gimp', media: 'vlc' });
 
 const reply = (res, code, value) => {
@@ -64,13 +76,7 @@ export function buildHandler({ getDaytona, accessToken, daytonaKey, origin = 'ht
           let sandbox;
           try {
             const daytona = await getDaytona();
-            sandbox = await daytona.create({
-              snapshot:process.env.DAYTONA_DESKTOP_SNAPSHOT || 'daytonaio/sandbox:0.6.0',
-              name:'meridian-' + id.slice(0,8),
-              public:false,
-              ttlMinutes:30,
-              envVars:{VNC_RESOLUTION:'1280x800'}
-            });
+            sandbox = await daytona.create(sandboxCreateParams(id));
             entry.sandbox=sandbox;
             await sandbox.computerUse.start();
             entry.status='ready'; entry.message='Escritorio gráfico iniciado en Daytona';

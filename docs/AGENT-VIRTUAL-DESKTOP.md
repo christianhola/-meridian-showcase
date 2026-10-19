@@ -8,8 +8,14 @@ GitHub Pages (UI sin secretos) → Railway (API HTTP privada con token del opera
 
 ## Despliegue
 
-El backend está en services/virtual-desktop, separado del runtime Meridian Agents. Configurar en Railway **DAYTONA_API_KEY**, **DESKTOP_ACCESS_TOKEN** y **OPENROUTER_API_KEY** para planes de visión aleatorio de al menos 32 caracteres. Establecer DESKTOP_ALLOWED_ORIGIN=https://christianhola.github.io. Nunca publicar credenciales en el frontend, repositorio ni documentación. Hasta configurar ambas variables, /health muestra configured:false y las solicitudes son rechazadas.
+El backend está en services/virtual-desktop, separado del runtime Meridian Agents. Configurar en Railway **DAYTONA_API_KEY** y **DESKTOP_ACCESS_TOKEN** (token aleatorio de 32 caracteres o más). Añadir **OPENROUTER_API_KEY** para habilitar propuestas con visión. Establecer DESKTOP_ALLOWED_ORIGIN=https://christianhola.github.io. Nunca publicar credenciales en el frontend, repositorio ni documentación. Hasta configurar DAYTONA_API_KEY y DESKTOP_ACCESS_TOKEN, /health muestra configured:false y las solicitudes son rechazadas.
 
 Capacidades disponibles al configurar: creación y borrado real, caducidad de 30 minutos, lectura de estado, captura JPEG, clics, texto, teclas permitidas e instalación aprobada de cuatro apps de repositorios apt (Mousepad, Writer, GIMP y VLC). No se ofrece un terminal público ni instalación arbitraria. La configuración es para **un solo operador y una sola réplica**: no es una plataforma multiusuario lista para acceso anónimo.
 
 Daytona Computer Use y VNC: https://www.daytona.io/docs/en/computer-use/ y https://www.daytona.io/docs/en/vnc-access/ . OSWorld: https://github.com/xlang-ai/OSWorld (benchmark opcional, no runtime de laptop).
+
+## Regiones e instantáneas
+
+No se fija una versión histórica de la instantánea. El SDK usa la instantánea predeterminada de Daytona, salvo que el operador establezca DAYTONA_DESKTOP_SNAPSHOT a una versión publicada en alguna de las regiones disponibles para su organización. Si Daytona muestra 'No hay regiones disponibles', verificar las secciones Snapshots y Limits y contactar con soporte si faltan permisos o capacidad. No se puede arreglar esa restricción publicando un frontend. El sitio web es público, pero las máquinas tienen controles de acceso y un tiempo máximo de 30 minutos.
+
+Para sandboxes creados manualmente en el panel, la parada, el archivo y la eliminación automática son intervalos de inactividad y pueden tener valores distintos a los de las sesiones efímeras que crea el backend.
