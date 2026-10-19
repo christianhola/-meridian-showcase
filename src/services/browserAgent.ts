@@ -40,7 +40,7 @@ export class BrowserAgent implements BrowserAdapter {
       return failed("DENIED", "Redirected outside the approved HTTPS hosts");
     }
     this.currentUrl = safe;
-    const artifacts: NonNullable<ToolExecutionResult["artifacts"]> = [];
+    const artifacts: Array<NonNullable<ToolExecutionResult["artifacts"]>[number]> = [];
     if (result.screenshotBase64) {
       if (result.screenshotBase64.length > 1_000_000 ||
           !/^[A-Za-z0-9+/]+={0,2}$/.test(result.screenshotBase64)) {
