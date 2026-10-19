@@ -3,6 +3,7 @@ import { ArrowUp, Check, ChevronDown, Copy, FilePlus2, Menu, MessageSquarePlus, 
 import "./AgentsWorkspace.css";
 import { AgentAvatar } from "./AgentAvatar";
 import { AgentMarkdown } from "./AgentMarkdown";
+import { ToolLab } from "./ToolLab";
 import { streamFreeAnswer, type FreeAgentRole, type FreeChatMessage } from "./freeModelStream";
 
 type Turn = { id: number; text: string; agent: string; provider: string; role: "user" | "assistant" };
@@ -17,6 +18,7 @@ const agents = [
 
 export function AgentsWorkspace() {
   const [agent, setAgent] = useState("Coder");
+  const [toolLabOpen, setToolLabOpen] = useState(false);
   const [provider, setProvider] = useState("free");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -83,6 +85,15 @@ export function AgentsWorkspace() {
       setBusy(false);
     }
   };
+  if (toolLabOpen) {
+    return <ToolLab initialAgent={agent} onClose={() => setToolLabOpen(false)} onUsePrompt={(selectedAgent, prompt) => {
+      setAgent(selectedAgent);
+      setDraft(prompt);
+      setError("");
+      setEditId(null);
+      setToolLabOpen(false);
+    }}/>;
+  }
   return (
     <section className="agents-workspace" id="agents" aria-label="Agentes de Meridian">
       <aside className={"agents-sidebar" + (sideOpen ? " open" : "")}>
@@ -92,7 +103,7 @@ export function AgentsWorkspace() {
         <div className="agents-list">
           {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setError(""); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><AgentAvatar name={a.name} size={35}/>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
         </div>
-        <div className="agents-sidebar-foot"><a href="/-meridian-showcase/" className="agents-community-link">← Meridian Community</a><span>Agentes · chat gratuito</span></div>
+        <div className="agents-sidebar-foot"><button type="button" onClick={() => setToolLabOpen(true)}>Laboratorio interactivo →</button><a href="/-meridian-showcase/" className="agents-community-link">← Meridian Community</a><span>Agentes · chat gratuito</span></div>
       </aside>
       <div className="agents-center">
         <header className="agents-toolbar">
@@ -101,7 +112,7 @@ export function AgentsWorkspace() {
             <button type="button" onClick={() => setAgentMenu(!agentMenu)} aria-expanded={agentMenu} className="agents-agent-btn"><AgentAvatar name={selected.name} size={29}/><strong>{agent}</strong><ChevronDown size={15}/></button>
             {agentMenu && <div className="agents-popup agents-agent-menu" role="menu">{agents.map(a => <button type="button" key={a.name} role="menuitem" onClick={() => { setAgent(a.name); setError(""); setAgentMenu(false); }}><AgentAvatar name={a.name} size={26}/>{a.name}{a.name === agent && <Check size={14}/>}</button>)}</div>}
           </div>
-          <button type="button" className="agents-preview-button" aria-pressed={preview} onClick={() => { setPreview(!preview); setPhase(0); }}>{preview ? "Cerrar animación" : "Ver animación"}</button><span className="agents-toolbar-status">Gratis</span>
+          <button type="button" className="agents-preview-button" onClick={() => { setToolLabOpen(true); }}>Explorar herramientas · Demo</button><span className="agents-toolbar-status">Gratis</span>
         </header>
         <div className={"agents-conversation" + (agentTurns.length ? " has-turns" : "")}>
           {agentTurns.length === 0 && !preview ? <div className="agents-hello"><AgentAvatar name={selected.name} size={84} active={preview}/><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{agentTurns.map(t => t.role === "assistant"
