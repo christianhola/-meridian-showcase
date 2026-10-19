@@ -72,8 +72,10 @@ export async function* runAgentLoop(config: AgentRunConfig): AsyncGenerator<Agen
     let authorized = !needsApproval;
     if (needsApproval) {
       const permission = permissions.create(call, context, definition.risk);
+      // Register before emitting the event so a fast user click cannot be lost.
+      const decisionPromise = permissions.wait(permission, context.signal);
       yield { type: "agent:permission_request", runId, request: permission };
-      authorized = (await permissions.wait(permission, context.signal)) === "APPROVED";
+      authorized = (await decisionPromise) === "APPROVED";
       if (!authorized) {
         yield { type: "agent:tool_result", runId, callId: call.id,
           result: failed("DENIED", "Action denied or permission expired") };
