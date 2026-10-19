@@ -5,6 +5,7 @@ import { ArchitectureMap } from "./components/ArchitectureMap";
 import { CommunityHub } from "./components/CommunityHub";
 import { AgentResponseShowcase } from "./components/AgentResponseShowcase";
 import { AgentsWorkspace } from "./components/AgentsWorkspace";
+import { VirtualDesktop } from "./components/VirtualDesktop";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
 import { WilennyLab } from "./components/WilennyLab";
@@ -60,6 +61,10 @@ export function App() {
     { label: "Ecosystem", href: "#community", id: "community" },
     { label: "Directory", href: "#directory", id: "directory" },
   ] as const;
+
+  if (window.location.pathname.replace(/\/+$/, "").endsWith("/desktop")) {
+    return <VirtualDesktop />;
+  }
 
   // Dedicated agents website: no Community navigation, marketing sections or footer.
   if (window.location.pathname.replace(/\/+$/, "").endsWith("/agents")) {

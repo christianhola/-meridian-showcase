@@ -25,6 +25,8 @@
 </tr>
 </table>
 
+**[Laptop virtual de agentes — Daytona](https://christianhola.github.io/-meridian-showcase/desktop/)** · Escritorio real con acceso privado y backend Railway. La función necesita credenciales Daytona antes de operar; no es una simulación.
+
 ## Explora las colecciones
 
 | Espacio | Contenido |
