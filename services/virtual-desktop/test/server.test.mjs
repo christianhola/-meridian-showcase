@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { buildHandler, validToken } from '../server.mjs';
+import { buildHandler, validToken, sandboxCreateParams } from '../server.mjs';
 const token='x'.repeat(40);
 const start=async handler=>{const server=createServer(handler).listen(0);await new Promise(r=>server.once('listening',r));return{server,url:'http://127.0.0.1:'+server.address().port};};
 test('credentials use exact match and minimum length',()=>{
@@ -26,4 +26,15 @@ test('provider is invoked, disallowed operations blocked and sandbox deleted',as
   assert.equal((await fetch(url+'/api/desktops/'+id+'/action',{method:'POST',headers,body:JSON.stringify({type:'click',x:3,y:3})})).status,200);
   assert.equal((await fetch(url+'/api/desktops/'+id,{method:'DELETE',headers})).status,200);assert.ok(calls.includes('delete'));
  } finally { server.close(); }
+});
+
+test('default snapshot follows Daytona region availability and cloud sessions are ephemeral', () => {
+  const standard = sandboxCreateParams('abcdefgh-1234', '');
+  assert.equal('snapshot' in standard, false);
+  assert.equal(standard.name, 'meridian-abcdefgh');
+  assert.equal(standard.public, false);
+  assert.equal(standard.ephemeral, true);
+  assert.equal(standard.ttlMinutes, 30);
+  const custom = sandboxCreateParams('abcdefgh-1234', 'team-linux-desktop');
+  assert.equal(custom.snapshot, 'team-linux-desktop');
 });
