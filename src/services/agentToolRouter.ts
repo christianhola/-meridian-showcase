@@ -12,7 +12,7 @@ export async function chooseAgentAction(
     throw Error('Solicitud inválida para el agente privado');
   }
   const selected=await desktopCall<AgentToolDecision>(
-    ownerSession,'/api/agents/plan','POST',{agent,prompt}
+    ownerSession,'/api/agents/plan','POST',{agent,prompt},45000
   );
   if (selected.kind==='answer' && typeof selected.text==='string' && selected.text.length<=5000) return selected;
   if (selected.kind==='tool_call' && selected.tool==='desktop.run_local_task'
