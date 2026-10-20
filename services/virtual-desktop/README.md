@@ -78,3 +78,37 @@ authentication; a static frontend cannot safely skip owner verification.
 **Known independent problem:** the public free-model stream sometimes
 returns HTTP 403 from `meridian-agents-v2`. Fix that provider
 authorization separately; it is unrelated to the private desktop login.
+
+
+## Registered model tools (Freebuff-style execution, limited scope)
+
+The owner-authenticated Agents chat now uses a **server-side model tool chooser**:
+`POST /api/agents/plan` asks the configured OpenRouter model to choose
+exactly one of the registered functions:
+- `use_daytona_computer` -> `desktop.run_local_task`: only an explicitly
+  requested local Linux GUI task, validated against the **original** user
+  instruction before the existing bounded screenshot/vision/click loop runs.
+- `respond_to_user`: a text answer; it never implies that a computer tool ran.
+
+`GET /api/agents/tools` describes the available capabilities. Both endpoints
+require the same private owner session as Daytona and reject anonymous users.
+They do not accept arbitrary tool names or model-provided shell commands.
+Neither tool creates another sandbox. Model results cannot skip the real
+server-side restrictions, and the app shows real Daytona action history and a
+captured screenshot when available.
+
+The tool selector uses `DESKTOP_ROUTER_MODEL` if configured, otherwise
+`DESKTOP_VISION_MODEL` or `openai/gpt-4o-mini`. A router model must actually
+support the OpenAI function-calling format; a provider refusing tool calls
+produces an explicit error rather than fake execution. API use may have costs.
+
+**This is deliberately narrower than Freebuff's coding runtime:** no arbitrary
+terminal execution, repository writes, web browser tasks, parallel code agents
+or git pushes are enabled by the current Daytona tool. Expand the capability
+registry only after adding isolated workspaces, per-tool authorization and
+focused tests. The public free chat still uses its separate restricted endpoint,
+and its observed HTTP 403 is a separate issue.
+
+When the owner GitHub OAuth variables are not installed, the private tool
+router stays inaccessible by design. This avoids creating a public endpoint
+to an operator's personal computer merely to skip a login.
