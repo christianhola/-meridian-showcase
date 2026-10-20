@@ -116,9 +116,8 @@ export function parseToolSelection(reply,task,agent) {
 }
 
 const REPOSITORY_QUESTION = /(?:repo(?:sitory|sitorio)?|github|c[oó]digo fuente|archivos del proyecto|archivo(?:s)? (?:de|en|del) (?:mi|el) proyecto|codebase|source files)/i;
-const specificRepository = task => /(?:meridian-agents-v2|agentes[- ]meridianos-v2)/i.test(task)
-  ? 'christianhola/meridian-agents-v2'
-  : 'christianhola/-meridian-showcase';
+const specificRepository = () => 'christianhola/-meridian-showcase';
+const asksPrivateRepo = task => /(?:meridian-agents-v2|agentes[- ]meridianos-v2)/i.test(task);
 
 export async function selectAgentTool({
   prompt,agent,apiKey,model='openai/gpt-4o-mini',modelFetch=fetch,repoFetch=fetch,
@@ -126,11 +125,17 @@ export async function selectAgentTool({
   if (!AGENTS.has(agent) || typeof prompt!=='string' || !prompt.trim() || prompt.length>MAX_PROMPT) {
     throw fail(400,'Describe una tarea válida para el agente');
   }
+  if (asksPrivateRepo(prompt) && REPOSITORY_QUESTION.test(prompt)) {
+    return {
+      kind:'answer',modelUsed:true,sources:[],
+      text:'Puedo inspeccionar el repositorio público Meridian Showcase, pero meridian-agents-v2 es privado. La conexión actual de GitHub solo autoriza identidad (read:user), no acceso a repositorios privados. No voy a inventar sus archivos: hace falta vincular permisos de lectura de ese repositorio antes de inspeccionarlo.',
+    };
+  }
   if (!apiKey) throw fail(503,'Modelo de orquestación no configurado en Railway');
   const instructions=[
     'You are the Meridian '+agent+' assistant with a REAL, SERVER-ENFORCED tool registry.',
     'You CAN inspect public GitHub repos using list_repository_files and read_repository_file. NEVER claim you cannot inspect files without trying these tools.',
-    'When asked about a repository or codebase, inspect relevant files via the tools before answering. Default repository is christianhola/-meridian-showcase; the other supported repo is christianhola/meridian-agents-v2.',
+    'When asked about the public community repository or codebase, inspect relevant files via the tools before answering. The only available repository is christianhola/-meridian-showcase.',
     'Do not claim to have edited files, run tests or pushed commits: GitHub tools are read-only. Explain this distinction for edit requests.',
     'Choose exactly one available function per step. After reading repo contents, select respond_to_user with an answer grounded in tool output and cite actual file URLs.',
     'Use use_daytona_computer ONLY for explicitly requested safe local Linux GUI interactions, not for repo operations.',
