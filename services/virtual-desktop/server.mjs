@@ -24,14 +24,14 @@ async function readBody(req) {
   try { return raw ? JSON.parse(raw) : {}; } catch { throw err(400, 'JSON inválido'); }
 }
 
-export function buildHandler({ getDaytona, accessToken, daytonaKey, origin = 'https://christianhola.github.io', clock = () => Date.now() }) {
+export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = process.env.DAYTONA_SANDBOX_ID, origin = 'https://christianhola.github.io', clock = () => Date.now() }) {
   const sessions = new Map();
   const attempts = new Map();
   let creating = false;
+  // A session only leases access. The named Daytona sandbox is NOT ours to delete.
   const close = async (id, entry) => {
     if (sessions.get(id) !== entry) return;
     sessions.delete(id);
-    if (entry.sandbox) await entry.sandbox.delete().catch(() => {});
   };
   return async (req, res) => {
     if (req.headers.origin && req.headers.origin !== origin) return reply(res, 403, {error:'Origen no permitido'});
@@ -42,52 +42,58 @@ export function buildHandler({ getDaytona, accessToken, daytonaKey, origin = 'ht
     if (req.method === 'OPTIONS') return reply(res, 204, {});
     const path = new URL(req.url || '/', 'http://localhost').pathname;
     if (path === '/health' && req.method === 'GET') {
-      return reply(res, 200, { service:'meridian-virtual-desktop', configured:Boolean(daytonaKey && accessToken?.length >= 32) });
+      return reply(res, 200, { service:'meridian-virtual-desktop', configured:Boolean(daytonaKey && accessToken?.length >= 32 && /^[a-f0-9-]{36}$/i.test(sandboxId || '')) });
     }
     const ip = req.socket.remoteAddress || 'unknown';
     let bucket = attempts.get(ip);
     if (!bucket || bucket.until < clock()) bucket = { until:clock() + 60_000, count:0 };
     bucket.count++; attempts.set(ip, bucket);
     if (bucket.count > 120) return reply(res, 429, {error:'Demasiadas peticiones'});
-    if (!daytonaKey || !accessToken || accessToken.length < 32) return reply(res,503,{error:'Falta configurar el servicio privado en Railway'});
+    if (!daytonaKey || !accessToken || accessToken.length < 32 || !/^[a-f0-9-]{36}$/i.test(sandboxId || '')) return reply(res,503,{error:'Falta DAYTONA_API_KEY, DESKTOP_ACCESS_TOKEN o DAYTONA_SANDBOX_ID en Railway'});
     const bearer = (req.headers.authorization || '').replace(/^Bearer /i, '');
     if (!validToken(bearer, accessToken)) return reply(res,401,{error:'Acceso no autorizado'});
     for (const [id, entry] of sessions) if (entry.expires <= clock()) void close(id,entry);
     try {
       if (path === '/api/desktops' && req.method === 'POST') {
-        if (creating || sessions.size >= 1) throw err(409, 'Ya existe un escritorio activo');
+        if (creating || sessions.size >= 1) throw err(409, 'Ya existe una conexión a sbmeridian');
         const id = randomUUID();
-        const entry = {status:'starting', message:'Daytona está creando el escritorio', sandbox:null, expires:clock()+TTL};
+        const entry = {status:'starting', message:'Conectando con sbmeridian en Daytona', sandbox:null, expires:clock()+TTL};
         creating = true;
         sessions.set(id,entry);
         void (async () => {
-          let sandbox;
           try {
             const daytona = await getDaytona();
-            sandbox = await daytona.create({
-              snapshot:process.env.DAYTONA_DESKTOP_SNAPSHOT || 'daytonaio/sandbox:0.6.0',
-              name:'meridian-' + id.slice(0,8),
-              public:false,
-              ttlMinutes:30,
-              envVars:{VNC_RESOLUTION:'1280x800'}
-            });
+            // Never create a second machine: attach to the immutable configured UUID.
+            const sandbox = await daytona.get(sandboxId);
+            if (String(sandbox.id).toLowerCase() !== sandboxId.toLowerCase()) {
+              throw Error('El proveedor devolvió otro sandbox');
+            }
             entry.sandbox=sandbox;
+            const rawState=String(sandbox.state || '').toLowerCase();
+            if (rawState !== 'started') {
+              entry.message='Reactivando sbmeridian ('+rawState+') en Daytona';
+              await sandbox.start(120);
+            }
+            entry.message='Iniciando el escritorio gráfico real';
             await sandbox.computerUse.start();
-            entry.status='ready'; entry.message='Escritorio gráfico iniciado en Daytona';
+            if (sessions.get(id) !== entry) return; // session could expire in the meantime
+            entry.status='ready'; entry.message='Escritorio de sbmeridian conectado';
           } catch (cause) {
-            entry.status='error'; entry.message='No se pudo iniciar Daytona. Revisa el snapshot o la clave';
-            if (sandbox) await sandbox.delete().catch(()=>{});
+            entry.status='error';
+            entry.message='No se pudo iniciar el escritorio de sbmeridian. Revisa Daytona y Computer Use.';
+            console.warn('Daytona existing-sandbox attach failed:',cause?.constructor?.name || 'Error');
+            // Never stop/archive/delete sbmeridian on failure.
           } finally { creating=false; }
         })();
-        return reply(res,202,{id,status:entry.status,expiresAt:new Date(entry.expires).toISOString()});
+        return reply(res,202,{id,status:entry.status,expiresAt:new Date(entry.expires).toISOString(),reused:true});
       }
       const match=/^\/api\/desktops\/([a-f0-9-]{36})(?:\/(screenshot|action|install|plan))?$/.exec(path);
       if (!match) throw err(404,'Ruta no encontrada');
       const [,id,operation]=match;
       const entry=sessions.get(id);
       if (!entry) throw err(404,'Sesión no encontrada o vencida');
-      if (!operation && req.method === 'GET') return reply(res,200,{id,status:entry.status,message:entry.message,expiresAt:new Date(entry.expires).toISOString()});
-      if (!operation && req.method === 'DELETE') { await close(id,entry); return reply(res,200,{deleted:true}); }
+      if (!operation && req.method === 'GET') return reply(res,200,{id,status:entry.status,message:entry.message,expiresAt:new Date(entry.expires).toISOString(),reused:true,sandboxId});
+      if (!operation && req.method === 'DELETE') { await close(id,entry); return reply(res,200,{disconnected:true,preserved:true}); }
       if (entry.status !== 'ready' || !entry.sandbox) throw err(409,entry.message);
       if (operation === 'screenshot' && req.method === 'GET') {
         const image=await entry.sandbox.computerUse.screenshot.takeCompressed({format:'jpeg',quality:75,showCursor:true});
@@ -174,6 +180,7 @@ if (process.argv[1] && new URL(import.meta.url).pathname === process.argv[1]) {
   const handler=buildHandler({
     accessToken:process.env.DESKTOP_ACCESS_TOKEN,
     daytonaKey:process.env.DAYTONA_API_KEY,
+    sandboxId:process.env.DAYTONA_SANDBOX_ID,
     origin:process.env.DESKTOP_ALLOWED_ORIGIN || 'https://christianhola.github.io',
     getDaytona:async()=>{ if (!daytona) { const {Daytona}=await import('@daytona/sdk'); daytona=new Daytona(); } return daytona; }
   });
