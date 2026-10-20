@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { publicRun, runLocalAutonomy, stopLocalRun, validateLocalGoal } from './autopilot.mjs';
 import { createOwnerAuth } from './owner-auth.mjs';
+import { publicAgentTools, selectAgentTool } from './agent-tools.mjs';
 
 const TTL = 30 * 60_000;
 const PACKAGE = Object.freeze({ editor: 'mousepad', office: 'libreoffice-writer', drawing: 'gimp', media: 'vlc' });
@@ -91,6 +92,18 @@ export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = 
     if (!ownerAuth.validSession(bearer) && !validToken(bearer, accessToken)) return reply(res,401,{error:'Acceso no autorizado'});
     for (const [id, entry] of sessions) if (entry.expires <= clock()) void close(id,entry);
     try {
+    if (path === '/api/agents/tools' && req.method === 'GET') {
+      return reply(res,200,{tools:publicAgentTools(),execution:'server-enforced',maxDesktopSteps:8});
+    }
+    if (path === '/api/agents/plan' && req.method === 'POST') {
+      const body=await readBody(req);
+      const selection=await selectAgentTool({
+        prompt:body?.prompt,agent:body?.agent,apiKey:visionKey,
+        model:process.env.DESKTOP_ROUTER_MODEL || process.env.DESKTOP_VISION_MODEL || 'openai/gpt-4o-mini',
+        modelFetch,
+      });
+      return reply(res,200,selection);
+    }
       if (path === '/api/desktops' && req.method === 'POST') {
         if (creating || sessions.size >= 1) throw err(409, 'Ya existe una conexión a sbmeridian');
         const id = randomUUID();
