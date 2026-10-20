@@ -231,8 +231,28 @@ export function AgentsWorkspace() {
             <button type="button" onClick={() => setAgentMenu(!agentMenu)} aria-expanded={agentMenu} className="agents-agent-btn"><AgentAvatar name={selected.name} size={29}/><strong>{agent}</strong><ChevronDown size={15}/></button>
             {agentMenu && <div className="agents-popup agents-agent-menu" role="menu">{agents.map(a => <button type="button" key={a.name} role="menuitem" onClick={() => { setAgent(a.name); setError(""); setAgentMenu(false); }}><AgentAvatar name={a.name} size={26}/>{a.name}{a.name === agent && <Check size={14}/>}</button>)}</div>}
           </div>
+          <button type="button" className="agents-mobile-desktop-toggle"
+            aria-controls="agents-mobile-daytona" aria-expanded={desktopAccessOpen}
+            onClick={() => { setDesktopAccessOpen(value => !value); setSideOpen(false); }}>
+            Computadora {pendingDesktopTask ? "· pendiente" : ""}
+          </button>
           <button type="button" className="agents-preview-button" onClick={() => { setToolLabOpen(true); }}>Explorar herramientas · Demo</button><span className="agents-toolbar-status">Gratis</span>
         </header>
+        {desktopAccessOpen && <section className="agents-mobile-desktop-panel" id="agents-mobile-daytona" aria-label="Acceso privado a la computadora Daytona">
+          <strong>Computadora Daytona</strong>
+          <p>Acceso a sbmeridian. El token es privado y solo permanece en esta pestaña.</p>
+          <label htmlFor="agents-mobile-desktop-token">Token del operador</label>
+          <input id="agents-mobile-desktop-token" type="password" autoComplete="off" spellCheck={false}
+            placeholder="Token privado de operador" value={desktopToken}
+            onChange={event => setDesktopToken(event.target.value)}
+          />
+          {pendingDesktopTask && <button type="button" className="agents-mobile-desktop-resume"
+            disabled={busy || desktopToken.trim().length < 32}
+            onClick={() => void resumeDesktopTask()}>
+            Continuar tarea pendiente
+          </button>}
+          <button type="button" className="agents-mobile-desktop-close" onClick={() => setDesktopAccessOpen(false)}>Cerrar panel</button>
+        </section>}
         <div className={"agents-conversation" + (agentTurns.length ? " has-turns" : "")}>
           {agentTurns.length === 0 && !preview ? <div className="agents-hello"><AgentAvatar name={selected.name} size={84} active={preview}/><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{agentTurns.map(t => t.role === "assistant"
             ? <div className="agents-turn agents-turn--assistant" key={t.id}>
@@ -252,7 +272,7 @@ export function AgentsWorkspace() {
             {desktopRun && <div className="agents-desktop-run" role="status" aria-live="polite"><strong>Computadora · {desktopRun.status}</strong><span>{desktopRun.message} · {desktopRun.step}/{desktopRun.maxSteps} pasos</span>{desktopRun.history.length>0 && <small>{desktopRun.history.slice(-2).map(s=>s.message).join(' · ')}</small>}{['starting','running'].includes(desktopRun.status) && <button type="button" onClick={()=>void stopDesktopTask()}>Detener agente</button>}<a href="/-meridian-showcase/desktop/" target="_blank" rel="noreferrer">Abrir pantalla ↗</a></div>}
             {pendingDesktopTask && pendingDesktopTask.agent === agent && <div className="agents-desktop-pending" role="status">
               <strong>Tarea en espera de autorización</strong>
-              <p>Tu solicitud se conservó. Introduce el token privado en «Computadora Daytona» y pulsa «Continuar tarea pendiente». No tendrás que reenviar el mensaje ni aprobar cada clic.</p>
+              <p>Tu solicitud está guardada en esta pestaña. En móvil toca «Computadora» arriba; introduce el token privado y pulsa «Continuar tarea pendiente». No tendrás que reenviar el mensaje.</p>
               <button type="button" disabled={busy || desktopToken.trim().length < 32}
                 onClick={()=>void resumeDesktopTask()}>Continuar tarea pendiente</button>
             </div>}
