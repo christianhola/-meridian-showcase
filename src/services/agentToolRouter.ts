@@ -18,7 +18,7 @@ export async function chooseAgentAction(
     // Render only grounded, canonical links reported by the authenticated backend.
     const sources=Array.isArray(selected.sources)
       ? selected.sources.filter(url=>typeof url==='string' &&
-          /^https:\/\/github\.com\/christianhola\/(?:-meridian-showcase|meridian-agents-v2)\/(?:blob|tree)\/main(?:\/[-a-zA-Z0-9_./+@%]*)?$/.test(url)).slice(0,5)
+          /^https:\/\/github\.com\/christianhola\/-meridian-showcase\/(?:blob|tree)\/main(?:\/[-a-zA-Z0-9_./+@%]*)?$/.test(url)).slice(0,5)
       : [];
     return {...selected,sources};
   }
