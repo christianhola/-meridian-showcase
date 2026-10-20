@@ -122,8 +122,11 @@ functions: `list_repository_files` and `read_repository_file`. They retrieve
 read their contents, and then answer grounded in those tool results.
 Repository content is never treated as a system instruction.
 
-Only these explicitly approved **public** repositories are currently supported:
-`christianhola/-meridian-showcase` and `christianhola/meridian-agents-v2`.
+Only the explicitly approved **public** repository `christianhola/-meridian-showcase`
+is currently supported. The separate `christianhola/meridian-agents-v2`
+repository is PRIVATE; the GitHub OAuth `read:user` identity-only scope is
+insufficient to read it. The agent explicitly reports this limitation rather
+than making up files.
 Paths are validated; dangerous traversal, hidden credential paths, and
 oversized or binary files are refused. Reads are bounded, and the response
 gives the user verified source links. Owner GitHub login continues to protect
