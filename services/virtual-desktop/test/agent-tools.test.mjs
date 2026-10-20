@@ -17,7 +17,7 @@ const desktopCall=purpose=>({choices:[{message:{tool_calls:[{
 const fakeFetch=response=>async (_url,options)=>{
   const data=JSON.parse(options.body);
   assert.equal(data.tool_choice,'required');
-  assert.deepEqual(data.tools.map(x=>x.function.name),['use_daytona_computer','respond_to_user']);
+  assert.deepEqual(data.tools.map(x=>x.function.name),['use_daytona_computer','list_repository_files','read_repository_file','respond_to_user']);
   return new Response(JSON.stringify(response),{status:200});
 };
 async function serve(handler,fn) {
@@ -27,7 +27,7 @@ async function serve(handler,fn) {
   finally {await new Promise(r=>server.close(r));}
 }
 test('registry exposes only the two declared tool schemas',()=>{
-  assert.deepEqual(publicAgentTools().map(x=>x.name),['use_daytona_computer','respond_to_user']);
+  assert.deepEqual(publicAgentTools().map(x=>x.name),['use_daytona_computer','list_repository_files','read_repository_file','respond_to_user']);
   for(const t of publicAgentTools()) assert.ok(t.description.length>20);
 });
 test('model selects an actual local desktop capability with unmodified user task',async()=>{
@@ -45,7 +45,7 @@ test('normal model response is not claimed to be a tool execution',async()=>{
     prompt:'Explica qué es TypeScript',agent:'Architect',apiKey:'private-key',
     modelFetch:fakeFetch(answerCall('TypeScript añade tipos a JavaScript.')),
   });
-  assert.deepEqual(choice,{kind:'answer',text:'TypeScript añade tipos a JavaScript.',modelUsed:true});
+  assert.deepEqual(choice,{kind:'answer',text:'TypeScript añade tipos a JavaScript.',modelUsed:true,sources:[]});
 });
 test('model cannot rewrite destructive user instruction into safe desktop task',()=>{
   const unsafe='Abre Mousepad y borra todos los archivos de la computadora';
@@ -99,7 +99,7 @@ test('authenticated endpoint exposes capabilities and chooses tools; anonymous a
     const listing=await fetch(url+'/api/agents/tools',{headers});
     assert.equal(listing.status,200);
     const data=await listing.json();
-    assert.deepEqual(data.tools.map(x=>x.name),['use_daytona_computer','respond_to_user']);
+    assert.deepEqual(data.tools.map(x=>x.name),['use_daytona_computer','list_repository_files','read_repository_file','respond_to_user']);
     const selected=await fetch(base,{method:'POST',headers,
       body:JSON.stringify({agent:'Coder',prompt:localTask})});
     assert.equal(selected.status,200);
