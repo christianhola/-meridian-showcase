@@ -19,14 +19,14 @@ export type LocalTaskState = {
 };
 
 export async function desktopCall<T>(
-  token:string,path:string,method='GET',body?:unknown
+  token:string,path:string,method='GET',body?:unknown,timeoutMs=30000
 ):Promise<T> {
   const response=await fetch(DESKTOP_API+path,{
     method,
     headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},
     body:body===undefined?undefined:JSON.stringify(body),
     cache:'no-store',
-    signal:AbortSignal.timeout(30000)
+    signal:AbortSignal.timeout(timeoutMs)
   });
   const payload=await response.json().catch(()=>({error:'Respuesta inválida del servicio de escritorio'}));
   if(!response.ok) throw new Error(String(payload.error||'La computadora virtual no respondió'));
