@@ -6,6 +6,8 @@ const TYPE_LIMIT = 700;
 const RUN_TIMEOUT_MS = 150_000;
 const MIN_STEP_PAUSE_MS = 500;
 const BANNED_TASK = /\b(?:delete|remove|erase|wipe|format|purchase|buy|pay|payment|transfer|bank|password|secret|credentials?|login|log\s*in|sign\s*in|account|email|send|submit|publish|post|upload|download|install|uninstall|terminal|shell|sudo|command|execute\s+code|browser|chrome|firefox|website|internet|https?|ssh|api\s*key|token|credit\s*card)\b|borrar|eliminar|destruir|contrase(?:ñ|n)a|credencial|iniciar\s+sesi[oó]n|cuenta|comprar|pagar|transferir|enviar|publicar|subir|descargar|instalar|desinstalar|terminal|navegador|consola|correo|sitio\s+web|p[aá]gina\s+web/i;
+// Imperatives and conjugations are easily missed by infinitive-only filters.
+const BANNED_SPANISH_FORMS = /\b(?:borra|borre|borro|borrando|elimina|elimine|eliminando|destruye|destruya|instala|instale|desinstala|desinstale|descarga|descargue|sube|suba|publica|publique|compra|compre|paga|pague|env[ií]a|env[ií]e|navega|navegue)\b/i;
 const AGENTS = new Set(['Architect','Coder','Researcher','Growth','Browser','Reviewer']);
 const KEYS = new Set(['enter','escape','tab','backspace','up','down','left','right']);
 const textOnly = (value, max=180) => typeof value === 'string'
@@ -16,7 +18,7 @@ export function validateLocalGoal(task, agent) {
   if (typeof task !== 'string' || !task.trim() || task.trim().length > TASK_LIMIT || !AGENTS.has(agent)) {
     throw failure(400, 'Describe una tarea local válida y selecciona un agente');
   }
-  if (BANNED_TASK.test(task)) {
+  if (BANNED_TASK.test(task) || BANNED_SPANISH_FORMS.test(task)) {
     throw failure(403, 'Esta tarea requiere supervisión: el modo autónomo solo permite tareas locales no sensibles');
   }
   return task.trim();

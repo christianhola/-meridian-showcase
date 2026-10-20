@@ -6,6 +6,7 @@ import { AgentMarkdown } from "./AgentMarkdown";
 import { ToolLab } from "./ToolLab";
 import { streamFreeAnswer, type FreeAgentRole, type FreeChatMessage } from "./freeModelStream";
 import { desktopCall, shouldUseDesktop, type LocalTaskState } from "../services/desktopAutonomy";
+import { chooseAgentAction } from "../services/agentToolRouter";
 import {
   loadDesktopOwnerSession, loadPendingDesktopTask, savePendingDesktopTask,
   clearPendingDesktopTask, clearDesktopOwnerSession, takeDesktopAuthTicket,
@@ -233,9 +234,22 @@ export function AgentsWorkspace() {
     const controller = new AbortController();
     activeRequest.current = controller;
     try {
-      if(localDesktopTask) {
-        const summary=await performLocalGoal(text,selectedAgent);
-        if (generation === chatGeneration.current) setTurns(prev=>[...prev,{id:replyId,text:summary,agent:selectedAgent,provider:'daytona',role:'assistant'}]);
+      if (ownerSession) {
+        // The model explicitly chooses a backend-registered capability; this
+        // client cannot execute arbitrary model-written instructions.
+        const selected=await chooseAgentAction(ownerSession,selectedAgent,text);
+        if (selected.kind==='tool_call') {
+          if (generation!==chatGeneration.current) return;
+          setDesktopFrame(null);
+          const summary=await performLocalGoal(selected.arguments.task,selectedAgent);
+          if (generation===chatGeneration.current) setTurns(prev=>[...prev,{
+            id:replyId,text:summary,agent:selectedAgent,provider:'daytona',role:'assistant'
+          }]);
+        } else if (generation===chatGeneration.current) {
+          setTurns(prev=>[...prev,{
+            id:replyId,text:selected.text,agent:selectedAgent,provider:'private-model',role:'assistant'
+          }]);
+        }
       } else await streamFreeAnswer(
         selectedAgent.toLowerCase() as FreeAgentRole,
         [...previous, { role: "user", content: text }],
@@ -319,7 +333,7 @@ export function AgentsWorkspace() {
         <div className={"agents-conversation" + (agentTurns.length ? " has-turns" : "")}>
           {agentTurns.length === 0 && !preview ? <div className="agents-hello"><AgentAvatar name={selected.name} size={84} active={preview}/><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{agentTurns.map(t => t.role === "assistant"
             ? <div className="agents-turn agents-turn--assistant" key={t.id}>
-                <div className="agents-assistant-identity"><AgentAvatar name={t.agent} size={35}/><strong>{t.agent}</strong><small>· {t.provider === "daytona" ? "Daytona · computadora real" : "Modelo gratuito"}</small></div>
+                <div className="agents-assistant-identity"><AgentAvatar name={t.agent} size={35}/><strong>{t.agent}</strong><small>· {t.provider === "daytona" ? "Daytona · computadora real" : t.provider === "private-model" ? "Agente · modelo con herramientas" : "Modelo gratuito"}</small></div>
                 <div className="agents-assistant-answer"><AgentMarkdown text={t.text}/></div>
                 <div className="agents-turn-actions"><button type="button" aria-label="Copiar respuesta" onClick={() => navigator.clipboard?.writeText(t.text)}><Copy size={15}/></button></div>
               </div>
@@ -358,7 +372,7 @@ export function AgentsWorkspace() {
               <div className="agents-compose-right"><button type="button" className="agents-icon" disabled title="Voz todavía no conectada" aria-label="Micrófono no disponible"><Mic size={19}/></button><button type="submit" className="agents-send" disabled={!draft.trim() || busy} aria-label={editId === null ? "Enviar mensaje" : "Guardar edición"}>{editId !== null ? <Check size={18}/> : <ArrowUp size={19}/>}</button></div>
             </div>
           </form>
-          <p className="agents-compose-note">Chat gratuito · Daytona autónomo hasta 8 pasos en tu computadora privada. Acciones sensibles requieren supervisión.</p>
+          <p className="agents-compose-note">Los agentes conectados eligen herramientas reales en Railway · Daytona permite tareas gráficas locales de hasta 8 pasos. Acciones sensibles requieren supervisión.</p>
         </div>
       </div>
     </section>
