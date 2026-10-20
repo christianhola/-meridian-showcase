@@ -112,3 +112,30 @@ and its observed HTTP 403 is a separate issue.
 When the owner GitHub OAuth variables are not installed, the private tool
 router stays inaccessible by design. This avoids creating a public endpoint
 to an operator's personal computer merely to skip a login.
+
+## GitHub repository inspection (read-only coding context)
+
+The owner-authenticated agent runtime now exposes two additional registered
+functions: `list_repository_files` and `read_repository_file`. They retrieve
+**actual** GitHub repository trees and UTF-8 text files, and return grounded
+`github.com` source URLs. The root agent can read a tree, select files,
+read their contents, and then answer grounded in those tool results.
+Repository content is never treated as a system instruction.
+
+Only the explicitly approved **public** repository `christianhola/-meridian-showcase`
+is currently supported. The separate `christianhola/meridian-agents-v2`
+repository is PRIVATE; the GitHub OAuth `read:user` identity-only scope is
+insufficient to read it. The agent explicitly reports this limitation rather
+than making up files.
+Paths are validated; dangerous traversal, hidden credential paths, and
+oversized or binary files are refused. Reads are bounded, and the response
+gives the user verified source links. Owner GitHub login continues to protect
+all agent routes; public visitors receive no desktop or repository-agent access.
+
+This is not arbitrary code editing: the OAuth scope remains `read:user`,
+the GitHub API reads are unauthenticated **public** reads, and the agent
+cannot commit, push, write, create PRs, run terminal commands or inspect
+private repositories using these tools. Supporting those requires a
+separate scoped GitHub connection, explicit authorization for mutations,
+testing, and sandbox isolation. Do not claim Freebuff-level coding autonomy
+before those steps are implemented and verified.
