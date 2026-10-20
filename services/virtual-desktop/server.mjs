@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { publicRun, runLocalAutonomy, stopLocalRun, validateLocalGoal } from './autopilot.mjs';
+import { createOwnerAuth } from './owner-auth.mjs';
 
 const TTL = 30 * 60_000;
 const PACKAGE = Object.freeze({ editor: 'mousepad', office: 'libreoffice-writer', drawing: 'gimp', media: 'vlc' });
@@ -56,7 +57,8 @@ async function readBody(req) {
   try { return raw ? JSON.parse(raw) : {}; } catch { throw err(400, 'JSON inválido'); }
 }
 
-export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = process.env.DAYTONA_SANDBOX_ID, origin = 'https://christianhola.github.io', clock = () => Date.now(), visionKey = process.env.OPENROUTER_API_KEY, modelFetch = fetch }) {
+export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = process.env.DAYTONA_SANDBOX_ID, origin = 'https://christianhola.github.io', clock = () => Date.now(), visionKey = process.env.OPENROUTER_API_KEY, modelFetch = fetch, ownerOAuth = {} }) {
+  const ownerAuth = createOwnerAuth({...ownerOAuth, origin, now:ownerOAuth.now ?? clock});
   const sessions = new Map();
   const attempts = new Map();
   let creating = false;
@@ -74,17 +76,19 @@ export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = 
     res.setHeader('access-control-allow-headers', 'Authorization,Content-Type');
     if (req.method === 'OPTIONS') return reply(res, 204, {});
     const path = new URL(req.url || '/', 'http://localhost').pathname;
+    // GitHub verifies the owner once; no Daytona or operator keys reach the browser.
+    if (await ownerAuth.handle(req,res,path,readBody)) return;
     if (path === '/health' && req.method === 'GET') {
-      return reply(res, 200, { service:'meridian-virtual-desktop', configured:Boolean(daytonaKey && accessToken?.length >= 32 && /^[a-f0-9-]{36}$/i.test(sandboxId || '')) });
+      return reply(res, 200, { service:'meridian-virtual-desktop', configured:Boolean(daytonaKey && (accessToken?.length >= 32 || ownerAuth.configured) && /^[a-f0-9-]{36}$/i.test(sandboxId || '')), ownerAuthConfigured:ownerAuth.configured });
     }
     const ip = req.socket.remoteAddress || 'unknown';
     let bucket = attempts.get(ip);
     if (!bucket || bucket.until < clock()) bucket = { until:clock() + 60_000, count:0 };
     bucket.count++; attempts.set(ip, bucket);
     if (bucket.count > 120) return reply(res, 429, {error:'Demasiadas peticiones'});
-    if (!daytonaKey || !accessToken || accessToken.length < 32 || !/^[a-f0-9-]{36}$/i.test(sandboxId || '')) return reply(res,503,{error:'Falta DAYTONA_API_KEY, DESKTOP_ACCESS_TOKEN o DAYTONA_SANDBOX_ID en Railway'});
+    if (!daytonaKey || (!ownerAuth.configured && (!accessToken || accessToken.length < 32)) || !/^[a-f0-9-]{36}$/i.test(sandboxId || '')) return reply(res,503,{error:'Falta configurar el acceso privado de GitHub o Daytona en Railway'});
     const bearer = (req.headers.authorization || '').replace(/^Bearer /i, '');
-    if (!validToken(bearer, accessToken)) return reply(res,401,{error:'Acceso no autorizado'});
+    if (!ownerAuth.validSession(bearer) && !validToken(bearer, accessToken)) return reply(res,401,{error:'Acceso no autorizado'});
     for (const [id, entry] of sessions) if (entry.expires <= clock()) void close(id,entry);
     try {
       if (path === '/api/desktops' && req.method === 'POST') {

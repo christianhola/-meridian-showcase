@@ -28,3 +28,53 @@ It is an owner-operated workspace with one active session per Railway replica; n
 Run `npm test` in `services/virtual-desktop` to run offline mock-based contract tests. Successful CI is **not proof of a live desktop**; use a real authenticated screenshot for that verification.
 
 Official documentation: https://www.daytona.io/docs/en/typescript-sdk/daytona/ and https://www.daytona.io/docs/en/computer-use/ .
+
+## Private agent automation without a manually pasted operator token
+
+The main **Agents** page uses an owner-only GitHub login. After the owner signs in
+once, Coder, Browser and the other agents can automatically open the existing
+`sbmeridian` desktop for explicitly local, low-risk GUI work. Requests stay
+in the chat; a real screenshot is displayed after a task when available.
+Sensitive or internet-facing tasks remain blocked by `autopilot.mjs`.
+The public GitHub Pages website never receives Daytona or OpenRouter API keys.
+
+**One-time owner setup in GitHub and Railway (required):**
+
+1. In GitHub **Settings → Developer settings → OAuth Apps → New OAuth App**,
+   set Homepage to `https://christianhola.github.io/-meridian-showcase/agents/`
+   and Authorization callback to
+   `https://meridian-virtual-desktop-production.up.railway.app/auth/github/callback`.
+   Choose a name such as `Meridian Desktop Owner`.
+2. In Railway **meridian-virtual-desktop** / Production Variables, set the
+   generated `GITHUB_OAUTH_CLIENT_ID` and `GITHUB_OAUTH_CLIENT_SECRET`.
+   Never paste the secret into a chat or a GitHub file.
+3. Set `DESKTOP_OWNER_GITHUB_ID=245952046` (the verified ID of
+   `christianhola`). Keep existing Daytona and OpenRouter secrets intact.
+4. Redeploy, open the Agents page, select **Conectar con GitHub**, and
+   authorize the owner account once. The pending local task resumes from
+   browser session storage without copying any operator token.
+
+**Security design:** The GitHub OAuth code and secret are exchanged *server
+side* over HTTPS; the server checks the numeric owner ID using GitHub's
+`/user` endpoint and sends the browser a short-lived single-use exchange
+ticket in the URL fragment. The browser exchanges it (same approved origin)
+for an opaque 8-hour session credential and keeps that credential in
+`sessionStorage`, not in the HTML or the model prompt. The session
+is in memory on Railway and expires on restart or after eight hours.
+No anonymous web visitor can control the private desktop or start a
+Daytona sandbox. It is **not** a public desktop service for the community.
+
+The legacy `DESKTOP_ACCESS_TOKEN` remains available only for the separate
+manual desktop page while migrating existing operators; the Agents chat
+no longer asks for it. Remove the legacy credential after migrating the
+manual page if you want to disable that route as well.
+
+`GET /auth/config` reports whether GitHub OAuth is set; `GET
+/auth/github/start` begins login; `GET /auth/github/callback` validates
+the owner; `POST /auth/exchange` consumes one ticket; `GET
+/auth/session` verifies an active session. This is server-enforced
+authentication; a static frontend cannot safely skip owner verification.
+
+**Known independent problem:** the public free-model stream sometimes
+returns HTTP 403 from `meridian-agents-v2`. Fix that provider
+authorization separately; it is unrelated to the private desktop login.

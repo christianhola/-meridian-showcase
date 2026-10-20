@@ -202,3 +202,25 @@
   .agents-agent-btn { padding:4px; gap:5px; font-size:13px; }
   .agents-mobile-desktop-toggle { font-size:11px; max-width:130px; }
 }
+
+/* GitHub owner session is the only credential the chat can use. No text fields
+   or operator keys appear in the public Agents interface. */
+.agents-desktop-access { display:flex; flex-direction:column; gap:9px; }
+.agents-desktop-access strong { font-size:12px; }
+.agents-desktop-access small { color:#737371; font-size:11px; line-height:1.5; }
+.agents-desktop-access > button {
+  border:1px solid #242424; background:#242424; color:#fff;
+  border-radius:8px; padding:10px 12px; font-size:12px;
+  text-align:center; font-weight:650;
+}
+.agents-desktop-access > button:disabled { opacity:.44;cursor:not-allowed; }
+.agents-desktop-run { min-width:0; }
+.agents-desktop-screenshot {
+  display:block; width:100%; max-width:720px; max-height:420px;
+  object-fit:contain; border:1px solid #dededc; border-radius:8px;
+  background:#f9f9f9;
+}
+@media (max-width:720px) {
+  .agents-mobile-desktop-panel { z-index:75; }
+  .agents-mobile-desktop-toggle { flex-shrink:0; }
+}
