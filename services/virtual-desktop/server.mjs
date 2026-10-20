@@ -58,7 +58,7 @@ async function readBody(req) {
 }
 
 export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = process.env.DAYTONA_SANDBOX_ID, origin = 'https://christianhola.github.io', clock = () => Date.now(), visionKey = process.env.OPENROUTER_API_KEY, modelFetch = fetch, ownerOAuth = {} }) {
-  const ownerAuth = createOwnerAuth({...ownerOAuth, origin, now:clock});
+  const ownerAuth = createOwnerAuth({...ownerOAuth, origin, now:ownerOAuth.now ?? clock});
   const sessions = new Map();
   const attempts = new Map();
   let creating = false;
