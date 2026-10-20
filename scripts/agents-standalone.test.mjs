@@ -46,8 +46,8 @@ test("Verified GitHub sources render as safe real anchors, not fused Markdown te
   assert.match(component, /text:selected\.text,sources:selected\.sources/);
   assert.match(component, /agents-verified-sources/);
   assert.match(component, /href=\{url\} target="_blank" rel="noopener noreferrer"/);
-  assert.match(component, /t\.sources\.join\("\\\\n"\)/);
+  assert.ok(component.includes('t.sources.join("\\n")'));
   assert.doesNotMatch(component, /text:selected\.text\s*\+/);
   assert.match(styles, /\.agents-verified-sources\s*\{/);
-  assert.match(router, /github\\\.com/);
+  assert.ok(router.includes('github\\.com'));
 });
