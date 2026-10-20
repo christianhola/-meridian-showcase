@@ -1,9 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { buildHandler, validToken } from '../server.mjs';
+import { buildHandler, validToken, jpegDimensions } from '../server.mjs';
 
 const token='x'.repeat(40);
+const jpegFixture=Buffer.from([
+  0xff,0xd8,0xff,0xe0,0x00,0x04,0x00,0x00,
+  0xff,0xc0,0x00,0x11,0x08,0x03,0x20,0x05,0x00,
+  0x03,0x01,0x11,0x00,0x02,0x11,0x00,0x03,0x11,0x00,
+  0xff,0xd9
+]).toString('base64');
 const sandboxId='da9ec846-473e-4779-be41-5fe8d5daf785';
 const headers={authorization:'Bearer '+token,'content-type':'application/json'};
 const start=async handler=>{
@@ -30,7 +36,7 @@ function fakeProvider({initialState='archived',graphic=true}={}) {
     stop:async()=>calls.push('stop'),
     computerUse:{
       start:async()=>{calls.push('computerUse.start');if(!graphic)throw Error('No desktop packages');},
-      screenshot:{takeCompressed:async()=>({screenshot:'YWN0dWFsLWZyYW1l',width:1280,height:800})},
+      screenshot:{takeCompressed:async()=>({screenshot:jpegFixture})},
       mouse:{click:async()=>calls.push('click')},
       keyboard:{type:async()=>calls.push('type'),press:async()=>calls.push('press')}
     },
@@ -76,11 +82,14 @@ test('archived existing sbmeridian is started, controlled and preserved',async()
     assert.equal(second.status,409);
     const frame=await(await fetch(url+'/api/desktops/'+id+'/screenshot',{headers})).json();
     assert.equal(frame.width,1280);
+    assert.equal(frame.height,800);
     const disallowed=await fetch(url+'/api/desktops/'+id+'/action',{method:'POST',headers,body:JSON.stringify({type:'shell',command:'uname -a'})});
     assert.equal(disallowed.status,400);
     const clicked=await fetch(url+'/api/desktops/'+id+'/action',{method:'POST',headers,body:JSON.stringify({type:'click',x:3,y:3})});
     assert.equal(clicked.status,200);
     assert.ok(data.calls.includes('click'));
+    const badPoint=await fetch(url+'/api/desktops/'+id+'/action',{method:'POST',headers,body:JSON.stringify({type:'click',x:1300,y:3})});
+    assert.equal(badPoint.status,400);
     const removed=await(await fetch(url+'/api/desktops/'+id,{method:'DELETE',headers})).json();
     assert.deepEqual(removed,{disconnected:true,preserved:true});
     assert.ok(!data.calls.includes('delete'));
@@ -125,4 +134,9 @@ test('unexpected sandbox UUID never starts a different computer',async()=>{
     assert.ok(!data.calls.includes('sandbox.start'));
     assert.ok(!data.calls.includes('delete'));
   }finally{server.close();}
+});
+
+test('reads JPEG SOF dimensions and rejects malformed screenshots',()=>{
+  assert.deepEqual(jpegDimensions(jpegFixture),{width:1280,height:800});
+  assert.throws(()=>jpegDimensions(Buffer.from('not jpeg').toString('base64')),/JPEG inválida/);
 });
