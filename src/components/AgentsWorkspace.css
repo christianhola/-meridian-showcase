@@ -73,3 +73,17 @@
   .agents-sidebar.open{top:0}
   .agent-markdown-code pre{font-size:11px}
 }
+
+
+/* Private desktop connection and bounded agent activity */
+.agents-desktop-access{margin:14px 12px;border-top:1px solid rgba(128,128,128,.25);padding-top:12px;font-size:12px}
+.agents-desktop-access>button{width:100%;background:transparent;color:inherit;border:1px solid rgba(150,150,150,.25);padding:10px;border-radius:7px;text-align:left;cursor:pointer}
+.agents-desktop-access label{display:block;font-size:11px;margin:12px 0 5px}
+.agents-desktop-access input{width:100%;max-width:100%;border:1px solid #5c5c5c;background:#111;color:#fff;border-radius:6px;padding:9px;font-size:12px}
+.agents-desktop-access small{display:block;margin:8px 0;color:#999;line-height:1.5}
+.agents-desktop-run{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:15px 0;padding:12px;border:1px solid rgba(120,120,120,.3);border-radius:9px;font-size:12px}
+.agents-desktop-run>strong{font-size:12px}
+.agents-desktop-run>span{width:100%}
+.agents-desktop-run>small{width:100%;opacity:.7}
+.agents-desktop-run button{border:1px solid currentColor;border-radius:5px;background:transparent;color:inherit;padding:6px 9px;cursor:pointer}
+.agents-desktop-run a{font-size:11px;text-decoration:underline}
