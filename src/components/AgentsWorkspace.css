@@ -136,3 +136,10 @@
   .agents-compose-note { margin: 5px 0 0; }
   .agents-compose textarea { min-height: 42px; }
 }
+/* An unconnected Daytona task is pending authorization, not a model response. */
+.agents-desktop-pending {align-self:stretch;border:1px solid #dadad8;border-radius:12px;padding:14px 16px;background:#fafaf9;font-size:13px;line-height:1.55}
+.agents-desktop-pending strong {display:block;font-size:13px;margin-bottom:6px}
+.agents-desktop-pending p {margin:0 0 12px;color:#6e6e6b}
+.agents-desktop-pending button,.agents-desktop-access .agents-desktop-resume {border:1px solid #202020;background:#202020;color:#fff;border-radius:8px;padding:9px 12px;font-weight:650;font-size:12px}
+.agents-desktop-pending button:disabled,.agents-desktop-access .agents-desktop-resume:disabled {opacity:.45;cursor:not-allowed}
+.agents-desktop-access .agents-desktop-resume {display:block;width:100%;margin-top:10px;text-align:center}
