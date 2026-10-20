@@ -83,6 +83,7 @@ export function AgentsWorkspace() {
     }
   }
   const activeRequest = useRef<AbortController | null>(null);
+  const chatGeneration = useRef(0);
   useEffect(() => () => activeRequest.current?.abort(), []);
   const [draft, setDraft] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -115,6 +116,7 @@ export function AgentsWorkspace() {
       return;
     }
     const selectedAgent = agent;
+    const generation = chatGeneration.current;
     const localDesktopTask = shouldUseDesktop(text);
     if (localDesktopTask && desktopToken.length < 32) {
       setDesktopAccessOpen(true);
@@ -136,7 +138,7 @@ export function AgentsWorkspace() {
     try {
       if(localDesktopTask) {
         const summary=await performLocalGoal(text,selectedAgent);
-        setTurns(prev=>[...prev,{id:replyId,text:summary,agent:selectedAgent,provider:'daytona',role:'assistant'}]);
+        if (generation === chatGeneration.current) setTurns(prev=>[...prev,{id:replyId,text:summary,agent:selectedAgent,provider:'daytona',role:'assistant'}]);
       } else await streamFreeAnswer(
         selectedAgent.toLowerCase() as FreeAgentRole,
         [...previous, { role: "user", content: text }],
@@ -146,7 +148,7 @@ export function AgentsWorkspace() {
         controller.signal,
       );
     } catch (reason) {
-      if (!controller.signal.aborted) {
+      if (!controller.signal.aborted && generation === chatGeneration.current) {
         setError(reason instanceof Error ? reason.message : "No se pudo completar la respuesta.");
       }
     } finally {
@@ -167,14 +169,14 @@ export function AgentsWorkspace() {
     <section className="agents-workspace" id="agents" aria-label="Agentes de Meridian">
       <aside className={"agents-sidebar" + (sideOpen ? " open" : "")}>
         <div className="agents-sidebar-top"><span>MERIDIAN <span className="agents-slash">/</span> AGENTES</span><button type="button" aria-label="Cerrar panel" className="agents-side-close" onClick={() => setSideOpen(false)}><X size={18}/></button></div>
-        <button className="agents-new" type="button" onClick={() => { setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
+        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
         <span className="agents-side-label">AGENTES</span>
         <div className="agents-list">
           {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setError(""); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><AgentAvatar name={a.name} size={35}/>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
         </div>
         <div className="agents-desktop-access">
           <button type="button" onClick={()=>setDesktopAccessOpen(v=>!v)} aria-expanded={desktopAccessOpen}>
-            Computadora Daytona {desktopToken.length>=32?'· conectada':'· acceso privado'}
+            Computadora Daytona {desktopToken.length>=32?'· credencial lista':'· acceso privado'}
           </button>
           {desktopAccessOpen && <div>
             <label htmlFor="agents-desktop-token">Token del operador</label>
