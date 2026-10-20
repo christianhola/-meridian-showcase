@@ -6,6 +6,12 @@ import { AgentMarkdown } from "./AgentMarkdown";
 import { ToolLab } from "./ToolLab";
 import { streamFreeAnswer, type FreeAgentRole, type FreeChatMessage } from "./freeModelStream";
 import { desktopCall, shouldUseDesktop, type LocalTaskState } from "../services/desktopAutonomy";
+import {
+  loadDesktopOwnerSession, loadPendingDesktopTask, savePendingDesktopTask,
+  clearPendingDesktopTask, clearDesktopOwnerSession, takeDesktopAuthTicket,
+  takeDesktopAuthError, exchangeDesktopAuthTicket, validateDesktopOwnerSession,
+  loadDesktopAuthConfig, beginDesktopOwnerLogin, type PendingDesktopTask,
+} from "../services/desktopOwnerSession";
 
 type Turn = { id: number; text: string; agent: string; provider: string; role: "user" | "assistant" };
 const agents = [
@@ -18,15 +24,17 @@ const agents = [
 ] as const;
 
 export function AgentsWorkspace() {
-  const [agent, setAgent] = useState("Coder");
+  const [agent, setAgent] = useState(() => loadPendingDesktopTask()?.agent || "Coder");
   const [toolLabOpen, setToolLabOpen] = useState(false);
   const [provider, setProvider] = useState("free");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [desktopAccessOpen, setDesktopAccessOpen] = useState(false);
-  const [desktopToken, setDesktopToken] = useState("");
+  const [ownerSession, setOwnerSession] = useState(loadDesktopOwnerSession);
+  const [ownerAuthConfigured, setOwnerAuthConfigured] = useState(false);
+  const [ownerAuthChecking, setOwnerAuthChecking] = useState(true);
   const [desktopRun, setDesktopRun] = useState<LocalTaskState | null>(null);
-  const [pendingDesktopTask, setPendingDesktopTask] = useState<{text:string;agent:string} | null>(null);
+  const [pendingDesktopTask, setPendingDesktopTask] = useState<PendingDesktopTask | null>(loadPendingDesktopTask);
   const desktopSession = useRef<string | null>(null);
   const desktopStopRequested = useRef(false);
   const wait = (ms:number) => new Promise<void>(resolve=>window.setTimeout(resolve,ms));
@@ -35,7 +43,7 @@ export function AgentsWorkspace() {
     const id=desktopSession.current;
     if (!id) return;
     try {
-      const stopped=await desktopCall<LocalTaskState>(desktopToken,'/api/desktops/'+id+'/autopilot','DELETE');
+      const stopped=await desktopCall<LocalTaskState>(ownerSession,'/api/desktops/'+id+'/autopilot','DELETE');
       setDesktopRun(stopped);
     } catch (e) {setError(e instanceof Error?e.message:'No se pudo detener la tarea');}
   }
@@ -43,25 +51,25 @@ export function AgentsWorkspace() {
     let id:string|null=null;
     desktopStopRequested.current=false;
     try {
-      const connected=await desktopCall<{id:string;status:string;reused:boolean}>(desktopToken,'/api/desktops','POST');
+      const connected=await desktopCall<{id:string;status:string;reused:boolean}>(ownerSession,'/api/desktops','POST');
       id=connected.id;
       desktopSession.current=id;
       let ready=false;
       for(let i=0;i<35;i++){
         if(desktopStopRequested.current) throw new Error('La tarea se canceló antes de abrir el escritorio');
-        const poll=await desktopCall<{status:string;message?:string}>(desktopToken,'/api/desktops/'+id);
+        const poll=await desktopCall<{status:string;message?:string}>(ownerSession,'/api/desktops/'+id);
         if(poll.status==='error') throw new Error(poll.message||'Daytona no pudo abrir el escritorio');
         if(poll.status==='ready'){ready=true;break;}
         await wait(1500);
       }
       if(!ready) throw new Error('La computadora no estuvo lista para la tarea');
       if(desktopStopRequested.current) throw new Error('Tarea cancelada');
-      const started=await desktopCall<LocalTaskState>(desktopToken,'/api/desktops/'+id+'/autopilot','POST',{task:text,agent:selectedAgent});
+      const started=await desktopCall<LocalTaskState>(ownerSession,'/api/desktops/'+id+'/autopilot','POST',{task:text,agent:selectedAgent});
       setDesktopRun(started);
       let outcome=started;
       for(let i=0;i<120;i++){
         await wait(1200);
-        outcome=await desktopCall<LocalTaskState>(desktopToken,'/api/desktops/'+id+'/autopilot');
+        outcome=await desktopCall<LocalTaskState>(ownerSession,'/api/desktops/'+id+'/autopilot');
         setDesktopRun(outcome);
         if(!['starting','running'].includes(outcome.status))break;
       }
@@ -77,7 +85,7 @@ export function AgentsWorkspace() {
       return [label,detail].filter(Boolean).join('\n\n');
     } finally {
       if(id) {
-        try{await desktopCall(desktopToken,'/api/desktops/'+id,'DELETE');}catch{}
+        try{await desktopCall(ownerSession,'/api/desktops/'+id,'DELETE');}catch{}
       }
       desktopSession.current=null;
       desktopStopRequested.current=false;
@@ -87,7 +95,10 @@ export function AgentsWorkspace() {
   const chatGeneration = useRef(0);
   useEffect(() => () => activeRequest.current?.abort(), []);
   const [draft, setDraft] = useState("");
-  const [turns, setTurns] = useState<Turn[]>([]);
+  const [turns, setTurns] = useState<Turn[]>(() => {
+    const pending=loadPendingDesktopTask();
+    return pending ? [{id:1,text:pending.text,agent:pending.agent,provider:'daytona',role:'user'}] : [];
+  });
   const [level, setLevel] = useState("Standard");
   const [agentMenu, setAgentMenu] = useState(false);
   const [settingsMenu, setSettingsMenu] = useState(false);
@@ -103,15 +114,22 @@ export function AgentsWorkspace() {
     return () => window.clearInterval(timer);
   }, [preview]);
   const fileInput = useRef<HTMLInputElement>(null);
-  const nextId = useRef(0);
+  const nextId = useRef(loadPendingDesktopTask() ? 1 : 0);
   const selected = agents.find(a => a.name === agent) ?? agents[1];
   const agentTurns = turns.filter(turn => turn.agent === agent);
+  function connectOwner() {
+    setDesktopAccessOpen(false);
+    if (!ownerAuthConfigured) {
+      setError('El acceso privado todavía no está habilitado en Railway. Se necesita configurar una aplicación OAuth de GitHub una sola vez; no introduzcas tokens en el chat.');
+      return;
+    }
+    beginDesktopOwnerLogin();
+  }
   async function resumeDesktopTask() {
     const pending = pendingDesktopTask;
     if (!pending || busy) return;
-    if (desktopToken.trim().length < 32) {
-      setDesktopAccessOpen(true);
-      setError('El token de operador todavía no está completo. Configúralo en Computadora Daytona para continuar.');
+    if (!ownerSession) {
+      connectOwner();
       return;
     }
     const generation = chatGeneration.current;
@@ -122,18 +140,57 @@ export function AgentsWorkspace() {
       if (generation === chatGeneration.current) {
         setTurns(prev => [...prev, {
           id: ++nextId.current, text: summary, agent: pending.agent,
-          provider: 'daytona', role: 'assistant'
+          provider:'daytona', role:'assistant'
         }]);
         setPendingDesktopTask(null);
+        clearPendingDesktopTask();
       }
     } catch (cause) {
       if (generation === chatGeneration.current) {
-        setError(cause instanceof Error ? cause.message : 'No fue posible abrir Daytona. La tarea sigue pendiente.');
+        const message=cause instanceof Error ? cause.message : 'No fue posible abrir Daytona. La tarea sigue pendiente.';
+        if (message.includes('Acceso no autorizado')) {
+          clearDesktopOwnerSession();
+          setOwnerSession('');
+          setError('La sesión privada venció. Vuelve a iniciar sesión con GitHub para continuar.');
+        } else setError(message);
       }
     } finally {
       setBusy(false);
     }
   }
+  const autoResumeKey=useRef('');
+  useEffect(() => {
+    if (!ownerSession || !pendingDesktopTask || busy) return;
+    const key=ownerSession+':'+pendingDesktopTask.agent+':'+pendingDesktopTask.text;
+    if (autoResumeKey.current===key) return;
+    autoResumeKey.current=key;
+    void resumeDesktopTask();
+  }, [ownerSession, pendingDesktopTask]);
+
+  useEffect(() => {
+    async function prepare() {
+      const previousError=takeDesktopAuthError();
+      if (previousError) setError(previousError);
+      const ticket=takeDesktopAuthTicket();
+      if (ticket) {
+        try {
+          const session=await exchangeDesktopAuthTicket(ticket);
+          setOwnerSession(session);
+          setError('');
+        } catch (e) { setError(e instanceof Error ? e.message : 'No se pudo recuperar la sesión privada'); }
+      } else {
+        const stored=loadDesktopOwnerSession();
+        if (stored && !(await validateDesktopOwnerSession(stored))) setOwnerSession('');
+      }
+      try {
+        const config=await loadDesktopAuthConfig();
+        setOwnerAuthConfigured(config.configured);
+      } catch { setError('No se pudo consultar la configuración privada de Daytona.'); }
+      finally { setOwnerAuthChecking(false); }
+    }
+    void prepare();
+  }, []);
+
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     const text = draft.trim();
@@ -153,16 +210,16 @@ export function AgentsWorkspace() {
       .map(t => ({ role: t.role, content: t.text }));
     const userId = ++nextId.current;
     const replyId = ++nextId.current;
-    setTurns(prev => [...prev, { id: userId, text, agent: selectedAgent, provider: "free", role: "user" }]);
+    setTurns(prev => [...prev, { id: userId, text, agent: selectedAgent, provider: localDesktopTask ? "daytona" : "free", role: "user" }]);
     setDraft("");
     setError("");
-    if (localDesktopTask && desktopToken.length < 32) {
-      // Always persist the user's submitted message before requesting credentials.
-      // A missing operator token is not a failed or ignored send.
-      setDesktopAccessOpen(true);
-      setPendingDesktopTask({text,agent:selectedAgent});
-      // This is an authorization pause, not a response from an AI model.
-      // Keep the user turn; resume it explicitly after operator authorization.
+    if (localDesktopTask && !ownerSession) {
+      const pending={text,agent:selectedAgent};
+      savePendingDesktopTask(pending);
+      setPendingDesktopTask(pending);
+      setError(ownerAuthConfigured
+        ? 'Para usar tu computadora privada, inicia sesión con GitHub una sola vez. Coder continuará automáticamente tu tarea.'
+        : 'La computadora privada todavía no está vinculada a GitHub en Railway. Tu tarea queda en espera; no compartas credenciales aquí.');
       return;
     }
     setBusy(true);
@@ -202,25 +259,23 @@ export function AgentsWorkspace() {
     <section className="agents-workspace" id="agents" aria-label="Agentes de Meridian">
       <aside className={"agents-sidebar" + (sideOpen ? " open" : "")}>
         <div className="agents-sidebar-top"><span>MERIDIAN <span className="agents-slash">/</span> AGENTES</span><button type="button" aria-label="Cerrar panel" className="agents-side-close" onClick={() => setSideOpen(false)}><X size={18}/></button></div>
-        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setPendingDesktopTask(null); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
+        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setPendingDesktopTask(null); clearPendingDesktopTask(); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
         <span className="agents-side-label">AGENTES</span>
         <div className="agents-list">
           {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setError(""); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><AgentAvatar name={a.name} size={35}/>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
         </div>
         <div className="agents-desktop-access">
-          <button type="button" onClick={()=>setDesktopAccessOpen(v=>!v)} aria-expanded={desktopAccessOpen}>
-            Computadora Daytona {desktopToken.length>=32?'· token introducido':'· acceso privado'}
-          </button>
-          {desktopAccessOpen && <div>
-            <label htmlFor="agents-desktop-token">Token del operador</label>
-            <input id="agents-desktop-token" type="password" autoComplete="off"
-              value={desktopToken} onChange={e=>setDesktopToken(e.target.value)}
-              placeholder="Credencial privada de Railway" aria-label="Token privado de Daytona"/>
-            <small>Solo permanece en esta pestaña. El agente decide cuándo necesita el escritorio; no se envía al modelo.</small>
-            {pendingDesktopTask && <button className="agents-desktop-resume" type="button"
-              disabled={busy || desktopToken.trim().length < 32}
-              onClick={()=>void resumeDesktopTask()}>Continuar tarea pendiente</button>}
-          </div>}
+          <strong>Computadora Daytona</strong>
+          <small>{ownerSession ? "Conectada a tu cuenta privada. Coder puede usar sbmeridian cuando la tarea lo requiera." :
+            ownerAuthChecking ? "Verificando acceso privado…" :
+            ownerAuthConfigured ? "Se requiere iniciar sesión con GitHub una sola vez. No necesitas tokens de operador." :
+            "Conexión privada pendiente de configuración en Railway."}</small>
+          {!ownerSession && <button type="button" disabled={ownerAuthChecking || !ownerAuthConfigured}
+            onClick={connectOwner}>Conectar con GitHub</button>}
+          {pendingDesktopTask && <button type="button" disabled={busy || (!ownerSession && !ownerAuthConfigured)}
+            onClick={() => ownerSession ? void resumeDesktopTask() : connectOwner()}>
+            {ownerSession ? "Continuar tarea pendiente" : "Autorizar y continuar"}
+          </button>}
         </div>
         <div className="agents-sidebar-foot"><button type="button" onClick={() => setToolLabOpen(true)}>Laboratorio interactivo →</button><a href="/-meridian-showcase/desktop/" className="agents-community-link">Laptop virtual Daytona →</a><a href="/-meridian-showcase/" className="agents-community-link">← Meridian Community</a><span>Agentes · chat gratuito</span></div>
       </aside>
@@ -234,24 +289,25 @@ export function AgentsWorkspace() {
           <button type="button" className="agents-mobile-desktop-toggle"
             aria-controls="agents-mobile-daytona" aria-expanded={desktopAccessOpen}
             onClick={() => { setDesktopAccessOpen(value => !value); setSideOpen(false); }}>
-            Computadora {pendingDesktopTask ? "· pendiente" : ""}
+            {ownerSession ? "Computadora lista" : pendingDesktopTask ? "Conectar computadora" : "Computadora"}
           </button>
           <button type="button" className="agents-preview-button" onClick={() => { setToolLabOpen(true); }}>Explorar herramientas · Demo</button><span className="agents-toolbar-status">Gratis</span>
         </header>
-        {desktopAccessOpen && <section className="agents-mobile-desktop-panel" id="agents-mobile-daytona" aria-label="Acceso privado a la computadora Daytona">
+        {desktopAccessOpen && <section className="agents-mobile-desktop-panel" id="agents-mobile-daytona" aria-label="Acceso privado Daytona">
           <strong>Computadora Daytona</strong>
-          <p>Acceso a sbmeridian. El token es privado y solo permanece en esta pestaña.</p>
-          <label htmlFor="agents-mobile-desktop-token">Token del operador</label>
-          <input id="agents-mobile-desktop-token" type="password" autoComplete="off" spellCheck={false}
-            placeholder="Token privado de operador" value={desktopToken}
-            onChange={event => setDesktopToken(event.target.value)}
-          />
+          <p>{ownerSession
+            ? "Tu cuenta está conectada. El agente usa sbmeridian cuando lo necesita."
+            : ownerAuthConfigured
+              ? "Inicia sesión con tu GitHub una sola vez. No tienes que introducir tokens de Daytona."
+              : "El propietario debe completar la conexión de GitHub en Railway antes de usar la computadora."}</p>
+          {!ownerSession && <button type="button" className="agents-mobile-desktop-resume"
+            disabled={!ownerAuthConfigured || ownerAuthChecking} onClick={connectOwner}>Conectar con GitHub</button>}
           {pendingDesktopTask && <button type="button" className="agents-mobile-desktop-resume"
-            disabled={busy || desktopToken.trim().length < 32}
-            onClick={() => void resumeDesktopTask()}>
-            Continuar tarea pendiente
+            disabled={busy || (!ownerSession && !ownerAuthConfigured)}
+            onClick={() => ownerSession ? void resumeDesktopTask() : connectOwner()}>
+            {ownerSession ? "Continuar tarea pendiente" : "Autorizar y continuar"}
           </button>}
-          <button type="button" className="agents-mobile-desktop-close" onClick={() => setDesktopAccessOpen(false)}>Cerrar panel</button>
+          <button type="button" className="agents-mobile-desktop-close" onClick={() => setDesktopAccessOpen(false)}>Cerrar</button>
         </section>}
         <div className={"agents-conversation" + (agentTurns.length ? " has-turns" : "")}>
           {agentTurns.length === 0 && !preview ? <div className="agents-hello"><AgentAvatar name={selected.name} size={84} active={preview}/><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{agentTurns.map(t => t.role === "assistant"
@@ -271,10 +327,13 @@ export function AgentsWorkspace() {
             {busy && <div className="agents-live-activity" role="status"><AgentAvatar name={agent} size={30} active/><span>{desktopSession.current?'Trabajando en sbmeridian…':'Generando respuesta gratuita…'}</span></div>}
             {desktopRun && <div className="agents-desktop-run" role="status" aria-live="polite"><strong>Computadora · {desktopRun.status}</strong><span>{desktopRun.message} · {desktopRun.step}/{desktopRun.maxSteps} pasos</span>{desktopRun.history.length>0 && <small>{desktopRun.history.slice(-2).map(s=>s.message).join(' · ')}</small>}{['starting','running'].includes(desktopRun.status) && <button type="button" onClick={()=>void stopDesktopTask()}>Detener agente</button>}<a href="/-meridian-showcase/desktop/" target="_blank" rel="noreferrer">Abrir pantalla ↗</a></div>}
             {pendingDesktopTask && pendingDesktopTask.agent === agent && <div className="agents-desktop-pending" role="status">
-              <strong>Tarea en espera de autorización</strong>
-              <p>Tu solicitud está guardada en esta pestaña. En móvil toca «Computadora» arriba; introduce el token privado y pulsa «Continuar tarea pendiente». No tendrás que reenviar el mensaje.</p>
-              <button type="button" disabled={busy || desktopToken.trim().length < 32}
-                onClick={()=>void resumeDesktopTask()}>Continuar tarea pendiente</button>
+              <strong>Computadora privada · tarea pendiente</strong>
+              <p>{ownerSession ? "La sesión privada está lista. Puedes reintentar la tarea."
+                : "Tu tarea se guardó. Autoriza tu cuenta de GitHub una sola vez para que el agente pueda usar sbmeridian sin tokens manuales."}</p>
+              <button type="button" disabled={busy || (!ownerSession && !ownerAuthConfigured)}
+                onClick={() => ownerSession ? void resumeDesktopTask() : connectOwner()}>
+                {ownerSession ? "Continuar tarea" : "Conectar GitHub y continuar"}
+              </button>
             </div>}
             {error && <div className="agents-live-error" role="alert">{error}</div>}{preview && <div className="agent-reasoning-preview"><div className="agent-reasoning-heading"><AgentAvatar name={agent} size={48} active/><div><strong>{agent}</strong><small>Vista previa de animación · Sin ejecución real</small></div></div><div className="agent-reasoning-status" role="status"><span className="agent-reasoning-loader" aria-hidden="true"/> <span key={phase} className="agent-reasoning-shimmer">{phrases[phase]}…</span></div><div className="agent-plan-preview"><div className="agent-plan-title">Plan de trabajo <small>Ejemplo visual</small></div>{phrases.map((step,i) => <div key={step} className="agent-plan-step"><span className={i < phase ? "complete" : i === phase ? "working" : ""}>{i < phase ? "✓" : i === phase ? "◌" : "○"}</span><span>{step}</span></div>)}</div><div className="agent-reasoning-example"><AgentAvatar name={agent} size={35}/><span>Animación de ejemplo. El chat utiliza respuestas reales del modelo gratuito.</span></div></div>}</div>}
         </div>
@@ -291,7 +350,7 @@ export function AgentsWorkspace() {
               <div className="agents-compose-right"><button type="button" className="agents-icon" disabled title="Voz todavía no conectada" aria-label="Micrófono no disponible"><Mic size={19}/></button><button type="submit" className="agents-send" disabled={!draft.trim() || busy} aria-label={editId === null ? "Enviar mensaje" : "Guardar edición"}>{editId !== null ? <Check size={18}/> : <ArrowUp size={19}/>}</button></div>
             </div>
           </form>
-          <p className="agents-compose-note">Chat gratuito · solicitudes locales compatibles: ejecución Daytona de hasta 8 pasos con token privado. Acciones sensibles requieren supervisión.</p>
+          <p className="agents-compose-note">Chat gratuito · Daytona autónomo hasta 8 pasos en tu computadora privada. Acciones sensibles requieren supervisión.</p>
         </div>
       </div>
     </section>
