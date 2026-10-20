@@ -2,10 +2,9 @@
 // Intentionally no GitHub secrets, private repo access, mutation or shell execution.
 // Never follow model-supplied URLs: the only hosts and repositories are fixed here.
 const API='https://api.github.com';
-const PROJECTS=Object.freeze([
-  'christianhola/-meridian-showcase',
-  'christianhola/meridian-agents-v2',
-]);
+// Only public repositories can be fetched without a delegated GitHub repo token.
+// meridian-agents-v2 is PRIVATE and therefore deliberately excluded here.
+const PROJECTS=Object.freeze(['christianhola/-meridian-showcase']);
 const MAX_TREE=180;
 const MAX_FILE_CHARS=14000;
 const MAX_FILE_BYTES=70000;
