@@ -20,7 +20,12 @@ export function createOwnerAuth({
   now = () => Date.now(),
   fetchImpl = fetch,
 } = {}) {
-  const configured = Boolean(clientId && clientSecret && /^\d+$/.test(String(ownerId || '')) &&
+  // Environment variables pasted from dashboards often include a trailing newline.
+  // Normalize only the surrounding whitespace; never log or expose OAuth secrets.
+  const normalizedClientId = typeof clientId === 'string' ? clientId.trim() : '';
+  const normalizedClientSecret = typeof clientSecret === 'string' ? clientSecret.trim() : '';
+  const normalizedOwnerId = String(ownerId ?? '').trim();
+  const configured = Boolean(normalizedClientId && normalizedClientSecret && /^\d+$/.test(normalizedOwnerId) &&
     callbackUrl.startsWith('https://') && returnUrl.startsWith('https://'));
   const states = new Map();
   const tickets = new Map();
@@ -63,7 +68,7 @@ export function createOwnerAuth({
         const state=secret();
         states.set(state, now() + LOGIN_TTL);
         const url=new URL('https://github.com/login/oauth/authorize');
-        url.searchParams.set('client_id',clientId);
+        url.searchParams.set('client_id',normalizedClientId);
         url.searchParams.set('redirect_uri',callbackUrl);
         url.searchParams.set('state',state);
         url.searchParams.set('scope','read:user');
@@ -83,7 +88,7 @@ export function createOwnerAuth({
         const oauth=await fetchImpl('https://github.com/login/oauth/access_token',{
           method:'POST',
           headers:{'content-type':'application/json','accept':'application/json'},
-          body:JSON.stringify({client_id:clientId,client_secret:clientSecret,code,redirect_uri:callbackUrl}),
+          body:JSON.stringify({client_id:normalizedClientId,client_secret:normalizedClientSecret,code,redirect_uri:callbackUrl}),
           signal:AbortSignal.timeout(12000),
         });
         if (!oauth.ok) throw Error('GitHub code exchange failed');
@@ -96,7 +101,7 @@ export function createOwnerAuth({
         });
         if (!profileResponse.ok) throw Error('GitHub identity unavailable');
         const user=await profileResponse.json();
-        if (String(user.id) !== String(ownerId)) { failed(res,'not_owner'); return true; }
+        if (String(user.id) !== normalizedOwnerId) { failed(res,'not_owner'); return true; }
         prune();
         if (tickets.size >= MAX_ACTIVE) { failed(res,'busy'); return true; }
         const ticket=secret();
