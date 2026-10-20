@@ -1,15 +1,21 @@
-# Meridian Virtual Desktop — Daytona (integración real)
+# Meridian Virtual Desktop — conexión Daytona desde la web
 
-La página [/desktop/](https://christianhola.github.io/-meridian-showcase/desktop/) se conecta a un servicio independiente desplegado en Railway. **No es un emulador ni una maqueta**: el backend utiliza el SDK oficial de Daytona para crear un sandbox Linux privado, arrancar XFCE y Computer Use, capturar píxeles reales y ejecutar comandos autorizados.
+La página pública https://christianhola.github.io/-meridian-showcase/desktop/ pertenece exclusivamente al repositorio `christianhola/-meridian-showcase`. El servicio `meridian-virtual-desktop` de Railway es su API privada. **No se realizan modificaciones en meridian-api ni Meridian Completo.**
 
-## Arquitectura
+## Flujo verídico
 
-GitHub Pages (UI sin secretos) → Railway (API HTTP privada con token del operador) → Daytona SDK → sandbox Linux + XFCE/X11/VNC. Los seis roles de agente pueden proponer un paso con visión de un screenshot real usando el modelo OpenRouter configurado. El servidor valida el JSON propuesto y el operador debe aprobar la ejecución. No existe autonomía sin supervisión. Una integración posterior del agente necesita una identidad de usuario, un plan verificable, permisos por acción y evaluación del resultado; nunca aceptar instrucciones del modelo como autorizaciones.
+GitHub Pages (interfaz pública) → Railway (token de operador, sin secretos en el cliente) → SDK oficial Daytona → sandbox Linux real `sbmeridian` (`da9ec846-473e-4779-be41-5fe8d5daf785`).
 
-## Despliegue
+Al conectarse, el backend consulta el sandbox existente. Si está archivado o detenido, solicita iniciarlo; después intenta iniciar XFCE/VNC/Computer Use. Solo muestra capturas reales de Daytona, sin datos inventados. Si el escritorio gráfico no está disponible, lo comunica. No crea máquinas alternativas.
 
-El backend está en services/virtual-desktop, separado del runtime Meridian Agents. Configurar en Railway **DAYTONA_API_KEY**, **DESKTOP_ACCESS_TOKEN** y **OPENROUTER_API_KEY** para planes de visión aleatorio de al menos 32 caracteres. Establecer DESKTOP_ALLOWED_ORIGIN=https://christianhola.github.io. Nunca publicar credenciales en el frontend, repositorio ni documentación. Hasta configurar ambas variables, /health muestra configured:false y las solicitudes son rechazadas.
+## Aislamiento y protección
 
-Capacidades disponibles al configurar: creación y borrado real, caducidad de 30 minutos, lectura de estado, captura JPEG, clics, texto, teclas permitidas e instalación aprobada de cuatro apps de repositorios apt (Mousepad, Writer, GIMP y VLC). No se ofrece un terminal público ni instalación arbitraria. La configuración es para **un solo operador y una sola réplica**: no es una plataforma multiusuario lista para acceso anónimo.
+La API acepta una sola sesión por réplica y requiere `DESKTOP_ACCESS_TOKEN` de al menos 32 caracteres. Validación de origen del sitio web, acciones acotadas, sin terminal pública. OpenRouter puede analizar una captura únicamente cuando el operador lo confirma y propone un paso; requiere otra aprobación para ejecutarlo. El token no se envía al modelo.
 
-Daytona Computer Use y VNC: https://www.daytona.io/docs/en/computer-use/ y https://www.daytona.io/docs/en/vnc-access/ . OSWorld: https://github.com/xlang-ai/OSWorld (benchmark opcional, no runtime de laptop).
+**Cerrar sesión no elimina, detiene ni archiva sbmeridian**. Daytona mantiene sus propias reglas de auto-stop, auto-archive y auto-delete; si está configurada una eliminación automática de un día, puede borrar la máquina sin intervención de esta web. Deshabilita o revisa esa política en Daytona si deseas persistencia.
+
+En `meridian-virtual-desktop` (Railway) configurar `DAYTONA_API_KEY`, `DAYTONA_SANDBOX_ID` y `DESKTOP_ACCESS_TOKEN` (secreto). Mantener `OPENROUTER_API_KEY` en el servidor para propuestas visuales.
+
+Consultas HTTP autenticadas y capturas reales deben comprobarse antes de declarar que el escritorio funciona por completo. Las pruebas con mocks validan la lógica, no el proveedor.
+
+Docs: https://www.daytona.io/docs/en/computer-use/ · https://www.daytona.io/docs/en/typescript-sdk/daytona/
