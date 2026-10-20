@@ -34,6 +34,7 @@ export function AgentsWorkspace() {
   const [ownerAuthConfigured, setOwnerAuthConfigured] = useState(false);
   const [ownerAuthChecking, setOwnerAuthChecking] = useState(true);
   const [desktopRun, setDesktopRun] = useState<LocalTaskState | null>(null);
+  const [desktopFrame, setDesktopFrame] = useState<string | null>(null);
   const [pendingDesktopTask, setPendingDesktopTask] = useState<PendingDesktopTask | null>(loadPendingDesktopTask);
   const desktopSession = useRef<string | null>(null);
   const desktopStopRequested = useRef(false);
@@ -77,6 +78,11 @@ export function AgentsWorkspace() {
         await stopDesktopTask();
         throw new Error('La ejecución superó el tiempo máximo de seguimiento');
       }
+      // An actual Daytona screenshot, never a simulated completion message.
+      try {
+        const shot=await desktopCall<{image:string}>(ownerSession,'/api/desktops/'+id+'/screenshot');
+        if (typeof shot.image==='string' && shot.image.startsWith('data:image/jpeg;base64,')) setDesktopFrame(shot.image);
+      } catch {/* The task report still remains available if a screenshot fails. */}
       const detail=outcome.history.map(h=>'Paso '+h.step+': '+h.message).join('\n');
       const label=outcome.status==='finished'
         ?'El agente indicó que terminó la tarea; comprueba el resultado en el escritorio.'
@@ -204,6 +210,7 @@ export function AgentsWorkspace() {
     const selectedAgent = agent;
     const generation = chatGeneration.current;
     const localDesktopTask = shouldUseDesktop(text);
+    if (localDesktopTask) setDesktopFrame(null);
     const previous: FreeChatMessage[] = turns
       .filter(t => t.agent === selectedAgent && t.provider === "free" && t.text)
       .slice(-7)
@@ -259,7 +266,7 @@ export function AgentsWorkspace() {
     <section className="agents-workspace" id="agents" aria-label="Agentes de Meridian">
       <aside className={"agents-sidebar" + (sideOpen ? " open" : "")}>
         <div className="agents-sidebar-top"><span>MERIDIAN <span className="agents-slash">/</span> AGENTES</span><button type="button" aria-label="Cerrar panel" className="agents-side-close" onClick={() => setSideOpen(false)}><X size={18}/></button></div>
-        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setPendingDesktopTask(null); clearPendingDesktopTask(); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
+        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setDesktopFrame(null); setPendingDesktopTask(null); clearPendingDesktopTask(); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
         <span className="agents-side-label">AGENTES</span>
         <div className="agents-list">
           {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setError(""); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><AgentAvatar name={a.name} size={35}/>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
@@ -277,7 +284,7 @@ export function AgentsWorkspace() {
             {ownerSession ? "Continuar tarea pendiente" : "Autorizar y continuar"}
           </button>}
         </div>
-        <div className="agents-sidebar-foot"><button type="button" onClick={() => setToolLabOpen(true)}>Laboratorio interactivo →</button><a href="/-meridian-showcase/desktop/" className="agents-community-link">Laptop virtual Daytona →</a><a href="/-meridian-showcase/" className="agents-community-link">← Meridian Community</a><span>Agentes · chat gratuito</span></div>
+        <div className="agents-sidebar-foot"><button type="button" onClick={() => setToolLabOpen(true)}>Laboratorio interactivo →</button><span>Daytona se controla desde estos agentes.</span><a href="/-meridian-showcase/" className="agents-community-link">← Meridian Community</a><span>Agentes · chat gratuito</span></div>
       </aside>
       <div className="agents-center">
         <header className="agents-toolbar">
@@ -325,7 +332,8 @@ export function AgentsWorkspace() {
                 </div>
               </div>)}
             {busy && <div className="agents-live-activity" role="status"><AgentAvatar name={agent} size={30} active/><span>{desktopSession.current?'Trabajando en sbmeridian…':'Generando respuesta gratuita…'}</span></div>}
-            {desktopRun && <div className="agents-desktop-run" role="status" aria-live="polite"><strong>Computadora · {desktopRun.status}</strong><span>{desktopRun.message} · {desktopRun.step}/{desktopRun.maxSteps} pasos</span>{desktopRun.history.length>0 && <small>{desktopRun.history.slice(-2).map(s=>s.message).join(' · ')}</small>}{['starting','running'].includes(desktopRun.status) && <button type="button" onClick={()=>void stopDesktopTask()}>Detener agente</button>}<a href="/-meridian-showcase/desktop/" target="_blank" rel="noreferrer">Abrir pantalla ↗</a></div>}
+            {desktopRun && <div className="agents-desktop-run" role="status" aria-live="polite"><strong>Computadora · {desktopRun.status}</strong><span>{desktopRun.message} · {desktopRun.step}/{desktopRun.maxSteps} pasos</span>{desktopRun.history.length>0 && <small>{desktopRun.history.slice(-2).map(s=>s.message).join(' · ')}</small>}{['starting','running'].includes(desktopRun.status) && <button type="button" onClick={()=>void stopDesktopTask()}>Detener agente</button>}{desktopFrame && <img className="agents-desktop-screenshot" src={desktopFrame}
+              alt="Captura real del escritorio Daytona tras la tarea" />}</div>}
             {pendingDesktopTask && pendingDesktopTask.agent === agent && <div className="agents-desktop-pending" role="status">
               <strong>Computadora privada · tarea pendiente</strong>
               <p>{ownerSession ? "La sesión privada está lista. Puedes reintentar la tarea."
