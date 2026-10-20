@@ -248,7 +248,7 @@ export function AgentsWorkspace() {
         } else if (generation===chatGeneration.current) {
           setTurns(prev=>[...prev,{
             id:replyId,text:selected.text + (selected.sources?.length
-              ? '\\n\\nFuentes verificadas en GitHub:\\n' + selected.sources.map(url=>'- '+url).join('\\n') : ''),
+              ? '\n\nFuentes verificadas en GitHub:\n' + selected.sources.map(url=>'- '+url).join('\n') : ''),
             agent:selectedAgent,provider:'private-model',role:'assistant'
           }]);
         }
