@@ -195,3 +195,10 @@
     max-height:100dvh; overflow-y:auto; z-index:80;
   }
 }
+
+
+@media (max-width:400px) {
+  .agents-toolbar-status { display:none; }
+  .agents-agent-btn { padding:4px; gap:5px; font-size:13px; }
+  .agents-mobile-desktop-toggle { font-size:11px; max-width:130px; }
+}
