@@ -56,7 +56,7 @@ test('no model text or tool arguments can escape repository allowlist',async()=>
   for(const repository of ['christianhola/meridian-api','attacker/data']){
     await assert.rejects(inspectRepository({tool:'list_repository_files',args:{repository},fetchImpl:githubFake}));
   }
-  assert.deepEqual(validateRepo(agents),agents);
+  assert.throws(()=>validateRepo(agents),/solo puede inspeccionar/);
 });
 test('multi-step Coder reads GitHub file before reporting the result',async()=>{
   let calls=0;
@@ -83,6 +83,17 @@ test('multi-step Coder reads GitHub file before reporting the result',async()=>{
     'https://github.com/'+community+'/tree/main',
     'https://github.com/'+community+'/blob/main/README.md',
   ]);
+});
+test('private meridian-agents-v2 prompts disclose lack of repo grant without fetching or inventing files',async()=>{
+  const result=await selectAgentTool({
+    prompt:'Revisa mi repositorio meridian-agents-v2 en GitHub',
+    agent:'Coder',apiKey:'test',repoFetch:()=>{throw Error('Private repo must not be fetched');},
+    modelFetch:()=>{throw Error('No model invocation needed when access is missing');}
+  });
+  assert.equal(result.kind,'answer');
+  assert.match(result.text,/privado/);
+  assert.match(result.text,/read:user/);
+  assert.deepEqual(result.sources,[]);
 });
 test('agent cannot choose repo file tool with invalid path or unknown repo',()=>{
   const bad=toolCall('read_repository_file',{repository:community,path:'../../.env'});
