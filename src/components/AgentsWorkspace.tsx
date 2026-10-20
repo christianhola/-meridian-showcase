@@ -5,6 +5,7 @@ import { AgentAvatar } from "./AgentAvatar";
 import { AgentMarkdown } from "./AgentMarkdown";
 import { ToolLab } from "./ToolLab";
 import { streamFreeAnswer, type FreeAgentRole, type FreeChatMessage } from "./freeModelStream";
+import { desktopCall, shouldUseDesktop, type LocalTaskState } from "../services/desktopAutonomy";
 
 type Turn = { id: number; text: string; agent: string; provider: string; role: "user" | "assistant" };
 const agents = [
@@ -22,7 +23,67 @@ export function AgentsWorkspace() {
   const [provider, setProvider] = useState("free");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [desktopAccessOpen, setDesktopAccessOpen] = useState(false);
+  const [desktopToken, setDesktopToken] = useState("");
+  const [desktopRun, setDesktopRun] = useState<LocalTaskState | null>(null);
+  const desktopSession = useRef<string | null>(null);
+  const desktopStopRequested = useRef(false);
+  const wait = (ms:number) => new Promise<void>(resolve=>window.setTimeout(resolve,ms));
+  async function stopDesktopTask() {
+    desktopStopRequested.current=true;
+    const id=desktopSession.current;
+    if (!id) return;
+    try {
+      const stopped=await desktopCall<LocalTaskState>(desktopToken,'/api/desktops/'+id+'/autopilot','DELETE');
+      setDesktopRun(stopped);
+    } catch (e) {setError(e instanceof Error?e.message:'No se pudo detener la tarea');}
+  }
+  async function performLocalGoal(text:string,selectedAgent:string):Promise<string> {
+    let id:string|null=null;
+    desktopStopRequested.current=false;
+    try {
+      const connected=await desktopCall<{id:string;status:string;reused:boolean}>(desktopToken,'/api/desktops','POST');
+      id=connected.id;
+      desktopSession.current=id;
+      let ready=false;
+      for(let i=0;i<35;i++){
+        if(desktopStopRequested.current) throw new Error('La tarea se canceló antes de abrir el escritorio');
+        const poll=await desktopCall<{status:string;message?:string}>(desktopToken,'/api/desktops/'+id);
+        if(poll.status==='error') throw new Error(poll.message||'Daytona no pudo abrir el escritorio');
+        if(poll.status==='ready'){ready=true;break;}
+        await wait(1500);
+      }
+      if(!ready) throw new Error('La computadora no estuvo lista para la tarea');
+      if(desktopStopRequested.current) throw new Error('Tarea cancelada');
+      const started=await desktopCall<LocalTaskState>(desktopToken,'/api/desktops/'+id+'/autopilot','POST',{task:text,agent:selectedAgent});
+      setDesktopRun(started);
+      let outcome=started;
+      for(let i=0;i<120;i++){
+        await wait(1200);
+        outcome=await desktopCall<LocalTaskState>(desktopToken,'/api/desktops/'+id+'/autopilot');
+        setDesktopRun(outcome);
+        if(!['starting','running'].includes(outcome.status))break;
+      }
+      if(['starting','running'].includes(outcome.status)) {
+        await stopDesktopTask();
+        throw new Error('La ejecución superó el tiempo máximo de seguimiento');
+      }
+      const detail=outcome.history.map(h=>'Paso '+h.step+': '+h.message).join('\n');
+      const label=outcome.status==='finished'
+        ?'El agente indicó que terminó la tarea; comprueba el resultado en el escritorio.'
+        :outcome.status==='cancelled'?'La tarea se detuvo'
+        :'La ejecución se detuvo: '+outcome.message;
+      return [label,detail].filter(Boolean).join('\n\n');
+    } finally {
+      if(id) {
+        try{await desktopCall(desktopToken,'/api/desktops/'+id,'DELETE');}catch{}
+      }
+      desktopSession.current=null;
+      desktopStopRequested.current=false;
+    }
+  }
   const activeRequest = useRef<AbortController | null>(null);
+  const chatGeneration = useRef(0);
   useEffect(() => () => activeRequest.current?.abort(), []);
   const [draft, setDraft] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -55,6 +116,13 @@ export function AgentsWorkspace() {
       return;
     }
     const selectedAgent = agent;
+    const generation = chatGeneration.current;
+    const localDesktopTask = shouldUseDesktop(text);
+    if (localDesktopTask && desktopToken.length < 32) {
+      setDesktopAccessOpen(true);
+      setError('Detecté una tarea que requiere sbmeridian. Introduce tu token privado de operador una vez; después ejecutaré los pasos locales sin pedir permiso por cada clic.');
+      return;
+    }
     const previous: FreeChatMessage[] = turns
       .filter(t => t.agent === selectedAgent && t.provider === "free" && t.text)
       .slice(-7)
@@ -68,7 +136,10 @@ export function AgentsWorkspace() {
     const controller = new AbortController();
     activeRequest.current = controller;
     try {
-      await streamFreeAnswer(
+      if(localDesktopTask) {
+        const summary=await performLocalGoal(text,selectedAgent);
+        if (generation === chatGeneration.current) setTurns(prev=>[...prev,{id:replyId,text:summary,agent:selectedAgent,provider:'daytona',role:'assistant'}]);
+      } else await streamFreeAnswer(
         selectedAgent.toLowerCase() as FreeAgentRole,
         [...previous, { role: "user", content: text }],
         delta => setTurns(prev => prev.some(t => t.id === replyId)
@@ -77,7 +148,7 @@ export function AgentsWorkspace() {
         controller.signal,
       );
     } catch (reason) {
-      if (!controller.signal.aborted) {
+      if (!controller.signal.aborted && generation === chatGeneration.current) {
         setError(reason instanceof Error ? reason.message : "No se pudo completar la respuesta.");
       }
     } finally {
@@ -98,10 +169,22 @@ export function AgentsWorkspace() {
     <section className="agents-workspace" id="agents" aria-label="Agentes de Meridian">
       <aside className={"agents-sidebar" + (sideOpen ? " open" : "")}>
         <div className="agents-sidebar-top"><span>MERIDIAN <span className="agents-slash">/</span> AGENTES</span><button type="button" aria-label="Cerrar panel" className="agents-side-close" onClick={() => setSideOpen(false)}><X size={18}/></button></div>
-        <button className="agents-new" type="button" onClick={() => { setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
+        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
         <span className="agents-side-label">AGENTES</span>
         <div className="agents-list">
           {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setError(""); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><AgentAvatar name={a.name} size={35}/>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
+        </div>
+        <div className="agents-desktop-access">
+          <button type="button" onClick={()=>setDesktopAccessOpen(v=>!v)} aria-expanded={desktopAccessOpen}>
+            Computadora Daytona {desktopToken.length>=32?'· credencial lista':'· acceso privado'}
+          </button>
+          {desktopAccessOpen && <div>
+            <label htmlFor="agents-desktop-token">Token del operador</label>
+            <input id="agents-desktop-token" type="password" autoComplete="off"
+              value={desktopToken} onChange={e=>setDesktopToken(e.target.value)}
+              placeholder="Credencial privada de Railway" aria-label="Token privado de Daytona"/>
+            <small>Solo permanece en esta pestaña. El agente decide cuándo necesita el escritorio; no se envía al modelo.</small>
+          </div>}
         </div>
         <div className="agents-sidebar-foot"><button type="button" onClick={() => setToolLabOpen(true)}>Laboratorio interactivo →</button><a href="/-meridian-showcase/desktop/" className="agents-community-link">Laptop virtual Daytona →</a><a href="/-meridian-showcase/" className="agents-community-link">← Meridian Community</a><span>Agentes · chat gratuito</span></div>
       </aside>
@@ -129,7 +212,8 @@ export function AgentsWorkspace() {
                   <button type="button" aria-label="Editar mensaje" disabled={busy} onClick={() => { setDraft(t.text); setEditId(t.id); }}><Pencil size={15}/></button>
                 </div>
               </div>)}
-            {busy && <div className="agents-live-activity" role="status"><AgentAvatar name={agent} size={30} active/><span>Generando respuesta gratuita…</span></div>}
+            {busy && <div className="agents-live-activity" role="status"><AgentAvatar name={agent} size={30} active/><span>{desktopSession.current?'Trabajando en sbmeridian…':'Generando respuesta gratuita…'}</span></div>}
+            {desktopRun && <div className="agents-desktop-run" role="status" aria-live="polite"><strong>Computadora · {desktopRun.status}</strong><span>{desktopRun.message} · {desktopRun.step}/{desktopRun.maxSteps} pasos</span>{desktopRun.history.length>0 && <small>{desktopRun.history.slice(-2).map(s=>s.message).join(' · ')}</small>}{['starting','running'].includes(desktopRun.status) && <button type="button" onClick={()=>void stopDesktopTask()}>Detener agente</button>}<a href="/-meridian-showcase/desktop/" target="_blank" rel="noreferrer">Abrir pantalla ↗</a></div>}
             {error && <div className="agents-live-error" role="alert">{error}</div>}{preview && <div className="agent-reasoning-preview"><div className="agent-reasoning-heading"><AgentAvatar name={agent} size={48} active/><div><strong>{agent}</strong><small>Vista previa de animación · Sin ejecución real</small></div></div><div className="agent-reasoning-status" role="status"><span className="agent-reasoning-loader" aria-hidden="true"/> <span key={phase} className="agent-reasoning-shimmer">{phrases[phase]}…</span></div><div className="agent-plan-preview"><div className="agent-plan-title">Plan de trabajo <small>Ejemplo visual</small></div>{phrases.map((step,i) => <div key={step} className="agent-plan-step"><span className={i < phase ? "complete" : i === phase ? "working" : ""}>{i < phase ? "✓" : i === phase ? "◌" : "○"}</span><span>{step}</span></div>)}</div><div className="agent-reasoning-example"><AgentAvatar name={agent} size={35}/><span>Animación de ejemplo. El chat utiliza respuestas reales del modelo gratuito.</span></div></div>}</div>}
         </div>
         <div className="agents-compose-area">
@@ -145,7 +229,7 @@ export function AgentsWorkspace() {
               <div className="agents-compose-right"><button type="button" className="agents-icon" disabled title="Voz todavía no conectada" aria-label="Micrófono no disponible"><Mic size={19}/></button><button type="submit" className="agents-send" disabled={!draft.trim() || busy} aria-label={editId === null ? "Enviar mensaje" : "Guardar edición"}>{editId !== null ? <Check size={18}/> : <ArrowUp size={19}/>}</button></div>
             </div>
           </form>
-          <p className="agents-compose-note">Modelos gratuitos por OpenRouter · límites de uso · sin claves en el navegador.</p>
+          <p className="agents-compose-note">Chat gratuito · solicitudes locales compatibles: ejecución Daytona de hasta 8 pasos con token privado. Acciones sensibles requieren supervisión.</p>
         </div>
       </div>
     </section>

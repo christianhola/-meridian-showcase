@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
+import { publicRun, runLocalAutonomy, stopLocalRun, validateLocalGoal } from './autopilot.mjs';
 
 const TTL = 30 * 60_000;
 const PACKAGE = Object.freeze({ editor: 'mousepad', office: 'libreoffice-writer', drawing: 'gimp', media: 'vlc' });
@@ -55,13 +56,14 @@ async function readBody(req) {
   try { return raw ? JSON.parse(raw) : {}; } catch { throw err(400, 'JSON inválido'); }
 }
 
-export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = process.env.DAYTONA_SANDBOX_ID, origin = 'https://christianhola.github.io', clock = () => Date.now() }) {
+export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = process.env.DAYTONA_SANDBOX_ID, origin = 'https://christianhola.github.io', clock = () => Date.now(), visionKey = process.env.OPENROUTER_API_KEY, modelFetch = fetch }) {
   const sessions = new Map();
   const attempts = new Map();
   let creating = false;
   // A session only leases access. The named Daytona sandbox is NOT ours to delete.
   const close = async (id, entry) => {
     if (sessions.get(id) !== entry) return;
+    stopLocalRun(entry.autopilot);
     sessions.delete(id);
   };
   return async (req, res) => {
@@ -118,7 +120,7 @@ export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = 
         })();
         return reply(res,202,{id,status:entry.status,expiresAt:new Date(entry.expires).toISOString(),reused:true});
       }
-      const match=/^\/api\/desktops\/([a-f0-9-]{36})(?:\/(screenshot|action|install|plan))?$/.exec(path);
+      const match=/^\/api\/desktops\/([a-f0-9-]{36})(?:\/(screenshot|action|install|plan|autopilot))?$/.exec(path);
       if (!match) throw err(404,'Ruta no encontrada');
       const [,id,operation]=match;
       const entry=sessions.get(id);
@@ -126,6 +128,37 @@ export function buildHandler({ getDaytona, accessToken, daytonaKey, sandboxId = 
       if (!operation && req.method === 'GET') return reply(res,200,{id,status:entry.status,message:entry.message,expiresAt:new Date(entry.expires).toISOString(),reused:true,sandboxId});
       if (!operation && req.method === 'DELETE') { await close(id,entry); return reply(res,200,{disconnected:true,preserved:true}); }
       if (entry.status !== 'ready' || !entry.sandbox) throw err(409,entry.message);
+      if (operation === 'autopilot') {
+        if (req.method === 'GET') {
+          if (!entry.autopilot) throw err(404,'No existe una tarea autónoma');
+          return reply(res,200,publicRun(entry.autopilot));
+        }
+        if (req.method === 'DELETE') {
+          if (!entry.autopilot) throw err(404,'No existe una tarea autónoma');
+          stopLocalRun(entry.autopilot);
+          return reply(res,200,publicRun(entry.autopilot));
+        }
+        if (req.method === 'POST') {
+          if (entry.autopilot && ['running','starting'].includes(entry.autopilot.status)) throw err(409,'Ya hay una tarea autónoma en curso');
+          if (!visionKey) throw err(503,'El modelo de visión no está configurado en Railway');
+          const body=await readBody(req);
+          const agent=typeof body.agent === 'string' ? body.agent : 'Browser';
+          const task=validateLocalGoal(body.task,agent);
+          const run={id:randomUUID(),agent,status:'starting',step:0,history:[],
+            message:'Preparando el escritorio',startedAt:new Date().toISOString(),
+            finishedAt:null,cancelled:false,controller:new AbortController()};
+          entry.autopilot=run;
+          void runLocalAutonomy({
+            run,sandbox:entry.sandbox,task,agent,modelKey:visionKey,
+            model:process.env.DESKTOP_VISION_MODEL || 'openai/gpt-4o-mini',
+            modelFetch,screenshotToJpeg:frameSize,clock
+          });
+          return reply(res,202,publicRun(run));
+        }
+        throw err(405,'Método no permitido');
+      }
+      if (entry.autopilot && ['running','starting'].includes(entry.autopilot.status)
+        && ['action','install','plan'].includes(operation)) throw err(409,'Detén la tarea autónoma antes de usar controles manuales');
       if (operation === 'screenshot' && req.method === 'GET') {
         const image=await entry.sandbox.computerUse.screenshot.takeCompressed({format:'jpeg',quality:75,showCursor:true});
         const {encoded,width,height}=frameSize(image);
