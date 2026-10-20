@@ -118,11 +118,6 @@ export function AgentsWorkspace() {
     const selectedAgent = agent;
     const generation = chatGeneration.current;
     const localDesktopTask = shouldUseDesktop(text);
-    if (localDesktopTask && desktopToken.length < 32) {
-      setDesktopAccessOpen(true);
-      setError('Detecté una tarea que requiere sbmeridian. Introduce tu token privado de operador una vez; después ejecutaré los pasos locales sin pedir permiso por cada clic.');
-      return;
-    }
     const previous: FreeChatMessage[] = turns
       .filter(t => t.agent === selectedAgent && t.provider === "free" && t.text)
       .slice(-7)
@@ -132,6 +127,17 @@ export function AgentsWorkspace() {
     setTurns(prev => [...prev, { id: userId, text, agent: selectedAgent, provider: "free", role: "user" }]);
     setDraft("");
     setError("");
+    if (localDesktopTask && desktopToken.length < 32) {
+      // Always persist the user's submitted message before requesting credentials.
+      // A missing operator token is not a failed or ignored send.
+      setDesktopAccessOpen(true);
+      setTurns(prev => [...prev, {
+        id: replyId,
+        text: "Recibí tu tarea. Para usar la computadora sbmeridian, abre «Computadora Daytona» en la barra lateral e introduce el token privado de operador. Después envía la tarea otra vez; no compartiré tu token con los modelos.",
+        agent: selectedAgent, provider: "daytona", role: "assistant"
+      }]);
+      return;
+    }
     setBusy(true);
     const controller = new AbortController();
     activeRequest.current = controller;
