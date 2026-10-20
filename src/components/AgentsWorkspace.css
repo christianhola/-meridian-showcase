@@ -224,3 +224,12 @@
   .agents-mobile-desktop-panel { z-index:75; }
   .agents-mobile-desktop-toggle { flex-shrink:0; }
 }
+
+/* Real GitHub citations are structured links, not Markdown pasted onto model text. */
+.agents-verified-sources{margin-top:16px;padding-top:12px;border-top:1px solid #ececeb;max-width:100%}
+.agents-verified-sources-title{display:block;color:#74746f;font-size:11px;font-weight:650;letter-spacing:.015em;margin-bottom:8px}
+.agents-verified-sources ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.agents-verified-sources li{min-width:0;max-width:100%;margin:0}
+.agents-verified-sources a{display:inline-block;max-width:100%;overflow-wrap:anywhere;border:1px solid #e7e7e5;
+  background:#fafaf9;border-radius:7px;padding:5px 9px;color:#36557a;font-size:11px;line-height:1.5;text-decoration:none}
+.agents-verified-sources a:hover{text-decoration:underline;border-color:#c6d0dd}
