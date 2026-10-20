@@ -82,6 +82,48 @@ test('owner GitHub login exchanges single-use ticket for hidden desktop session'
     assert.equal((await fetch(url+'/api/desktops',{method:'POST',headers:{authorization:'Bearer forged'}})).status,401);
   });
 });
+test('GitHub OAuth trims pasted credentials in BOTH authorize URL and code exchange',async()=>{
+  let exchanges=0;
+  await withServer(configured({
+    clientId:'  Ov23exampleID\\n'.replace('\\n','\n'),
+    clientSecret:'  oauth-secret-with-padding\\n'.replace('\\n','\n'),
+    ownerId:' '+ownerId+'\\n'.replace('\\n','\n'),
+    fetchImpl:async (url,options)=>{
+      if (url.includes('access_token')) {
+        const data=JSON.parse(options.body);
+        assert.equal(data.client_id,'Ov23exampleID');
+        assert.equal(data.client_secret,'oauth-secret-with-padding');
+        exchanges++;
+        return new Response(JSON.stringify({access_token:'gho-verified'}),{status:200});
+      }
+      if (url.endsWith('/user')) {
+        assert.equal(options.headers.authorization,'Bearer gho-verified');
+        return new Response(JSON.stringify({id:ownerId}),{status:200});
+      }
+      throw Error('Unexpected URL');
+    },
+  }), async url=>{
+    const config=await json(await fetch(url+'/auth/config'));
+    assert.equal(config.configured,true);
+    const start=await fetch(url+'/auth/github/start',{redirect:'manual'});
+    assert.equal(start.status,302);
+    const authorize=new URL(start.headers.get('location'));
+    assert.equal(authorize.searchParams.get('client_id'),'Ov23exampleID');
+    assert.doesNotMatch(start.headers.get('location'),/%0A|%0D|%20/);
+    const state=authorize.searchParams.get('state');
+    const callback=await fetch(url+'/auth/github/callback?code=ok&state='+state,{redirect:'manual'});
+    assert.equal(callback.status,302);
+    assert.match(callback.headers.get('location'),/#desktop_auth=/);
+    assert.equal(exchanges,1);
+  });
+});
+test('credentials with whitespace alone do not enable OAuth',async()=>{
+  await withServer(configured({clientId:' \n ',clientSecret:' \n '}), async url=>{
+    const config=await json(await fetch(url+'/auth/config'));
+    assert.equal(config.configured,false);
+    assert.equal((await fetch(url+'/auth/github/start')).status,503);
+  });
+});
 test('another GitHub user cannot access owner computer',async()=>{
   await withServer(configured({fetchImpl:async url=>new Response(JSON.stringify(
     url.endsWith('/user')?{id:12345}:{access_token:'other-user-token'}),{status:200})}),async url=>{
