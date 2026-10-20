@@ -37,3 +37,17 @@ test("Long model replies are limited only in the API payload, never in display",
   assert.match(component, /AgentMarkdown text=\{t\.text\}/);
   assert.doesNotMatch(component, /t\.text\.slice\(0, 1200\)/);
 });
+
+test("Verified GitHub sources render as safe real anchors, not fused Markdown text", () => {
+  const component=read("src/components/AgentsWorkspace.tsx");
+  const styles=read("src/components/AgentsWorkspace.css");
+  const router=read("src/services/agentToolRouter.ts");
+  assert.match(component, /sources\?: string\[\]/);
+  assert.match(component, /text:selected\.text,sources:selected\.sources/);
+  assert.match(component, /agents-verified-sources/);
+  assert.match(component, /href=\{url\} target="_blank" rel="noopener noreferrer"/);
+  assert.match(component, /t\.sources\.join\("\\\\n"\)/);
+  assert.doesNotMatch(component, /text:selected\.text\s*\+/);
+  assert.match(styles, /\.agents-verified-sources\s*\{/);
+  assert.match(router, /github\\\.com/);
+});
