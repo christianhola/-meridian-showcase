@@ -87,3 +87,52 @@
 .agents-desktop-run>small{width:100%;opacity:.7}
 .agents-desktop-run button{border:1px solid currentColor;border-radius:5px;background:transparent;color:inherit;padding:6px 9px;cursor:pointer}
 .agents-desktop-run a{font-size:11px;text-decoration:underline}
+
+/*
+ * Layout regression: a tall sidebar used to raise the implicit grid row's
+ * min-content height, pushing the Composer below shorter desktop viewports.
+ * Keep the single grid row bounded and scroll each pane independently.
+ */
+.agents-workspace {
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
+}
+.agents-sidebar {
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.agents-center {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.agents-conversation {
+  flex: 1 1 0%;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.agents-compose-area {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+.agents-standalone,
+.agents-standalone .agents-workspace {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+}
+@media (max-width: 720px) {
+  .agents-sidebar.open {
+    max-height: 100%;
+    overflow-y: auto;
+  }
+}
+@media (max-height: 600px) {
+  .agents-compose-area { padding-bottom: 6px; }
+  .agents-compose-note { margin: 5px 0 0; }
+  .agents-compose textarea { min-height: 42px; }
+}
