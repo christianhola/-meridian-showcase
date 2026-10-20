@@ -54,6 +54,19 @@ test('model cannot rewrite destructive user instruction into safe desktop task',
     e=>e.code===403,
   );
 });
+test('Spanish imperative forms cannot bypass local tool policy',()=>{
+  for (const input of [
+    'Abre Mousepad y borra todas las notas',
+    'Abre Mousepad y elimina el documento anterior',
+    'Abre el editor y sube todo a internet',
+    'Abre Mousepad y publica mis archivos'
+  ]) {
+    assert.throws(
+      ()=>parseToolSelection(desktopCall('just edit a local text'),input,'Coder'),
+      e=>e.code===403,
+    );
+  }
+});
 test('unknown, malformed, duplicated, and non-tool responses cannot execute',()=>{
   const broken=[
     {choices:[{message:{content:'I will open the desktop now'}}]},
