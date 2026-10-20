@@ -14,7 +14,7 @@ import {
   loadDesktopAuthConfig, beginDesktopOwnerLogin, type PendingDesktopTask,
 } from "../services/desktopOwnerSession";
 
-type Turn = { id: number; text: string; agent: string; provider: string; role: "user" | "assistant" };
+type Turn = { id: number; text: string; agent: string; provider: string; role: "user" | "assistant"; sources?: string[] };
 const agents = [
   { name: "Architect", symbol: "◇", tone: "#8595ff" },
   { name: "Coder", symbol: "</>", tone: "#6ecdaa" },
@@ -247,8 +247,7 @@ export function AgentsWorkspace() {
           }]);
         } else if (generation===chatGeneration.current) {
           setTurns(prev=>[...prev,{
-            id:replyId,text:selected.text + (selected.sources?.length
-              ? '\n\nFuentes verificadas en GitHub:\n' + selected.sources.map(url=>'- '+url).join('\n') : ''),
+            id:replyId,text:selected.text,sources:selected.sources,
             agent:selectedAgent,provider:'private-model',role:'assistant'
           }]);
         }
@@ -336,8 +335,18 @@ export function AgentsWorkspace() {
           {agentTurns.length === 0 && !preview ? <div className="agents-hello"><AgentAvatar name={selected.name} size={84} active={preview}/><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{agentTurns.map(t => t.role === "assistant"
             ? <div className="agents-turn agents-turn--assistant" key={t.id}>
                 <div className="agents-assistant-identity"><AgentAvatar name={t.agent} size={35}/><strong>{t.agent}</strong><small>· {t.provider === "daytona" ? "Daytona · computadora real" : t.provider === "private-model" ? "Agente · modelo con herramientas" : "Modelo gratuito"}</small></div>
-                <div className="agents-assistant-answer"><AgentMarkdown text={t.text}/></div>
-                <div className="agents-turn-actions"><button type="button" aria-label="Copiar respuesta" onClick={() => navigator.clipboard?.writeText(t.text)}><Copy size={15}/></button></div>
+                <div className="agents-assistant-answer">
+                  <AgentMarkdown text={t.text}/>
+                  {t.sources && t.sources.length > 0 && <div className="agents-verified-sources" aria-label="Fuentes verificadas en GitHub">
+                    <span className="agents-verified-sources-title">Fuentes verificadas en GitHub</span>
+                    <ul>{t.sources.map((url) => <li key={url}><a href={url} target="_blank" rel="noopener noreferrer">
+                      {url.includes("/blob/main/") ? url.split("/blob/main/")[1] : "Repositorio Meridian Showcase"}
+                    </a></li>)}</ul>
+                  </div>}
+                </div>
+                <div className="agents-turn-actions"><button type="button" aria-label="Copiar respuesta" onClick={() => navigator.clipboard?.writeText(
+                  t.text + (t.sources?.length ? "\n\nFuentes verificadas en GitHub:\n" + t.sources.join("\n") : "")
+                )}><Copy size={15}/></button></div>
               </div>
             : <div className="agents-turn" key={t.id}>
                 <div className="agents-turn-meta">Tú · {t.agent}</div>
