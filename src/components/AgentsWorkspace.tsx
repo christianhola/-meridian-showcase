@@ -26,6 +26,7 @@ export function AgentsWorkspace() {
   const [desktopAccessOpen, setDesktopAccessOpen] = useState(false);
   const [desktopToken, setDesktopToken] = useState("");
   const [desktopRun, setDesktopRun] = useState<LocalTaskState | null>(null);
+  const [pendingDesktopTask, setPendingDesktopTask] = useState<{text:string;agent:string} | null>(null);
   const desktopSession = useRef<string | null>(null);
   const desktopStopRequested = useRef(false);
   const wait = (ms:number) => new Promise<void>(resolve=>window.setTimeout(resolve,ms));
@@ -105,6 +106,34 @@ export function AgentsWorkspace() {
   const nextId = useRef(0);
   const selected = agents.find(a => a.name === agent) ?? agents[1];
   const agentTurns = turns.filter(turn => turn.agent === agent);
+  async function resumeDesktopTask() {
+    const pending = pendingDesktopTask;
+    if (!pending || busy) return;
+    if (desktopToken.trim().length < 32) {
+      setDesktopAccessOpen(true);
+      setError('El token de operador todavía no está completo. Configúralo en Computadora Daytona para continuar.');
+      return;
+    }
+    const generation = chatGeneration.current;
+    setError('');
+    setBusy(true);
+    try {
+      const summary = await performLocalGoal(pending.text, pending.agent);
+      if (generation === chatGeneration.current) {
+        setTurns(prev => [...prev, {
+          id: ++nextId.current, text: summary, agent: pending.agent,
+          provider: 'daytona', role: 'assistant'
+        }]);
+        setPendingDesktopTask(null);
+      }
+    } catch (cause) {
+      if (generation === chatGeneration.current) {
+        setError(cause instanceof Error ? cause.message : 'No fue posible abrir Daytona. La tarea sigue pendiente.');
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     const text = draft.trim();
@@ -131,11 +160,9 @@ export function AgentsWorkspace() {
       // Always persist the user's submitted message before requesting credentials.
       // A missing operator token is not a failed or ignored send.
       setDesktopAccessOpen(true);
-      setTurns(prev => [...prev, {
-        id: replyId,
-        text: "Recibí tu tarea. Para usar la computadora sbmeridian, abre «Computadora Daytona» en la barra lateral e introduce el token privado de operador. Después envía la tarea otra vez; no compartiré tu token con los modelos.",
-        agent: selectedAgent, provider: "daytona", role: "assistant"
-      }]);
+      setPendingDesktopTask({text,agent:selectedAgent});
+      // This is an authorization pause, not a response from an AI model.
+      // Keep the user turn; resume it explicitly after operator authorization.
       return;
     }
     setBusy(true);
@@ -175,14 +202,14 @@ export function AgentsWorkspace() {
     <section className="agents-workspace" id="agents" aria-label="Agentes de Meridian">
       <aside className={"agents-sidebar" + (sideOpen ? " open" : "")}>
         <div className="agents-sidebar-top"><span>MERIDIAN <span className="agents-slash">/</span> AGENTES</span><button type="button" aria-label="Cerrar panel" className="agents-side-close" onClick={() => setSideOpen(false)}><X size={18}/></button></div>
-        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
+        <button className="agents-new" type="button" onClick={() => { chatGeneration.current++; desktopStopRequested.current=true; if(desktopSession.current)void stopDesktopTask(); setDesktopRun(null); setPendingDesktopTask(null); setTurns([]); setDraft(""); setFiles([]); setEditId(null); setPreview(false); setError(""); activeRequest.current?.abort(); setBusy(false); setSideOpen(false); }}><MessageSquarePlus size={17}/> Nuevo chat</button>
         <span className="agents-side-label">AGENTES</span>
         <div className="agents-list">
           {agents.map(a => <button type="button" key={a.name} onClick={() => { setAgent(a.name); setError(""); setSideOpen(false); }} className={"agents-list-item" + (agent === a.name ? " active" : "")} aria-pressed={agent === a.name}><AgentAvatar name={a.name} size={35}/>{a.name}{agent === a.name && <Check size={14} className="agents-check"/>}</button>)}
         </div>
         <div className="agents-desktop-access">
           <button type="button" onClick={()=>setDesktopAccessOpen(v=>!v)} aria-expanded={desktopAccessOpen}>
-            Computadora Daytona {desktopToken.length>=32?'· credencial lista':'· acceso privado'}
+            Computadora Daytona {desktopToken.length>=32?'· token introducido':'· acceso privado'}
           </button>
           {desktopAccessOpen && <div>
             <label htmlFor="agents-desktop-token">Token del operador</label>
@@ -190,6 +217,9 @@ export function AgentsWorkspace() {
               value={desktopToken} onChange={e=>setDesktopToken(e.target.value)}
               placeholder="Credencial privada de Railway" aria-label="Token privado de Daytona"/>
             <small>Solo permanece en esta pestaña. El agente decide cuándo necesita el escritorio; no se envía al modelo.</small>
+            {pendingDesktopTask && <button className="agents-desktop-resume" type="button"
+              disabled={busy || desktopToken.trim().length < 32}
+              onClick={()=>void resumeDesktopTask()}>Continuar tarea pendiente</button>}
           </div>}
         </div>
         <div className="agents-sidebar-foot"><button type="button" onClick={() => setToolLabOpen(true)}>Laboratorio interactivo →</button><a href="/-meridian-showcase/desktop/" className="agents-community-link">Laptop virtual Daytona →</a><a href="/-meridian-showcase/" className="agents-community-link">← Meridian Community</a><span>Agentes · chat gratuito</span></div>
@@ -206,7 +236,7 @@ export function AgentsWorkspace() {
         <div className={"agents-conversation" + (agentTurns.length ? " has-turns" : "")}>
           {agentTurns.length === 0 && !preview ? <div className="agents-hello"><AgentAvatar name={selected.name} size={84} active={preview}/><h1>{agent}</h1></div> : <div className="agents-thread" aria-live="polite">{agentTurns.map(t => t.role === "assistant"
             ? <div className="agents-turn agents-turn--assistant" key={t.id}>
-                <div className="agents-assistant-identity"><AgentAvatar name={t.agent} size={35}/><strong>{t.agent}</strong><small>· Modelo gratuito</small></div>
+                <div className="agents-assistant-identity"><AgentAvatar name={t.agent} size={35}/><strong>{t.agent}</strong><small>· {t.provider === "daytona" ? "Daytona · computadora real" : "Modelo gratuito"}</small></div>
                 <div className="agents-assistant-answer"><AgentMarkdown text={t.text}/></div>
                 <div className="agents-turn-actions"><button type="button" aria-label="Copiar respuesta" onClick={() => navigator.clipboard?.writeText(t.text)}><Copy size={15}/></button></div>
               </div>
@@ -220,6 +250,12 @@ export function AgentsWorkspace() {
               </div>)}
             {busy && <div className="agents-live-activity" role="status"><AgentAvatar name={agent} size={30} active/><span>{desktopSession.current?'Trabajando en sbmeridian…':'Generando respuesta gratuita…'}</span></div>}
             {desktopRun && <div className="agents-desktop-run" role="status" aria-live="polite"><strong>Computadora · {desktopRun.status}</strong><span>{desktopRun.message} · {desktopRun.step}/{desktopRun.maxSteps} pasos</span>{desktopRun.history.length>0 && <small>{desktopRun.history.slice(-2).map(s=>s.message).join(' · ')}</small>}{['starting','running'].includes(desktopRun.status) && <button type="button" onClick={()=>void stopDesktopTask()}>Detener agente</button>}<a href="/-meridian-showcase/desktop/" target="_blank" rel="noreferrer">Abrir pantalla ↗</a></div>}
+            {pendingDesktopTask && pendingDesktopTask.agent === agent && <div className="agents-desktop-pending" role="status">
+              <strong>Tarea en espera de autorización</strong>
+              <p>Tu solicitud se conservó. Introduce el token privado en «Computadora Daytona» y pulsa «Continuar tarea pendiente». No tendrás que reenviar el mensaje ni aprobar cada clic.</p>
+              <button type="button" disabled={busy || desktopToken.trim().length < 32}
+                onClick={()=>void resumeDesktopTask()}>Continuar tarea pendiente</button>
+            </div>}
             {error && <div className="agents-live-error" role="alert">{error}</div>}{preview && <div className="agent-reasoning-preview"><div className="agent-reasoning-heading"><AgentAvatar name={agent} size={48} active/><div><strong>{agent}</strong><small>Vista previa de animación · Sin ejecución real</small></div></div><div className="agent-reasoning-status" role="status"><span className="agent-reasoning-loader" aria-hidden="true"/> <span key={phase} className="agent-reasoning-shimmer">{phrases[phase]}…</span></div><div className="agent-plan-preview"><div className="agent-plan-title">Plan de trabajo <small>Ejemplo visual</small></div>{phrases.map((step,i) => <div key={step} className="agent-plan-step"><span className={i < phase ? "complete" : i === phase ? "working" : ""}>{i < phase ? "✓" : i === phase ? "◌" : "○"}</span><span>{step}</span></div>)}</div><div className="agent-reasoning-example"><AgentAvatar name={agent} size={35}/><span>Animación de ejemplo. El chat utiliza respuestas reales del modelo gratuito.</span></div></div>}</div>}
         </div>
         <div className="agents-compose-area">
