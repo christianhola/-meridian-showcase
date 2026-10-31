@@ -10,6 +10,9 @@ hero:
     alt: Meridian
   actions:
     - theme: brand
+      text: Probar AI Playground
+      link: /app/#ai-playground
+    - theme: alt
       text: Explorar documentación
       link: /GETTING-STARTED
     - theme: alt
@@ -20,6 +23,10 @@ hero:
       link: https://github.com/christianhola/-meridian-showcase/issues
 
 features:
+  - icon: ✦
+    title: AI Playground visual
+    details: Explora la selección de modelos, una interfaz de chat y estados de proveedor en una demostración local, sin llamadas a APIs.
+    link: /app/#ai-playground
   - icon: 🖥️
     title: Laptop virtual con Daytona
     details: Acceso autenticado a un escritorio Linux real. Requiere credenciales de servicio.

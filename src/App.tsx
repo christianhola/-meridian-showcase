@@ -9,6 +9,7 @@ import { VirtualDesktop } from "./components/VirtualDesktop";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
 import { WilennyLab } from "./components/WilennyLab";
+import { AIPlayground } from "./components/AIPlayground";
 
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -17,6 +18,9 @@ export function App() {
   useEffect(() => {
     if (window.location.hash === "#agents") {
       window.location.replace("/-meridian-showcase/agents/");
+    }
+    if (window.location.hash === "#ai-playground") {
+      requestAnimationFrame(() => document.getElementById("ai-playground")?.scrollIntoView());
     }
   }, []);
 
@@ -36,7 +40,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const ids = ["playground", "agents", "start", "community", "directory", "architecture", "wilenny", "status"];
+    const ids = ["playground", "ai-playground", "agents", "start", "community", "directory", "architecture", "wilenny", "status"];
     const sections = ids.map(id => document.getElementById(id)).filter((node): node is HTMLElement => Boolean(node));
     const observer = new IntersectionObserver(entries => {
       const mostVisible = entries.filter(entry => entry.isIntersecting)
@@ -56,6 +60,7 @@ export function App() {
 
   const navigation = [
     { label: "Playground", href: "#playground", id: "playground" },
+    { label: "AI Lab", href: "#ai-playground", id: "ai-playground" },
     { label: "Agentes", href: "/-meridian-showcase/agents/", id: "agents" },
     { label: "Get started", href: "#start", id: "start" },
     { label: "Ecosystem", href: "#community", id: "community" },
@@ -157,6 +162,7 @@ export function App() {
           </div>
         </section>
 
+        <AIPlayground />
 
         <section className="developer-start" id="start" aria-labelledby="dev-start-title" data-reveal>
           <div className="developer-start__heading">
