@@ -24,8 +24,8 @@ hero:
 
 features:
   - icon: ✦
-    title: AI Playground visual
-    details: Explora la selección de modelos, una interfaz de chat y estados de proveedor en una demostración local, sin llamadas a APIs.
+    title: AI Playground en vivo
+    details: Prueba el chat de texto con streaming real del endpoint gratuito de Meridian. Los modelos y proveedores son controles visuales; los archivos solo se previsualizan localmente.
     link: /app/#ai-playground
   - icon: 🖥️
     title: Laptop virtual con Daytona
@@ -54,7 +54,7 @@ features:
 Esta es la página pública de presentación y documentación de Meridian Community. Reúne recursos educativos, propuestas de arquitectura, ejemplos y guías para personas que crean herramientas con IA.
 
 > [!NOTE] Estado de los ejemplos
-> Parte del contenido es conceptual o experimental. Las demostraciones no deben interpretarse como funciones operativas de una plataforma en producción.
+> El chat de texto del Playground sí utiliza el endpoint gratuito de Meridian. La selección de modelos/proveedores es visual y los adjuntos no se envían para análisis. El resto del contenido puede ser conceptual o experimental.
 
 ### Explora el ecosistema
 

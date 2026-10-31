@@ -1,5 +1,5 @@
 import { ArrowRight, Github, Menu, PauseCircle, Sparkles, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import ecosystemUrl from "../assets/meridian-ecosystem-hub.svg";
 import { ArchitectureMap } from "./components/ArchitectureMap";
 import { CommunityHub } from "./components/CommunityHub";
@@ -9,7 +9,38 @@ import { VirtualDesktop } from "./components/VirtualDesktop";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
 import { WilennyLab } from "./components/WilennyLab";
-import { AIPlayground } from "./components/AIPlayground";
+
+const LazyAIPlayground = lazy(() => import("./components/AIPlayground").then(module => ({ default: module.AIPlayground })));
+
+function DeferredAIPlayground() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (!("IntersectionObserver" in window)) {
+      setReady(true);
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        setReady(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "450px 0px" });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  const loading = <section className="section ai-playground ai-playground--loading" aria-busy="true" aria-label="AI Playground">
+    <div className="ai-playground__loading"><span className="ai-live-loader" aria-hidden="true" /> Cargando el chat en vivo…</div>
+  </section>;
+
+  return <div id="ai-playground" className="ai-playground-shell" ref={sectionRef}>
+    {ready ? <Suspense fallback={loading}><LazyAIPlayground /></Suspense> : loading}
+  </div>;
+}
 
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -162,7 +193,7 @@ export function App() {
           </div>
         </section>
 
-        <AIPlayground />
+        <DeferredAIPlayground />
 
         <section className="developer-start" id="start" aria-labelledby="dev-start-title" data-reveal>
           <div className="developer-start__heading">
