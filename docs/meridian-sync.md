@@ -80,6 +80,8 @@ El sitio debe incluir:
 - Pestaña `Code`.
 - Copia del código con un clic.
 
+La primera área está integrada en `src/components/MeridianSyncCatalog.tsx` y se accede desde `#meridian-sync` en `src/App.tsx`. Incluye sidebar de catálogo, búsqueda, grupos, preview, pestaña `Code` y copia del bloque activo.
+
 ## Código visual recopilado
 
 - [Componentes y áreas](./generated/shadcn-requested-sidebar-code.md)
@@ -91,5 +93,6 @@ El sitio debe incluir:
 - Repositorio clonado.
 - Requisitos de Meridian Sync documentados.
 - Código visual recopilado copiado al repositorio.
+- Catálogo visual inicial integrado en la página principal.
 - Implementación del runtime pendiente.
-- Sitio interactivo pendiente.
+- Catálogo completo pendiente.

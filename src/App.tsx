@@ -9,6 +9,7 @@ import { VirtualDesktop } from "./components/VirtualDesktop";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
 import { WilennyLab } from "./components/WilennyLab";
+import { MeridianSyncCatalog } from "./components/MeridianSyncCatalog";
 
 const LazyAIPlayground = lazy(() => import("./components/AIPlayground").then(module => ({ default: module.AIPlayground })));
 
@@ -96,6 +97,7 @@ export function App() {
     { label: "Get started", href: "#start", id: "start" },
     { label: "Ecosystem", href: "#community", id: "community" },
     { label: "Directory", href: "#directory", id: "directory" },
+    { label: "Sync Library", href: "#meridian-sync", id: "meridian-sync" },
   ] as const;
 
   if (window.location.pathname.replace(/\/+$/, "").endsWith("/desktop")) {
@@ -181,6 +183,9 @@ export function App() {
               <a className="button button--secondary" href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/agent-response-starter" target="_blank" rel="noreferrer">
                 Get the starter
               </a>
+              <a className="button button--sync" href="#meridian-sync">
+                Open Sync Library <ArrowRight size={15} />
+              </a>
             </div>
             <div className="hero-meta">
               <span><Sparkles size={13} /> open-source building blocks</span>
@@ -218,6 +223,7 @@ export function App() {
         </section>
 
         <div data-reveal><CommunityHub /></div>
+        <div data-reveal><MeridianSyncCatalog /></div>
         <div data-reveal><ProofGrid /></div>
         <div data-reveal><ArchitectureMap /></div>
 
