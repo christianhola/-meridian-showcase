@@ -50,7 +50,7 @@ jobs:
           cp dist/index.html docs/.vitepress/dist/desktop/index.html
           sed -i 's/Meridian Community — Tools for Builders/Meridian Agents — Chat gratuito/g' docs/.vitepress/dist/agents/index.html
           sed -i 's/Meridian Community — Tools for Builders/Meridian Desktop — Daytona/g' docs/.vitepress/dist/desktop/index.html
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
