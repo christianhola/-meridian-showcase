@@ -10,7 +10,7 @@ import {
   Sparkles,
   Sun,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import {
   ComponentThumbnail,
   MeridianSyncPreview,
@@ -576,7 +576,7 @@ export function MeridianSyncCatalog() {
               <div className="meridian-sync__tokens" role="tabpanel" aria-label="Design tokens">
                 {tokenCards.map(([token, swatch, detail]) => (
                   <div className="ms-token-card" key={token}>
-                    <span style={{ "--token-swatch": swatch } as React.CSSProperties} />
+                    <span style={{ "--token-swatch": swatch } as CSSProperties} />
                     <code>--{token}</code>
                     <small>{detail}</small>
                   </div>
