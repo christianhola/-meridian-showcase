@@ -1,13 +1,12 @@
 import * as React from "react"
+import type { VariantProps } from "class-variance-authority"
 import { motion, useReducedMotion } from "motion/react"
 
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type MeridianMotionButtonProps = Omit<React.ComponentProps<typeof Button>, "asChild"> & {
-  variant?: Parameters<typeof buttonVariants>[0]["variant"]
-  size?: Parameters<typeof buttonVariants>[0]["size"]
-}
+type MeridianMotionButtonProps = React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants>
 
 export function MeridianMotionButton({
   className,
