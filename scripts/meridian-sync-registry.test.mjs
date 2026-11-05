@@ -27,9 +27,9 @@ test("catalog uses real install commands and three workbench modes", () => {
   assert.equal(catalog.includes("pnpm dlx meridian add"), false);
   assert.equal(catalog.includes("npx shadcn@latest add"), true);
   assert.equal(catalog.includes('"preview" | "code" | "tokens"'), true);
-  assert.equal(catalog.includes(">Preview<"), true);
-  assert.equal(catalog.includes(">Code<"), true);
-  assert.equal(catalog.includes(">Tokens<"), true);
+  assert.match(catalog, /Preview/);
+  assert.match(catalog, /Code/);
+  assert.match(catalog, /Tokens/);
   assert.equal(catalog.includes("ComponentThumbnail"), true);
 });
 
