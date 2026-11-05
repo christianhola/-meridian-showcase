@@ -347,4 +347,6 @@ function renderPreview(name: PreviewName) {
         </div>
       );
   }
+
+  return null;
 }
