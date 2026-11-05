@@ -61,3 +61,5 @@ Esta es la página pública de presentación y documentación de Meridian Commun
 ![Ilustración del ecosistema Meridian](/meridian-ecosystem-hub.svg)
 
 **¿Por dónde empezar?** [Lee la introducción](/GETTING-STARTED), [explora la arquitectura](/ARCHITECTURE) o [conoce cómo contribuir](/community).
+
+**[Meridian Sync](/meridian-sync)** · Runtime unificado, memoria, Swarm y catálogo de código visual.
