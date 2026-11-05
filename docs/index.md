@@ -18,6 +18,9 @@ hero:
     - theme: alt
       text: Descubrir la visión
       link: /vision
+    - theme: brand
+      text: Meridian Sync
+      link: /app/#meridian-sync
     - theme: alt
       text: Participar en GitHub
       link: https://github.com/christianhola/-meridian-showcase/issues
