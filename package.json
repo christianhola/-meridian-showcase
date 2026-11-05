@@ -16,7 +16,9 @@
     "starter:test": "node --test examples/agent-response-starter/test/*.test.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "registry:build": "shadcn build",
+    "registry:check": "shadcn build --output .registry-check"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.163",
