@@ -16,7 +16,7 @@ import {
   Settings2,
   Sparkles,
 } from "lucide-react";
-import { useRef } from "react";
+import { useRef, type PointerEvent as ReactPointerEvent } from "react";
 
 export type PreviewName =
   | "Button"
@@ -60,7 +60,7 @@ export function MeridianSyncPreview({
 }) {
   const spotRef = useRef<HTMLSpanElement>(null);
 
-  const updateSpot = (event: React.PointerEvent<HTMLDivElement>) => {
+  const updateSpot = (event: ReactPointerEvent<HTMLDivElement>) => {
     const stage = event.currentTarget.getBoundingClientRect();
     const spot = spotRef.current;
     if (!spot) return;
