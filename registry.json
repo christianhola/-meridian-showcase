@@ -1,0 +1,70 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "meridian-sync",
+  "homepage": "https://github.com/christianhola/-meridian-showcase",
+  "items": [
+    {
+      "name": "motion-button",
+      "type": "registry:ui",
+      "title": "Meridian Motion Button",
+      "description": "A shadcn-compatible action button with restrained Motion interactions and reduced-motion support.",
+      "registryDependencies": ["button"],
+      "dependencies": ["motion@14.9.1"],
+      "files": [
+        {
+          "path": "registry/meridian/motion-button/motion-button.tsx",
+          "type": "registry:ui",
+          "target": "@ui/meridian-motion-button.tsx"
+        }
+      ],
+      "categories": ["button", "actions", "motion"]
+    },
+    {
+      "name": "metric-card",
+      "type": "registry:component",
+      "title": "Meridian Metric Card",
+      "description": "A compact analytics card with a semantic trend treatment and tabular values.",
+      "registryDependencies": ["card", "badge"],
+      "files": [
+        {
+          "path": "registry/meridian/metric-card/metric-card.tsx",
+          "type": "registry:component",
+          "target": "@components/meridian/metric-card.tsx"
+        }
+      ],
+      "categories": ["dashboard", "analytics", "card"]
+    },
+    {
+      "name": "prompt-composer",
+      "type": "registry:block",
+      "title": "Meridian Prompt Composer",
+      "description": "An accessible AI prompt composer with tool actions, submit state and clear keyboard affordances.",
+      "registryDependencies": ["button", "textarea", "tooltip"],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "registry/meridian/prompt-composer/prompt-composer.tsx",
+          "type": "registry:component",
+          "target": "@components/meridian/prompt-composer.tsx"
+        }
+      ],
+      "categories": ["ai", "chat", "composer"]
+    },
+    {
+      "name": "component-workbench",
+      "type": "registry:block",
+      "title": "Meridian Component Workbench",
+      "description": "A preview/code/tokens workbench for documenting production UI components.",
+      "registryDependencies": ["button", "tabs", "badge"],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "registry/meridian/component-workbench/component-workbench.tsx",
+          "type": "registry:component",
+          "target": "@components/meridian/component-workbench.tsx"
+        }
+      ],
+      "categories": ["docs", "developer-tools", "design-system"]
+    }
+  ]
+}
