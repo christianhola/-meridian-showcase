@@ -1,150 +1,588 @@
-import { Check, Code2, Copy, Search, Sparkles } from "lucide-react";
+import {
+  Check,
+  Code2,
+  Copy,
+  Eye,
+  Moon,
+  PackagePlus,
+  Palette,
+  Search,
+  Sparkles,
+  Sun,
+} from "lucide-react";
 import { useMemo, useState } from "react";
+import {
+  ComponentThumbnail,
+  MeridianSyncPreview,
+  type PreviewName,
+} from "./MeridianSyncPreview";
 
 type CatalogItem = {
-  name: string;
+  name: PreviewName;
+  slug: string;
   group: string;
   description: string;
+  install: string;
+  source: "meridian" | "shadcn";
   code: string;
 };
+
+const code = (...lines: string[]) => lines.join("\n");
 
 const catalog: CatalogItem[] = [
   {
     name: "Button",
+    slug: "motion-button",
     group: "Core",
-    description: "Acción primaria, secundaria y destructiva con estados claros.",
-    code: `<button className="ms-button ms-button--primary">Deploy agent</button>\n<button className="ms-button ms-button--outline">View code</button>`,
+    description: "Acciones primarias, secundarias y destructivas con Motion opcional, foco visible y estados disabled.",
+    install: "npx shadcn@latest add christianhola/-meridian-showcase/motion-button",
+    source: "meridian",
+    code: code(
+      'import { MeridianMotionButton } from "@/components/ui/meridian-motion-button"',
+      "",
+      "export function Actions() {",
+      "  return (",
+      '    <div className="flex gap-2">',
+      '      <MeridianMotionButton>Deploy agent</MeridianMotionButton>',
+      '      <MeridianMotionButton variant="outline">View code</MeridianMotionButton>',
+      "    </div>",
+      "  )",
+      "}",
+    ),
   },
   {
     name: "Card",
+    slug: "metric-card",
     group: "Core",
-    description: "Superficie modular para datos, configuración y resultados.",
-    code: `<article className="ms-card">\n  <span className="ms-eyebrow">Runtime status</span>\n  <strong>All systems operational</strong>\n</article>`,
+    description: "Tarjeta de métrica compacta con jerarquía tipográfica, valor tabular y tendencia semántica.",
+    install: "npx shadcn@latest add christianhola/-meridian-showcase/metric-card",
+    source: "meridian",
+    code: code(
+      'import { MetricCard } from "@/components/meridian/metric-card"',
+      "",
+      "<MetricCard",
+      '  label="Total revenue"',
+      '  value="$1,250.00"',
+      '  detail="Trending up this month"',
+      '  trend="+12.5%"',
+      '  tone="positive"',
+      "/>",
+    ),
   },
   {
     name: "Input",
+    slug: "input",
     group: "Forms",
-    description: "Campo enterprise con label, descripción y estado de validación.",
-    code: `<label className="ms-field">\n  <span>Workspace name</span>\n  <input placeholder="Meridian Cloud" />\n</label>`,
+    description: "Campo sobrio con helper text, error semántico, focus-visible y contraste consistente.",
+    install: "npx shadcn@latest add input label",
+    source: "shadcn",
+    code: code(
+      'import { Input } from "@/components/ui/input"',
+      'import { Label } from "@/components/ui/label"',
+      "",
+      '<Label htmlFor="workspace">Workspace name</Label>',
+      '<Input id="workspace" defaultValue="Meridian Cloud" />',
+    ),
   },
   {
     name: "Tabs",
+    slug: "tabs",
     group: "Navigation",
-    description: "Cambia entre Preview, Code y estados del componente.",
-    code: `<div className="ms-tabs">\n  <button data-active="true">Preview</button>\n  <button>Code</button>\n</div>`,
+    description: "Tabs para Preview, Code y Tokens sin perder el contexto del componente seleccionado.",
+    install: "npx shadcn@latest add tabs",
+    source: "shadcn",
+    code: code(
+      'import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"',
+      "",
+      '<Tabs defaultValue="preview">',
+      "  <TabsList>",
+      '    <TabsTrigger value="preview">Preview</TabsTrigger>',
+      '    <TabsTrigger value="code">Code</TabsTrigger>',
+      "  </TabsList>",
+      "</Tabs>",
+    ),
   },
   {
     name: "Area Chart",
-    group: "Charts",
-    description: "Visualización compacta para latencia, uso y actividad del runtime.",
-    code: `<div className="ms-chart ms-chart--area" aria-label="Runtime activity chart">\n  <svg viewBox="0 0 600 180" role="img">\n    <path d="M0 150 C80 132 110 75 190 108 S310 146 380 75 S500 92 600 24" />\n  </svg>\n</div>`,
+    slug: "chart",
+    group: "Data",
+    description: "Gráfico de actividad con ejes limpios, valores legibles y degradado contenido dentro del área.",
+    install: "npx shadcn@latest add chart",
+    source: "shadcn",
+    code: code(
+      'import { ChartContainer } from "@/components/ui/chart"',
+      "",
+      '<ChartContainer config={config}>',
+      "  {/* Recharts chart */}",
+      "</ChartContainer>",
+    ),
   },
   {
     name: "Toast",
+    slug: "sonner",
     group: "Feedback",
-    description: "Confirmación no bloqueante para acciones reversibles.",
-    code: `<div className="ms-toast" role="status">\n  <span className="ms-status-dot" />\n  Runtime checkpoint saved\n</div>`,
+    description: "Confirmación no bloqueante con acción reversible y copia corta.",
+    install: "npx shadcn@latest add sonner",
+    source: "shadcn",
+    code: code(
+      'import { toast } from "sonner"',
+      "",
+      'toast("Deployment queued", {',
+      '  description: "Preview build will start shortly.",',
+      '  action: { label: "Undo", onClick: rollback },',
+      "})",
+    ),
   },
-  { name: "Accordion", group: "Layout", description: "Agrupa contenido avanzado sin perder contexto.", code: `<details className="ms-accordion" open>\n  <summary>Advanced runtime settings</summary>\n  <p>Configure retries, tools and execution limits.</p>\n</details>` },
-  { name: "Alert", group: "Feedback", description: "Mensaje persistente para avisos, errores y permisos.", code: `<div className="ms-alert" role="alert">\n  <strong>Approval required</strong>\n  <span>Review the proposed write before continuing.</span>\n</div>` },
-  { name: "Dialog", group: "Overlay", description: "Superficie modal para crear, editar y confirmar.", code: `<dialog open className="ms-dialog">\n  <h2>Deploy runtime</h2>\n  <p>Choose the target environment.</p>\n</dialog>` },
-  { name: "Dropdown Menu", group: "Overlay", description: "Acciones secundarias para un recurso o contexto.", code: `<button className="ms-menu-trigger">Actions</button>\n<div className="ms-menu">\n  <button>Duplicate</button>\n  <button>Archive</button>\n</div>` },
-  { name: "Select", group: "Forms", description: "Selector compacto para modelos, regiones y entornos.", code: `<label className="ms-field">\n  <span>Model</span>\n  <select defaultValue="meridian">\n    <option value="meridian">Meridian Fast</option>\n    <option value="reasoning">Meridian Reasoning</option>\n  </select>\n</label>` },
-  { name: "Textarea", group: "Forms", description: "Entrada larga para prompts, políticas y notas.", code: `<label className="ms-field">\n  <span>System instruction</span>\n  <textarea placeholder="Describe the task..." />\n</label>` },
-  { name: "Switch", group: "Forms", description: "Activa o desactiva una capacidad sin salir del flujo.", code: `<label className="ms-switch-row">\n  <span>Persist runtime state</span>\n  <input type="checkbox" defaultChecked />\n</label>` },
-  { name: "Table", group: "Data", description: "Datos operativos con lectura rápida y estados claros.", code: `<table className="ms-table">\n  <tbody><tr><td>Run 2841</td><td>Success</td><td>184ms</td></tr></tbody>\n</table>` },
-  { name: "Progress", group: "Data", description: "Estado cuantificable de una tarea en ejecución.", code: `<div className="ms-progress" aria-label="Ingestion progress"\n  role="progressbar" aria-valuenow={72}>\n  <span style={{ width: "72%" }} />\n</div>` },
-  { name: "Skeleton", group: "Feedback", description: "Carga estructural sin saltos de layout.", code: `<div className="ms-skeleton" aria-busy="true">\n  <span /><span /><span />\n</div>` },
-  { name: "Tooltip", group: "Overlay", description: "Explicación breve para controles compactos.", code: `<button className="ms-icon-button" aria-label="Copy">\n  <Copy size={14} />\n  <span className="ms-tooltip">Copy code</span>\n</button>` },
-  { name: "Command", group: "Navigation", description: "Búsqueda global y comandos rápidos del workspace.", code: `<div className="ms-command">\n  <Search size={15} />\n  <input placeholder="Search commands..." />\n  <kbd>⌘ K</kbd>\n</div>` },
-  { name: "Badge", group: "Core", description: "Estado compacto para recursos, ejecuciones y versiones.", code: `<span className="ms-badge ms-badge--success">Healthy</span>` },
-  { name: "Avatar", group: "Core", description: "Identidad de miembros, owners y agentes.", code: `<div className="ms-avatar" aria-label="Meridian agent">M</div>` },
+  {
+    name: "Accordion",
+    slug: "accordion",
+    group: "Layout",
+    description: "Contenido técnico expandible con targets de click completos y jerarquía discreta.",
+    install: "npx shadcn@latest add accordion",
+    source: "shadcn",
+    code: code(
+      'import { Accordion } from "@/components/ui/accordion"',
+      "",
+      '<Accordion type="single" collapsible>{/* items */}</Accordion>',
+    ),
+  },
+  {
+    name: "Alert",
+    slug: "alert",
+    group: "Feedback",
+    description: "Aviso persistente para permisos, estado operativo y errores recuperables.",
+    install: "npx shadcn@latest add alert",
+    source: "shadcn",
+    code: code(
+      'import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"',
+      "",
+      "<Alert>",
+      "  <AlertTitle>Approval required</AlertTitle>",
+      "  <AlertDescription>Review the proposed write.</AlertDescription>",
+      "</Alert>",
+    ),
+  },
+  {
+    name: "Dialog",
+    slug: "dialog",
+    group: "Overlay",
+    description: "Modal de confirmación con foco, cierre por teclado y acciones claramente priorizadas.",
+    install: "npx shadcn@latest add dialog",
+    source: "shadcn",
+    code: code(
+      'import { Dialog, DialogContent } from "@/components/ui/dialog"',
+      "",
+      '<Dialog open><DialogContent>{/* content */}</DialogContent></Dialog>',
+    ),
+  },
+  {
+    name: "Dropdown Menu",
+    slug: "dropdown-menu",
+    group: "Overlay",
+    description: "Menú contextual con atajos, separadores y acción destructiva visualmente aislada.",
+    install: "npx shadcn@latest add dropdown-menu",
+    source: "shadcn",
+    code: code(
+      'import { DropdownMenu } from "@/components/ui/dropdown-menu"',
+      "",
+      "<DropdownMenu>{/* trigger + items */}</DropdownMenu>",
+    ),
+  },
+  {
+    name: "Select",
+    slug: "select",
+    group: "Forms",
+    description: "Selector compacto para modelos, regiones y entornos, sin inventar controles personalizados.",
+    install: "npx shadcn@latest add select",
+    source: "shadcn",
+    code: code(
+      'import { Select } from "@/components/ui/select"',
+      "",
+      '<Select defaultValue="reasoning">{/* options */}</Select>',
+    ),
+  },
+  {
+    name: "Textarea",
+    slug: "textarea",
+    group: "Forms",
+    description: "Entrada multilinea para instrucciones, notas y prompts largos.",
+    install: "npx shadcn@latest add textarea",
+    source: "shadcn",
+    code: code(
+      'import { Textarea } from "@/components/ui/textarea"',
+      "",
+      '<Textarea placeholder="Describe the task…" />',
+    ),
+  },
+  {
+    name: "Switch",
+    slug: "switch",
+    group: "Forms",
+    description: "Toggle binario con estado visible y target táctil suficiente.",
+    install: "npx shadcn@latest add switch",
+    source: "shadcn",
+    code: code(
+      'import { Switch } from "@/components/ui/switch"',
+      "",
+      '<Switch aria-label="Persist runtime state" />',
+    ),
+  },
+  {
+    name: "Table",
+    slug: "table",
+    group: "Data",
+    description: "Datos operativos densos sin sacrificar lectura, alineación o estado semántico.",
+    install: "npx shadcn@latest add table",
+    source: "shadcn",
+    code: code(
+      'import { Table } from "@/components/ui/table"',
+      "",
+      "<Table>{/* header + rows */}</Table>",
+    ),
+  },
+  {
+    name: "Progress",
+    slug: "progress",
+    group: "Data",
+    description: "Progreso cuantificable de tareas y procesos en ejecución.",
+    install: "npx shadcn@latest add progress",
+    source: "shadcn",
+    code: code(
+      'import { Progress } from "@/components/ui/progress"',
+      "",
+      "<Progress value={72} />",
+    ),
+  },
+  {
+    name: "Skeleton",
+    slug: "skeleton",
+    group: "Feedback",
+    description: "Carga estructural que conserva el layout y respeta reduced motion.",
+    install: "npx shadcn@latest add skeleton",
+    source: "shadcn",
+    code: code(
+      'import { Skeleton } from "@/components/ui/skeleton"',
+      "",
+      '<Skeleton className="h-12 w-12 rounded-full" />',
+    ),
+  },
+  {
+    name: "Tooltip",
+    slug: "tooltip",
+    group: "Overlay",
+    description: "Ayuda contextual breve para iconos y controles compactos.",
+    install: "npx shadcn@latest add tooltip",
+    source: "shadcn",
+    code: code(
+      'import { Tooltip } from "@/components/ui/tooltip"',
+      "",
+      "<Tooltip>{/* trigger + content */}</Tooltip>",
+    ),
+  },
+  {
+    name: "Command",
+    slug: "command",
+    group: "Navigation",
+    description: "Command palette para navegación y acciones rápidas con atajos visibles.",
+    install: "npx shadcn@latest add command",
+    source: "shadcn",
+    code: code(
+      'import { Command } from "@/components/ui/command"',
+      "",
+      "<Command>{/* input + groups + items */}</Command>",
+    ),
+  },
+  {
+    name: "Badge",
+    slug: "badge",
+    group: "Core",
+    description: "Estados compactos para ejecuciones, versiones y salud del sistema.",
+    install: "npx shadcn@latest add badge",
+    source: "shadcn",
+    code: code(
+      'import { Badge } from "@/components/ui/badge"',
+      "",
+      '<Badge variant="outline">Preview</Badge>',
+    ),
+  },
+  {
+    name: "Avatar",
+    slug: "avatar",
+    group: "Core",
+    description: "Identidad de miembros y agentes con fallback legible.",
+    install: "npx shadcn@latest add avatar",
+    source: "shadcn",
+    code: code(
+      'import { Avatar, AvatarFallback } from "@/components/ui/avatar"',
+      "",
+      "<Avatar><AvatarFallback>CD</AvatarFallback></Avatar>",
+    ),
+  },
+  {
+    name: "Prompt Composer",
+    slug: "prompt-composer",
+    group: "AI",
+    description: "Composer para IA con herramientas, búsqueda, adjuntos y submit claro, inspirado en interfaces de producto reales.",
+    install: "npx shadcn@latest add christianhola/-meridian-showcase/prompt-composer",
+    source: "meridian",
+    code: code(
+      'import { PromptComposer } from "@/components/meridian/prompt-composer"',
+      "",
+      "<PromptComposer onSubmit={(prompt) => send(prompt)} />",
+    ),
+  },
 ];
 
-const groups = ["All", "Core", "Forms", "Navigation", "Layout", "Data", "Charts", "Overlay", "Feedback"];
+const groups = ["All", "Core", "Forms", "Navigation", "Layout", "Data", "Overlay", "Feedback", "AI"];
+
+const tokenCards = [
+  ["background", "#fbfbfa", "Primary canvas"],
+  ["foreground", "#181a1b", "Primary text"],
+  ["primary", "#1d2021", "Primary action"],
+  ["border", "#d8d9d7", "Hairline border"],
+  ["muted", "#74787a", "Secondary text"],
+  ["accent", "#365ec9", "Focus and data"],
+] as const;
 
 export function MeridianSyncCatalog() {
   const [activeGroup, setActiveGroup] = useState("All");
-  const [activeName, setActiveName] = useState("Button");
-  const [mode, setMode] = useState<"preview" | "code">("preview");
+  const [activeName, setActiveName] = useState<PreviewName>("Button");
+  const [mode, setMode] = useState<"preview" | "code" | "tokens">("preview");
   const [query, setQuery] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<"code" | "install" | null>(null);
+  const [previewTheme, setPreviewTheme] = useState<"light" | "dark">("light");
 
-  const visibleItems = useMemo(() => catalog.filter(item => {
-    const matchesGroup = activeGroup === "All" || item.group === activeGroup;
-    const matchesQuery = `${item.name} ${item.description}`.toLowerCase().includes(query.toLowerCase());
-    return matchesGroup && matchesQuery;
-  }), [activeGroup, query]);
+  const visibleItems = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return catalog.filter((item) => {
+      const matchesGroup = activeGroup === "All" || item.group === activeGroup;
+      const matchesQuery =
+        !needle ||
+        `${item.name} ${item.group} ${item.description}`.toLowerCase().includes(needle);
+      return matchesGroup && matchesQuery;
+    });
+  }, [activeGroup, query]);
 
-  const activeItem = catalog.find(item => item.name === activeName) ?? catalog[0];
-  const installCommand = `pnpm dlx meridian add ${activeItem.name.toLowerCase().replace(/\s+/g, "-")}`;
+  const activeItem = catalog.find((item) => item.name === activeName) ?? catalog[0];
 
-  const copyCode = async () => {
-    await navigator.clipboard?.writeText(activeItem.code);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
+  const copy = async (value: string, target: "code" | "install") => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(target);
+      window.setTimeout(() => setCopied(null), 1400);
+    } catch {
+      setCopied(null);
+    }
   };
 
   return (
-    <section className="section meridian-sync" id="meridian-sync" aria-labelledby="meridian-sync-title">
+    <section
+      className="section meridian-sync meridian-sync-v2"
+      id="meridian-sync"
+      aria-labelledby="meridian-sync-title"
+    >
       <div className="meridian-sync__heading">
         <div>
-          <span className="eyebrow"><Sparkles size={13} /> Meridian Sync / Component library</span>
-          <h2 id="meridian-sync-title">The runtime, <span>made visible.</span></h2>
-          <p>Una librería interactiva para explorar componentes, revisar su preview y copiar el código sin salir de Meridian.</p>
+          <span className="eyebrow">
+            <Sparkles size={13} aria-hidden="true" /> Meridian Sync / React component registry
+          </span>
+          <h2 id="meridian-sync-title">
+            Real components.
+            <span> Real previews.</span>
+          </h2>
+          <p>
+            Componentes React documentados como producto: preview funcional, código copiable,
+            tokens visibles y comandos reales de shadcn. Sin bloques genéricos ni installs ficticios.
+          </p>
         </div>
-          <div className="meridian-sync__metrics" aria-label="Library metrics">
-          <strong>{String(catalog.length).padStart(2, "0")}</strong><span>ready components</span>
-          <strong>02</strong><span>modes per block</span>
+        <div className="meridian-sync__metrics" aria-label="Library metrics">
+          <strong>{String(catalog.length).padStart(2, "0")}</strong>
+          <span>components</span>
+          <strong>04</strong>
+          <span>custom registry items</span>
+          <strong>03</strong>
+          <span>workbench views</span>
         </div>
       </div>
 
       <div className="meridian-sync__shell">
         <aside className="meridian-sync__sidebar" aria-label="Component catalog navigation">
-          <div className="meridian-sync__sidebar-title"><span>Catalog</span><small>v0.1</small></div>
+          <div className="meridian-sync__sidebar-title">
+            <span className="meridian-sync__library-brand">
+              <span className="meridian-sync__library-mark">M</span>
+              <span>Meridian Sync</span>
+            </span>
+            <small>v0.2</small>
+          </div>
+
           <label className="meridian-sync__search">
             <Search size={14} aria-hidden="true" />
-            <input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search components" aria-label="Search components" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search components"
+              aria-label="Search components"
+            />
           </label>
+
           <div className="meridian-sync__groups">
-            {groups.map(group => (
-              <button type="button" key={group} className={activeGroup === group ? "is-active" : ""} onClick={() => setActiveGroup(group)}>
-                <span>{group}</span><small>{group === "All" ? catalog.length : catalog.filter(item => item.group === group).length}</small>
+            {groups.map((group) => (
+              <button
+                type="button"
+                key={group}
+                className={activeGroup === group ? "is-active" : ""}
+                onClick={() => setActiveGroup(group)}
+              >
+                <span>{group}</span>
+                <small>
+                  {group === "All"
+                    ? catalog.length
+                    : catalog.filter((item) => item.group === group).length}
+                </small>
               </button>
             ))}
           </div>
-          <div className="meridian-sync__sidebar-foot"><span className="ms-status-dot" /> Live catalog preview</div>
+
+          <div className="meridian-sync__sidebar-foot">
+            <span className="ms-status-dot" /> GitHub-backed shadcn registry
+          </div>
         </aside>
 
         <div className="meridian-sync__content">
           <div className="meridian-sync__component-list" role="listbox" aria-label="Components">
-            {visibleItems.map(item => (
-              <button type="button" role="option" aria-selected={activeItem.name === item.name} key={item.name} className={activeItem.name === item.name ? "is-active" : ""} onClick={() => { setActiveName(item.name); setMode("preview"); }}>
-                <span><strong>{item.name}</strong><small>{item.group}</small></span><span className="meridian-sync__list-mark">{activeItem.name === item.name ? "●" : "○"}</span>
-              </button>
-            ))}
+            {visibleItems.length ? (
+              visibleItems.map((item) => (
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={activeItem.name === item.name}
+                  key={item.name}
+                  className={activeItem.name === item.name ? "is-active" : ""}
+                  onClick={() => {
+                    setActiveName(item.name);
+                    setMode("preview");
+                  }}
+                >
+                  <span className="meridian-sync__component-copy">
+                    <ComponentThumbnail name={item.name} />
+                    <span>
+                      <strong>{item.name}</strong>
+                      <small>{item.source === "meridian" ? "Meridian registry" : item.group}</small>
+                    </span>
+                  </span>
+                  <span className="meridian-sync__list-mark">
+                    {activeItem.name === item.name ? "●" : "○"}
+                  </span>
+                </button>
+              ))
+            ) : (
+              <div className="ms-empty-state">No components match “{query}”.</div>
+            )}
           </div>
 
           <div className="meridian-sync__stage">
             <header className="meridian-sync__stage-head">
-              <div><span className="eyebrow">Component / {activeItem.group}</span><h3>{activeItem.name}</h3><p>{activeItem.description}</p></div>
-              <div className="meridian-sync__tabs" role="tablist" aria-label="Component view">
-                <button type="button" role="tab" aria-selected={mode === "preview"} className={mode === "preview" ? "is-active" : ""} onClick={() => setMode("preview")}>Preview</button>
-                <button type="button" role="tab" aria-selected={mode === "code"} className={mode === "code" ? "is-active" : ""} onClick={() => setMode("code")}><Code2 size={13} /> Code</button>
+              <div>
+                <span className="eyebrow">
+                  {activeItem.source === "meridian" ? "Meridian registry" : "shadcn/ui"} / {activeItem.group}
+                </span>
+                <h3>{activeItem.name}</h3>
+                <p>{activeItem.description}</p>
+              </div>
+
+              <div className="meridian-sync__stage-actions">
+                <div className="meridian-sync__theme-toggle" aria-label="Preview theme">
+                  <button
+                    type="button"
+                    className={previewTheme === "light" ? "is-active" : ""}
+                    aria-label="Light preview"
+                    aria-pressed={previewTheme === "light"}
+                    onClick={() => setPreviewTheme("light")}
+                  >
+                    <Sun size={14} />
+                  </button>
+                  <button
+                    type="button"
+                    className={previewTheme === "dark" ? "is-active" : ""}
+                    aria-label="Dark preview"
+                    aria-pressed={previewTheme === "dark"}
+                    onClick={() => setPreviewTheme("dark")}
+                  >
+                    <Moon size={14} />
+                  </button>
+                </div>
+
+                <div className="meridian-sync__tabs" role="tablist" aria-label="Component view">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mode === "preview"}
+                    className={mode === "preview" ? "is-active" : ""}
+                    onClick={() => setMode("preview")}
+                  >
+                    <Eye size={13} /> Preview
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mode === "code"}
+                    className={mode === "code" ? "is-active" : ""}
+                    onClick={() => setMode("code")}
+                  >
+                    <Code2 size={13} /> Code
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mode === "tokens"}
+                    className={mode === "tokens" ? "is-active" : ""}
+                    onClick={() => setMode("tokens")}
+                  >
+                    <Palette size={13} /> Tokens
+                  </button>
+                </div>
               </div>
             </header>
 
-            <div className="meridian-sync__install"><span>Install</span><code>{installCommand}</code><button type="button" onClick={() => navigator.clipboard?.writeText(installCommand)}><Copy size={13} /> Copy</button></div>
+            <div className="meridian-sync__install">
+              <PackagePlus size={13} aria-hidden="true" />
+              <code>{activeItem.install}</code>
+              <button type="button" onClick={() => copy(activeItem.install, "install")}>
+                {copied === "install" ? <Check size={13} /> : <Copy size={13} />}
+                {copied === "install" ? "Copied" : "Copy"}
+              </button>
+            </div>
 
-            {mode === "preview" ? <div className="meridian-sync__preview" aria-label={`${activeItem.name} preview`}>
-              {activeItem.name === "Button" && <div className="ms-preview-stack"><div className="ms-preview-line"><button className="ms-button ms-button--primary">Deploy agent</button><button className="ms-button ms-button--outline">View code</button><button className="ms-button ms-button--ghost">Cancel</button></div><div className="ms-preview-caption"><Check size={14} /> keyboard-ready / focus-visible</div></div>}
-              {activeItem.name === "Card" && <article className="ms-card"><div className="ms-card__icon"><Sparkles size={17} /></div><span className="ms-eyebrow">Runtime status</span><strong>All systems operational</strong><p>12 active agents · 0 blocked runs</p><div className="ms-card__bar"><span /></div></article>}
-              {activeItem.name === "Input" && <div className="ms-form-preview"><label className="ms-field"><span>Workspace name</span><input defaultValue="Meridian Cloud" /></label><span className="ms-helper">Used in your runtime namespace.</span></div>}
-              {activeItem.name === "Tabs" && <div className="ms-tabs-preview"><div className="ms-tabs"><button data-active="true">Preview</button><button>Code</button><button>Props</button></div><div className="ms-tab-panel"><span className="ms-eyebrow">Selected view</span><strong>Preview state</strong><p>Interactive components keep their context.</p></div></div>}
-              {activeItem.name === "Area Chart" && <div className="ms-chart"><div className="ms-chart__labels"><span>98ms</span><span>12ms</span></div><svg viewBox="0 0 600 180" role="img" aria-label="Runtime activity"><defs><linearGradient id="sync-area" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#6576ff" stopOpacity=".42" /><stop offset="1" stopColor="#6576ff" stopOpacity="0" /></linearGradient></defs><path className="ms-chart__fill" d="M0 150 C80 132 110 75 190 108 S310 146 380 75 S500 92 600 24 V180 H0 Z" /><path className="ms-chart__line" d="M0 150 C80 132 110 75 190 108 S310 146 380 75 S500 92 600 24" /></svg><div className="ms-chart__axis"><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span></div></div>}
-              {activeItem.name === "Toast" && <div className="ms-toast" role="status"><span className="ms-status-dot" /><div><strong>Checkpoint saved</strong><small>Runtime state persisted 2s ago</small></div><button type="button">Undo</button></div>}
-              {!['Button', 'Card', 'Input', 'Tabs', 'Area Chart', 'Toast'].includes(activeItem.name) && <div className="ms-generic-preview"><div className="ms-generic-preview__bar"><span className="ms-status-dot" /><span>{activeItem.group} / {activeItem.name}</span><span className="ms-generic-preview__dots">•••</span></div><div className="ms-generic-preview__body"><div className="ms-generic-preview__icon"><Sparkles size={18} /></div><strong>{activeItem.name} component</strong><p>{activeItem.description}</p><div className="ms-generic-preview__controls"><span /><span /><span /></div></div></div>}
-            </div> : <div className="meridian-sync__code"><div className="meridian-sync__code-head"><span>tsx</span><button type="button" onClick={copyCode}>{copied ? <Check size={14} /> : <Copy size={14} />}{copied ? "Copied" : "Copy code"}</button></div><pre><code>{activeItem.code}</code></pre></div>}
+            {mode === "preview" ? (
+              <div className="meridian-sync__preview" role="tabpanel" aria-label={`${activeItem.name} preview`}>
+                <MeridianSyncPreview name={activeItem.name} theme={previewTheme} />
+              </div>
+            ) : null}
+
+            {mode === "code" ? (
+              <div className="meridian-sync__code" role="tabpanel" aria-label={`${activeItem.name} code`}>
+                <div className="meridian-sync__code-head">
+                  <span>tsx</span>
+                  <button type="button" onClick={() => copy(activeItem.code, "code")}>
+                    {copied === "code" ? <Check size={14} /> : <Copy size={14} />}
+                    {copied === "code" ? "Copied" : "Copy code"}
+                  </button>
+                </div>
+                <pre><code>{activeItem.code}</code></pre>
+              </div>
+            ) : null}
+
+            {mode === "tokens" ? (
+              <div className="meridian-sync__tokens" role="tabpanel" aria-label="Design tokens">
+                {tokenCards.map(([token, swatch, detail]) => (
+                  <div className="ms-token-card" key={token}>
+                    <span style={{ "--token-swatch": swatch } as React.CSSProperties} />
+                    <code>--{token}</code>
+                    <small>{detail}</small>
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
