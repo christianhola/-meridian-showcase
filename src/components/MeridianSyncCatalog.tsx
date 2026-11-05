@@ -45,9 +45,23 @@ const catalog: CatalogItem[] = [
     description: "Confirmación no bloqueante para acciones reversibles.",
     code: `<div className="ms-toast" role="status">\n  <span className="ms-status-dot" />\n  Runtime checkpoint saved\n</div>`,
   },
+  { name: "Accordion", group: "Layout", description: "Agrupa contenido avanzado sin perder contexto.", code: `<details className="ms-accordion" open>\n  <summary>Advanced runtime settings</summary>\n  <p>Configure retries, tools and execution limits.</p>\n</details>` },
+  { name: "Alert", group: "Feedback", description: "Mensaje persistente para avisos, errores y permisos.", code: `<div className="ms-alert" role="alert">\n  <strong>Approval required</strong>\n  <span>Review the proposed write before continuing.</span>\n</div>` },
+  { name: "Dialog", group: "Overlay", description: "Superficie modal para crear, editar y confirmar.", code: `<dialog open className="ms-dialog">\n  <h2>Deploy runtime</h2>\n  <p>Choose the target environment.</p>\n</dialog>` },
+  { name: "Dropdown Menu", group: "Overlay", description: "Acciones secundarias para un recurso o contexto.", code: `<button className="ms-menu-trigger">Actions</button>\n<div className="ms-menu">\n  <button>Duplicate</button>\n  <button>Archive</button>\n</div>` },
+  { name: "Select", group: "Forms", description: "Selector compacto para modelos, regiones y entornos.", code: `<label className="ms-field">\n  <span>Model</span>\n  <select defaultValue="meridian">\n    <option value="meridian">Meridian Fast</option>\n    <option value="reasoning">Meridian Reasoning</option>\n  </select>\n</label>` },
+  { name: "Textarea", group: "Forms", description: "Entrada larga para prompts, políticas y notas.", code: `<label className="ms-field">\n  <span>System instruction</span>\n  <textarea placeholder="Describe the task..." />\n</label>` },
+  { name: "Switch", group: "Forms", description: "Activa o desactiva una capacidad sin salir del flujo.", code: `<label className="ms-switch-row">\n  <span>Persist runtime state</span>\n  <input type="checkbox" defaultChecked />\n</label>` },
+  { name: "Table", group: "Data", description: "Datos operativos con lectura rápida y estados claros.", code: `<table className="ms-table">\n  <tbody><tr><td>Run 2841</td><td>Success</td><td>184ms</td></tr></tbody>\n</table>` },
+  { name: "Progress", group: "Data", description: "Estado cuantificable de una tarea en ejecución.", code: `<div className="ms-progress" aria-label="Ingestion progress"\n  role="progressbar" aria-valuenow={72}>\n  <span style={{ width: "72%" }} />\n</div>` },
+  { name: "Skeleton", group: "Feedback", description: "Carga estructural sin saltos de layout.", code: `<div className="ms-skeleton" aria-busy="true">\n  <span /><span /><span />\n</div>` },
+  { name: "Tooltip", group: "Overlay", description: "Explicación breve para controles compactos.", code: `<button className="ms-icon-button" aria-label="Copy">\n  <Copy size={14} />\n  <span className="ms-tooltip">Copy code</span>\n</button>` },
+  { name: "Command", group: "Navigation", description: "Búsqueda global y comandos rápidos del workspace.", code: `<div className="ms-command">\n  <Search size={15} />\n  <input placeholder="Search commands..." />\n  <kbd>⌘ K</kbd>\n</div>` },
+  { name: "Badge", group: "Core", description: "Estado compacto para recursos, ejecuciones y versiones.", code: `<span className="ms-badge ms-badge--success">Healthy</span>` },
+  { name: "Avatar", group: "Core", description: "Identidad de miembros, owners y agentes.", code: `<div className="ms-avatar" aria-label="Meridian agent">M</div>` },
 ];
 
-const groups = ["All", "Core", "Forms", "Navigation", "Charts", "Feedback"];
+const groups = ["All", "Core", "Forms", "Navigation", "Layout", "Data", "Charts", "Overlay", "Feedback"];
 
 export function MeridianSyncCatalog() {
   const [activeGroup, setActiveGroup] = useState("All");
@@ -63,6 +77,7 @@ export function MeridianSyncCatalog() {
   }), [activeGroup, query]);
 
   const activeItem = catalog.find(item => item.name === activeName) ?? catalog[0];
+  const installCommand = `pnpm dlx meridian add ${activeItem.name.toLowerCase().replace(/\s+/g, "-")}`;
 
   const copyCode = async () => {
     await navigator.clipboard?.writeText(activeItem.code);
@@ -78,8 +93,8 @@ export function MeridianSyncCatalog() {
           <h2 id="meridian-sync-title">The runtime, <span>made visible.</span></h2>
           <p>Una librería interactiva para explorar componentes, revisar su preview y copiar el código sin salir de Meridian.</p>
         </div>
-        <div className="meridian-sync__metrics" aria-label="Library metrics">
-          <strong>06</strong><span>ready components</span>
+          <div className="meridian-sync__metrics" aria-label="Library metrics">
+          <strong>{String(catalog.length).padStart(2, "0")}</strong><span>ready components</span>
           <strong>02</strong><span>modes per block</span>
         </div>
       </div>
@@ -119,6 +134,8 @@ export function MeridianSyncCatalog() {
               </div>
             </header>
 
+            <div className="meridian-sync__install"><span>Install</span><code>{installCommand}</code><button type="button" onClick={() => navigator.clipboard?.writeText(installCommand)}><Copy size={13} /> Copy</button></div>
+
             {mode === "preview" ? <div className="meridian-sync__preview" aria-label={`${activeItem.name} preview`}>
               {activeItem.name === "Button" && <div className="ms-preview-stack"><div className="ms-preview-line"><button className="ms-button ms-button--primary">Deploy agent</button><button className="ms-button ms-button--outline">View code</button><button className="ms-button ms-button--ghost">Cancel</button></div><div className="ms-preview-caption"><Check size={14} /> keyboard-ready / focus-visible</div></div>}
               {activeItem.name === "Card" && <article className="ms-card"><div className="ms-card__icon"><Sparkles size={17} /></div><span className="ms-eyebrow">Runtime status</span><strong>All systems operational</strong><p>12 active agents · 0 blocked runs</p><div className="ms-card__bar"><span /></div></article>}
@@ -126,6 +143,7 @@ export function MeridianSyncCatalog() {
               {activeItem.name === "Tabs" && <div className="ms-tabs-preview"><div className="ms-tabs"><button data-active="true">Preview</button><button>Code</button><button>Props</button></div><div className="ms-tab-panel"><span className="ms-eyebrow">Selected view</span><strong>Preview state</strong><p>Interactive components keep their context.</p></div></div>}
               {activeItem.name === "Area Chart" && <div className="ms-chart"><div className="ms-chart__labels"><span>98ms</span><span>12ms</span></div><svg viewBox="0 0 600 180" role="img" aria-label="Runtime activity"><defs><linearGradient id="sync-area" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#6576ff" stopOpacity=".42" /><stop offset="1" stopColor="#6576ff" stopOpacity="0" /></linearGradient></defs><path className="ms-chart__fill" d="M0 150 C80 132 110 75 190 108 S310 146 380 75 S500 92 600 24 V180 H0 Z" /><path className="ms-chart__line" d="M0 150 C80 132 110 75 190 108 S310 146 380 75 S500 92 600 24" /></svg><div className="ms-chart__axis"><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span></div></div>}
               {activeItem.name === "Toast" && <div className="ms-toast" role="status"><span className="ms-status-dot" /><div><strong>Checkpoint saved</strong><small>Runtime state persisted 2s ago</small></div><button type="button">Undo</button></div>}
+              {!['Button', 'Card', 'Input', 'Tabs', 'Area Chart', 'Toast'].includes(activeItem.name) && <div className="ms-generic-preview"><div className="ms-generic-preview__bar"><span className="ms-status-dot" /><span>{activeItem.group} / {activeItem.name}</span><span className="ms-generic-preview__dots">•••</span></div><div className="ms-generic-preview__body"><div className="ms-generic-preview__icon"><Sparkles size={18} /></div><strong>{activeItem.name} component</strong><p>{activeItem.description}</p><div className="ms-generic-preview__controls"><span /><span /><span /></div></div></div>}
             </div> : <div className="meridian-sync__code"><div className="meridian-sync__code-head"><span>tsx</span><button type="button" onClick={copyCode}>{copied ? <Check size={14} /> : <Copy size={14} />}{copied ? "Copied" : "Copy code"}</button></div><pre><code>{activeItem.code}</code></pre></div>}
           </div>
         </div>
