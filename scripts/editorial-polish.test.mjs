@@ -4,21 +4,22 @@ import { readFileSync } from "node:fs";
 
 const read = path => readFileSync(new URL("../" + path, import.meta.url), "utf8");
 
-test("editorial polish is loaded after the legacy stylesheet", () => {
+test("editorial polish is consolidated into the base stylesheet", () => {
   const entry = read("src/main.tsx");
-  assert.match(entry, /import "\.\/styles\.css";\s*import "\.\/editorial-polish\.css";/);
+  const css = read("src/styles.css");
+  assert.equal(entry.includes("./editorial-polish.css"), false);
+  assert.equal(css.includes("=== Integrated editorial polish layer ==="), true);
 });
 
 test("interactive controls keep keyboard focus and reduced-motion behavior", () => {
-  const css = read("src/editorial-polish.css");
+  const css = read("src/styles.css");
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /\[data-reveal\]/);
   assert.match(css, /@media \(max-width: 760px\)/);
 });
 
-
-test("product system is loaded last and covers the full application", () => {
+test("product system remains the final visual layer and covers the full application", () => {
   const entry = read("src/main.tsx");
   const css = read("src/product-system.css");
   assert.equal(entry.includes('import "./meridian-sync.css";\nimport "./product-system.css";'), true);
