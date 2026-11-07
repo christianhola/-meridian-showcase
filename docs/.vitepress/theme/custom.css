@@ -28,3 +28,28 @@
 .gallery-card h3 { margin: 12px 0 6px; }
 .gallery-card p { margin: 0; color: var(--vp-c-text-2); font-size: .9rem; }
 @media (max-width: 720px) { .gallery-grid { grid-template-columns: 1fr; } .VPHome .VPHero { padding-top: 50px; } }
+
+/* Seamless live data embed: no card, border or frame between site and chart. */
+.meridian-activity-embed {
+  display: block;
+  width: 100%;
+  max-width: 1030px;
+  margin: 38px auto 18px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.meridian-activity-embed iframe {
+  display: block;
+  width: 100%;
+  height: 455px;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+@media (max-width: 720px) {
+  .meridian-activity-embed { margin: 24px auto 12px; }
+  .meridian-activity-embed iframe { height: 415px; }
+}
