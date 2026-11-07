@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Map as LibreMap, Marker as LibreMarker } from "maplibre-gl";
-import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { classifyGust, parseWindForecast, type WindReading } from "../lib/wind-forecast";
 import {
   Activity,
@@ -150,7 +149,6 @@ export default function AtmosphericCommandCenter() {
       try {
         if (!mapContainerRef.current) return;
         const maplibregl = await import("maplibre-gl");
-        maplibregl.setWorkerUrl(maplibreWorkerUrl);
         if (disposed || !mapContainerRef.current) return;
         const container = mapContainerRef.current;
         const map = new maplibregl.Map({
