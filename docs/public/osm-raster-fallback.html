@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Meridian · Mapa 2D accesible</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+  <style>
+    html,body,#map { width:100%;height:100%;margin:0;overflow:hidden; }
+    body { background:#edf1f7;font:13px/1.5 Inter,system-ui,sans-serif; }
+    #map { position:absolute;inset:0;z-index:0; }
+    #notice { position:absolute;inset:0;z-index:1;padding:18px;display:flex;
+      flex-direction:column;align-items:center;justify-content:center;
+      gap:10px;background:#edf1f7;color:#283850;text-align:center; }
+    #notice[hidden] { display:none; }
+    #notice a { color:#3157c9;font-weight:650; }
+    .leaflet-container { font-family:Inter,system-ui,sans-serif; }
+    .leaflet-control-attribution { font-size:10px!important; }
+  </style>
+</head>
+<body>
+  <div id="map" role="application" aria-label="Mapa 2D interactivo de OpenStreetMap"></div>
+  <div id="notice" role="status" hidden>
+    <strong>No fue posible iniciar el mapa 2D.</strong>
+    <span>Puedes consultar la ubicación directamente en OpenStreetMap.</span>
+    <a id="outside" href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer">Abrir OpenStreetMap</a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="anonymous"></script>
+  <script>
+    (function () {
+      "use strict";
+      const params = new URLSearchParams(window.location.search);
+      const latitude = Number(params.get("latitude"));
+      const longitude = Number(params.get("longitude"));
+      const notice = document.getElementById("notice");
+      const outside = document.getElementById("outside");
+
+      function fail() {
+        notice.hidden = false;
+        document.getElementById("map").hidden = true;
+      }
+
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude) ||
+          Math.abs(latitude) > 85 || Math.abs(longitude) > 180 ||
+          !params.has("latitude") || !params.has("longitude")) {
+        fail();
+        return;
+      }
+
+      const location = new URL("https://www.openstreetmap.org/");
+      location.searchParams.set("mlat", String(latitude));
+      location.searchParams.set("mlon", String(longitude));
+      location.hash = "map=13/" + latitude + "/" + longitude;
+      outside.href = location.href;
+
+      if (!window.L || typeof window.L.map !== "function") {
+        fail();
+        return;
+      }
+
+      try {
+        const map = window.L.map("map", {
+          zoomControl: true,
+          attributionControl: true,
+          scrollWheelZoom: false,
+        }).setView([latitude, longitude], 13);
+        window.L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          minZoom: 2,
+          maxZoom: 18,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>',
+        }).addTo(map);
+        window.L.circleMarker([latitude, longitude], {
+          radius: 8,
+          weight: 2,
+          color: "#ffffff",
+          fillColor: "#4966ee",
+          fillOpacity: 0.95,
+        }).addTo(map);
+        window.addEventListener("pagehide", function () { map.remove(); }, { once:true });
+      } catch (_error) {
+        fail();
+      }
+    })();
+  </script>
+</body>
+</html>
