@@ -2,13 +2,24 @@ import { ArrowRight, Github, Menu, PauseCircle, Sparkles, X } from "lucide-react
 import { useEffect, useState } from "react";
 import ecosystemUrl from "../assets/meridian-ecosystem-hub.svg";
 import { ArchitectureMap } from "./components/ArchitectureMap";
+import { AgentsWorkspace } from "./components/AgentsWorkspace";
 import { LiveTrace } from "./components/LiveTrace";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
+import { VirtualDesktop } from "./components/VirtualDesktop";
 import { WilennyLab } from "./components/WilennyLab";
 
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const agentRoute = { href: "/-meridian-showcase/agents/" };
+
+  if (window.location.pathname.replace(/\/+$/, "").endsWith("/desktop")) {
+    return <VirtualDesktop />;
+  }
+
+  if (window.location.pathname.replace(/\/+$/, "").endsWith("/agents")) {
+    return <div className="agents-standalone"><AgentsWorkspace /></div>;
+  }
 
   useEffect(() => {
     const reveal = new IntersectionObserver(
@@ -22,20 +33,29 @@ export function App() {
 
     const nodes = document.querySelectorAll("[data-reveal]");
     nodes.forEach((node) => reveal.observe(node));
-    return () => reveal.disconnect();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      reveal.disconnect();
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   return (
     <div className="site-shell">
+      <a className="skip-link" href="#proof">Skip to interactive demo</a>
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Meridian showcase">
           <span className="brand-mark">M</span>
-          <span>MERIDIAN / SYSTEM SHOWCASE</span>
+          <span>MERIDIAN / COMMUNITY</span>
         </a>
 
         <nav className="topnav" aria-label="Principal">
-          <a href="#proof">Proof</a>
-          <a href="#architecture">Architecture</a>
+          <a href="#proof" aria-current="page">The work</a>
+          <a href="#architecture">System</a>
+          <a href={agentRoute.href}>Agents</a>
           <a href="#wilenny">WILENNY</a>
           <a href="#status">Status</a>
           <a className="nav-pill" href="https://github.com/christianhola/-meridian-showcase">
@@ -57,8 +77,8 @@ export function App() {
       {mobileOpen ? (
         <nav className="mobile-nav" aria-label="Principal móvil">
           {[
-            ["Proof", "#proof"],
-            ["Architecture", "#architecture"],
+            ["The work", "#proof"],
+            ["System", "#architecture"],
             ["WILENNY", "#wilenny"],
             ["Status", "#status"],
           ].map(([label, href]) => (
@@ -66,6 +86,9 @@ export function App() {
               {label}<ArrowRight size={15} />
             </a>
           ))}
+          <a href="https://github.com/christianhola/-meridian-showcase" onClick={() => setMobileOpen(false)}>
+            Open on GitHub <Github size={15} />
+          </a>
         </nav>
       ) : null}
 
@@ -74,27 +97,27 @@ export function App() {
           <div className="hero-copy" data-reveal>
             <span className="hero-kicker">
               <span className="pulse-dot" />
-              Evidence-first AI operating layer
+              Meridian Community / Open workspace
             </span>
             <h1>
-              Context becomes
-              <span>controlled execution.</span>
+              A better place
+              <span>to build in public.</span>
             </h1>
             <p>
-              Meridian conecta intención, contexto, agentes especializados y herramientas
-              autorizadas en una capa operativa verificable para trabajo empresarial.
+              Open examples, working interfaces and documented systems for people who care about
+              how software is made. Explore the work, take what helps and contribute back.
             </p>
             <div className="hero-actions">
               <a className="button button--primary" href="#proof">
-                Inspect the system <ArrowRight size={15} />
+                Explore the work <ArrowRight size={15} />
               </a>
               <a className="button button--secondary" href="#wilenny">
-                Explore WILENNY
+                Read the system
               </a>
             </div>
             <div className="hero-meta">
-              <span><Sparkles size={13} /> agent orchestration</span>
-              <span><PauseCircle size={13} /> preview-first execution</span>
+              <span><Sparkles size={13} /> documented systems</span>
+              <span><PauseCircle size={13} /> built in public</span>
             </div>
           </div>
 

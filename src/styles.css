@@ -593,3 +593,63 @@ body { background: #fff; color: #111; }
     box-shadow: none;
   }
 }
+
+
+/* === Integrated editorial polish layer === */
+/* Editorial product world — restrained, open, documentation-led */
+:root {
+  --paper: #fbfbfa;
+  --surface: #ffffff;
+  --ink: #171716;
+  --muted: #666660;
+  --line: #deded9;
+  --line-strong: #b8b8b0;
+  --meri: #a34b3b;
+  --blue: #405e8f;
+  --shadow: 0 16px 40px rgba(23,23,22,.045);
+  font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+}
+body { background: var(--paper); color: var(--ink); }
+::selection { background: #171716; color: #fff; }
+.topbar { min-height: 74px; width: min(1420px, calc(100% - 56px)); margin: 0 auto; padding: 0; border-bottom: 1px solid var(--line); background: var(--paper); backdrop-filter: none; }
+.brand { gap: 12px; font-size: 11px; letter-spacing: .08em; }
+.brand-mark { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); font-size: 12px; }
+.topnav { gap: 25px; color: #53534e; font-size: 12px; }
+.topnav a:hover { color: var(--ink); }
+.nav-pill { min-height: 36px; padding: 0 16px; border: 0; border-radius: 4px; background: var(--ink); color: #fff; box-shadow: none; }
+.nav-pill:hover { background: #3e3e3b; color: #fff !important; }
+.menu-button { border-radius: 4px; background: var(--surface); }
+.hero { width: min(1420px, calc(100% - 56px)); grid-template-columns: minmax(0, .92fr) minmax(500px, 1.08fr); gap: clamp(46px, 7vw, 120px); padding: 148px 0 132px; border-bottom: 1px solid var(--line); }
+.hero-copy h1 { max-width: 800px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(4.5rem, 7.2vw, 7.4rem); font-weight: 400; line-height: .94; letter-spacing: -.075em; }
+.hero-copy h1 span { color: var(--ink); font-style: italic; }
+.hero-copy > p { max-width: 570px; margin-top: 30px; color: #555550; font-size: 17px; line-height: 1.65; }
+.hero-kicker, .eyebrow { color: #6f6f68; font-size: 10px; letter-spacing: .14em; }
+.pulse-dot { width: 6px; height: 6px; background: var(--meri); box-shadow: none; }
+.hero-actions { margin-top: 34px; }
+.button { min-height: 44px; border-radius: 4px; padding: 0 17px; font-size: 12px; }
+.button--primary { background: var(--ink); }
+.button--secondary { border-color: var(--line-strong); background: transparent; color: var(--ink); }
+.hero-meta { margin-top: 24px; color: #85857d; }
+.hero-visual { align-self: center; }
+.trace { border: 1px solid #d2d2cc; border-radius: 5px; background: #171716; box-shadow: 0 22px 55px rgba(23,23,22,.07); }
+.trace-step, .trace__running, .icon-button { border-radius: 4px; }
+.section, .ecosystem-strip { width: min(1420px, calc(100% - 56px)); }
+.section { padding: 132px 0; }
+.section-heading h2, .ecosystem-strip h2, .cta h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: -.06em; }
+.section-heading h2, .ecosystem-strip h2, .cta h2 { font-size: clamp(2.7rem, 5.2vw, 5.6rem); }
+.section-heading p, .ecosystem-strip p, .cta p { max-width: 600px; font-size: 15px; }
+.proof-card, .architecture-flow, .architecture-detail, .wilenny-console, .status-table, .ecosystem-art, .cta { border-radius: 4px; box-shadow: none; }
+.architecture-node, .wilenny-tabs button { border-radius: 4px; }
+.ecosystem-strip { padding: 132px 0; }
+.cta { width: min(1420px, calc(100% - 56px)); margin-top: 44px; padding: 90px 70px; }
+.footer { width: min(1420px, calc(100% - 56px)); }
+@media (max-width: 1100px) { .hero { grid-template-columns: 1fr; padding-top: 100px; } .hero-visual { max-width: 760px; } }
+@media (max-width: 760px) { .topbar, .section, .ecosystem-strip, .footer, .hero { width: min(100% - 32px, 1420px); } .topbar { min-height: 64px; } .topnav { display: none; } .menu-button { display: grid; } .hero { padding: 90px 0 80px; } .hero-copy h1 { font-size: clamp(3.7rem, 17vw, 5.8rem); } .hero-copy > p { font-size: 15px; } .section, .ecosystem-strip { padding: 88px 0; } .cta { width: calc(100% - 32px); padding: 54px 26px; } }
+
+
+/* Final interaction guarantees for the editorial layer */
+:where(button, a, input, textarea, select):focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 35%, transparent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  [data-reveal] { opacity: 1; transform: none; }
+}
