@@ -42,3 +42,11 @@ Feature: Centro atmosférico Meridian con telemetría verificable y mapa 3D
     When se cambia de ciudad
     Then se mueve la cámara sin animación flyTo
     And no se reproduce el destello animado de tormenta
+  Scenario: Navegador sin WebGL
+    Given que MapLibre no puede iniciar el contexto WebGL
+    When se abre el centro atmosférico
+    Then se mantiene el gráfico meteorológico real
+    And se muestra un mapa interactivo 2D de OpenStreetMap sin claves API
+    And el texto explica que la visualización 3D no está disponible
+    When el usuario selecciona Reykjavík
+    Then el mapa alternativo muestra la ubicación de Reykjavík
