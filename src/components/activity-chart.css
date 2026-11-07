@@ -61,13 +61,17 @@ html:has(.activity-page) #root { background: transparent !important; }
 @media (prefers-reduced-motion: reduce) {
   .activity-bar, .activity-tooltip, .activity-tabs button, .activity-refresh { animation: none !important; transition: none !important; }
 }
-@media (prefers-color-scheme: dark) {
-  .activity-card { color: #ebeff8; }
-  .activity-heading p, .activity-chart-info span, .activity-total, .activity-axis, .activity-footer p, .activity-meta { color: #b4bfd1; fill: #b4bfd1; }
-  .activity-grid { stroke: #485368; }
-  .activity-tabs button { color: #c6d1ea; }
-  .activity-tabs button[aria-pressed='true'] { color: #c4cfff; }
-  .activity-refresh { border-color: #69758b; color: #d7dff4; }
-  .activity-tooltip { background: #e8efff; color: #1e2b47; }
-  .activity-tooltip span { color: #455778; }
-}
+
+html[data-meridian-theme="dark"] .activity-card { color: #ebeff8; }
+html[data-meridian-theme="dark"] .activity-heading p,
+html[data-meridian-theme="dark"] .activity-chart-info span,
+html[data-meridian-theme="dark"] .activity-total,
+html[data-meridian-theme="dark"] .activity-footer p,
+html[data-meridian-theme="dark"] .activity-meta { color: #b4bfd1; }
+html[data-meridian-theme="dark"] .activity-axis { fill: #b4bfd1; }
+html[data-meridian-theme="dark"] .activity-grid { stroke: #485368; }
+html[data-meridian-theme="dark"] .activity-tabs button { color: #c6d1ea; }
+html[data-meridian-theme="dark"] .activity-tabs button[aria-pressed='true'] { color: #c4cfff; }
+html[data-meridian-theme="dark"] .activity-refresh { border-color: #69758b; color: #d7dff4; }
+html[data-meridian-theme="dark"] .activity-tooltip { background: #e8efff; color: #1e2b47; }
+html[data-meridian-theme="dark"] .activity-tooltip span { color: #455778; }
