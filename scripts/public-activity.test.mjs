@@ -24,22 +24,22 @@ test('falla al recibir una respuesta inválida: no inventa eventos', () => {
   assert.throws(() => aggregatePublicEvents([], now, 0), RangeError);
   assert.throws(() => parsePublicMetrics(null, now), TypeError);
 });
-test('admite búsquedas web solo cuando la API ofrece conteos verificables', () => {
-  const actual = parsePublicMetrics({ days: [
-    { date: '2026-11-06', events: 4, webSearches: 3 },
-    { date: '2026-11-07', events: 2 },
-  ] }, now);
-  assert.deepEqual(actual.slice(-2), [
-    { date: '2026-11-06', events: 4, webSearches: 3 },
-    { date: '2026-11-07', events: 2 },
-  ]);
+test('admite búsquedas web únicamente cuando la API contiene conteos verificables', () => {
+  const days = Array.from({ length: 7 }, (_, index) => ({
+    date: new Date(Date.UTC(2026, 10, index + 1)).toISOString().slice(0, 10),
+    events: index,
+    ...(index === 5 ? { webSearches: 3 } : {}),
+  }));
+  const actual = parsePublicMetrics({ days }, now);
+  assert.equal(actual.length, 7);
+  assert.equal(actual[5].webSearches, 3);
   assert.equal(actual[0].webSearches, undefined);
 });
-test('ignora métricas negativas o malformadas', () => {
-  const actual = parsePublicMetrics({ days: [
+
+test('rechaza métricas negativas, días incompletos o respuestas malformadas', () => {
+  assert.throws(() => parsePublicMetrics({ days: [
     { date: '2026-11-07', events: -7, webSearches: 2 },
     { date: '2026-11-06', events: 1, webSearches: -1 },
-  ] }, now);
-  assert.equal(actual.at(-1).events, 0);
-  assert.equal(actual.at(-2).webSearches, undefined);
+  ] }, now), TypeError);
+  assert.throws(() => parsePublicMetrics({ days: [] }, now), TypeError);
 });
