@@ -28,4 +28,5 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build -- --base=/-meridian-showcase/app/
+      - run: mkdir -p docs/public && cp assets/*.svg docs/public/
       - run: npm run docs:build
