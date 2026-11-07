@@ -184,6 +184,34 @@ export function ActivityChart() {
   const [retry, setRetry] = useState(0);
 
   useEffect(() => {
+    // The embed is same-origin: follow the parent documentation theme.
+    const root = document.documentElement;
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    let parentRoot: HTMLElement | null = null;
+    try {
+      if (window.parent !== window && window.parent.location.origin === window.location.origin) {
+        parentRoot = window.parent.document.documentElement;
+      }
+    } catch {
+      // Standalone and cross-origin uses the operating-system preference.
+    }
+    const sync = () => {
+      root.dataset.meridianTheme = (parentRoot
+        ? parentRoot.classList.contains('dark')
+        : media.matches) ? 'dark' : 'light';
+    };
+    const observer = new MutationObserver(sync);
+    if (parentRoot) observer.observe(parentRoot, { attributes: true, attributeFilter: ['class'] });
+    media.addEventListener('change', sync);
+    sync();
+    return () => {
+      observer.disconnect();
+      media.removeEventListener('change', sync);
+      delete root.dataset.meridianTheme;
+    };
+  }, []);
+
+  useEffect(() => {
     let alive = true;
     let controller: AbortController | undefined;
     const refresh = () => {
