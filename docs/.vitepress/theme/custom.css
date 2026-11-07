@@ -53,3 +53,19 @@
   .meridian-activity-embed { margin: 24px auto 12px; }
   .meridian-activity-embed iframe { height: 415px; }
 }
+
+/* Responsive preview for the interactive MapLibre + Recharts module. */
+.meridian-atmosphere-embed {
+  width: 100%; max-width: 1380px; margin: 22px auto 20px;
+  background: transparent; border: 0; box-shadow: none;
+}
+.meridian-atmosphere-embed iframe {
+  width: 100%; height: 765px; display: block;
+  border: 0; background: transparent;
+}
+@media (max-width: 920px) {
+  .meridian-atmosphere-embed iframe { height: 1130px; }
+}
+@media (max-width: 600px) {
+  .meridian-atmosphere-embed iframe { height: 1190px; }
+}
