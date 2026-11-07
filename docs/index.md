@@ -62,7 +62,7 @@ Explora pronósticos reales de viento y ráfagas con un gráfico Recharts y un m
   ></iframe>
 </div>
 
-[Abrir centro atmosférico a pantalla completa](/app/atmosphere/)
+<a href="/-meridian-showcase/app/atmosphere/">Abrir centro atmosférico a pantalla completa</a>
 
 ## Actividad diaria verificada
 
