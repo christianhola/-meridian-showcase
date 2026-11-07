@@ -46,3 +46,11 @@ Ejecutar Node.js 22, npm ci, npm run check, npm test,
 npm run build -- --base=/-meridian-showcase/app/ y npm run docs:build.
 Además verificar la ruta /app/activity/, su iframe en la portada y
 /GETTING-STARTED, navegación por teclado y respuesta 403/429 de GitHub.
+
+## Open-Meteo: datos reales sin clave
+
+La interfaz contiene una pestaña de pronóstico meteorológico para Santo Domingo. Consulta el endpoint HTTPS público de Open-Meteo con las variables diarias temperature_2m_max, temperature_2m_min y precipitation_probability_max, zona horaria America/Santo_Domingo y siete días de pronóstico. No usa claves API. Valida fecha, cardinalidad, rango y mínimos/máximos antes de mostrar cualquier barra.
+
+El cursor, el foco del teclado y el resaltado automático cada 3,2 segundos muestran valores verificables, sin cambiar los números aleatoriamente. La animación de entrada no convierte el gráfico en datos de medición real. La fuente de eventos de GitHub y los pronósticos meteorológicos son independientes.
+
+La presentación en GitHub Pages está incrustada sin tarjeta, borde ni sombra; hay que verificarla en escritorio y móvil después de publicar.

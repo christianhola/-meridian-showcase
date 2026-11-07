@@ -2,19 +2,14 @@
 
 **Current status:** este repositorio es público. Mantén las credenciales, datos privados y métricas internas exclusivamente en servicios protegidos.
 
-## Actividad diaria
-
-
-<div class="meridian-activity-embed">
+<div class="meridian-activity-embed" aria-label="Actividad pública y pronóstico real">
   <iframe
     src="/-meridian-showcase/app/activity/"
     title="Actividad diaria verificable de Meridian"
     loading="lazy"
-    style="display:block;width:100%;height:490px;border:0;background:transparent"
+    style="display:block;width:100%;border:0;background:transparent;pointer-events:auto"
   ></iframe>
 </div>
-
-Los eventos corresponden a actividad pública verificable del repositorio. Las búsquedas web aparecerán únicamente si un servicio autorizado publica datos agregados; no se exponen claves en GitHub Pages.
 
 ## English — start with a real project
 1. Clone the repository with a GitHub account that has access.

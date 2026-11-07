@@ -49,19 +49,14 @@ features:
     link: /community
 ---
 
-## Actividad diaria
-
-
-<div class="meridian-activity-embed">
+<div class="meridian-activity-embed" aria-label="Datos reales de Meridian y el clima">
   <iframe
     src="/-meridian-showcase/app/activity/"
     title="Actividad diaria verificable de Meridian"
     loading="lazy"
-    style="display:block;width:100%;height:490px;border:0;background:transparent"
+    style="display:block;width:100%;border:0;background:transparent;pointer-events:auto"
   ></iframe>
 </div>
-
-Actividad pública verificada; los registros internos solo se mostrarán si existe un endpoint público de estadísticas agregadas.
 
 ## Una comunidad para construir con criterio
 
