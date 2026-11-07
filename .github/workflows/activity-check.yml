@@ -1,0 +1,32 @@
+name: Verify Meridian public activity chart
+on:
+  pull_request:
+    paths:
+      - 'src/components/ActivityChart.tsx'
+      - 'src/components/activity-chart.css'
+      - 'src/lib/public-activity.ts'
+      - 'src/App.tsx'
+      - 'scripts/public-activity.test.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'docs/**'
+      - '.github/workflows/activity-check.yml'
+      - '.github/workflows/docs-pages.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check
+      - run: npm test
+      - run: npm run build -- --base=/-meridian-showcase/app/
+      - run: mkdir -p docs/public && cp assets/*.svg docs/public/
+      - run: npm run docs:build

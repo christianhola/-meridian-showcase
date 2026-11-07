@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ecosystemUrl from "../assets/meridian-ecosystem-hub.svg";
 import { ArchitectureMap } from "./components/ArchitectureMap";
 import { AgentsWorkspace } from "./components/AgentsWorkspace";
+import { ActivityChart } from "./components/ActivityChart";
 import { LiveTrace } from "./components/LiveTrace";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
@@ -12,6 +13,10 @@ import { WilennyLab } from "./components/WilennyLab";
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const agentRoute = { href: "/-meridian-showcase/agents/" };
+
+  if (window.location.pathname.replace(/\/+$/, "").endsWith("/activity")) {
+    return <div className="activity-page"><ActivityChart /></div>;
+  }
 
   if (window.location.pathname.replace(/\/+$/, "").endsWith("/desktop")) {
     return <VirtualDesktop />;
