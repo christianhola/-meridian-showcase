@@ -153,11 +153,6 @@ export default function AtmosphericCommandCenter() {
         maplibregl.setWorkerUrl(maplibreWorkerUrl);
         if (disposed || !mapContainerRef.current) return;
         const container = mapContainerRef.current;
-        if (!maplibregl.supported()) {
-          setMapError("Este navegador no dispone de WebGL compatible.");
-          return;
-        }
-
         const map = new maplibregl.Map({
           container,
           style: MAP_STYLE,
@@ -166,7 +161,6 @@ export default function AtmosphericCommandCenter() {
           pitch: 58,
           bearing: CITIES[0].bearing,
           canvasContextAttributes: { antialias: true },
-          attributionControl: true,
         });
         instance = map;
         mapRef.current = map;
