@@ -36,7 +36,8 @@ export function parseWeatherForecast(input: unknown): WeatherDay[] {
     const maximum: unknown = maximums[i];
     const probability: unknown = Array.isArray(rain) ? rain[i] : undefined;
     if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
-        Number.isNaN(Date.parse(date + 'T00:00:00Z')) || seen.has(date) ||
+        (!Number.isFinite(Date.parse(date + 'T00:00:00Z')) ||
+         new Date(date + 'T00:00:00Z').toISOString().slice(0, 10) !== date) || seen.has(date) ||
         (i > 0 && date <= dates[i - 1]) ||
         typeof minimum !== 'number' || !Number.isFinite(minimum) ||
         typeof maximum !== 'number' || !Number.isFinite(maximum) ||
