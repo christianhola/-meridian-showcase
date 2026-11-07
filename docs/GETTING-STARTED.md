@@ -2,7 +2,7 @@
 
 **Current status:** este repositorio es público. Mantén las credenciales, datos privados y métricas internas exclusivamente en servicios protegidos.
 
-**Nuevo:** [Explora el centro atmosférico 3D con MapLibre y Recharts](/app/atmosphere/). Incluye tres ciudades, datos de Open-Meteo y un modo de simulación inequívocamente marcado.
+**Nuevo:** <a href="/-meridian-showcase/app/atmosphere/">Explora el centro atmosférico 3D con MapLibre y Recharts</a>. Incluye tres ciudades, datos de Open-Meteo y un modo de simulación inequívocamente marcado.
 
 <div class="meridian-activity-embed" aria-label="Actividad pública y pronóstico real">
   <iframe
