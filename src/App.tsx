@@ -1,60 +1,14 @@
 import { ArrowRight, Github, Menu, PauseCircle, Sparkles, X } from "lucide-react";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ecosystemUrl from "../assets/meridian-ecosystem-hub.svg";
 import { ArchitectureMap } from "./components/ArchitectureMap";
-import { CommunityHub } from "./components/CommunityHub";
-import { AgentResponseShowcase } from "./components/AgentResponseShowcase";
-import { AgentsWorkspace } from "./components/AgentsWorkspace";
-import { VirtualDesktop } from "./components/VirtualDesktop";
+import { LiveTrace } from "./components/LiveTrace";
 import { ProofGrid } from "./components/ProofGrid";
 import { StatusMatrix } from "./components/StatusMatrix";
 import { WilennyLab } from "./components/WilennyLab";
-import { MeridianSyncCatalog } from "./components/MeridianSyncCatalog";
-
-const LazyAIPlayground = lazy(() => import("./components/AIPlayground").then(module => ({ default: module.AIPlayground })));
-
-function DeferredAIPlayground() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    if (!("IntersectionObserver" in window)) {
-      setReady(true);
-      return;
-    }
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) {
-        setReady(true);
-        observer.disconnect();
-      }
-    }, { rootMargin: "450px 0px" });
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  const loading = <section className="section ai-playground ai-playground--loading" aria-busy="true" aria-label="AI Playground">
-    <div className="ai-playground__loading"><span className="ai-live-loader" aria-hidden="true" /> Cargando el chat en vivo…</div>
-  </section>;
-
-  return <div id="ai-playground" className="ai-playground-shell" ref={sectionRef}>
-    {ready ? <Suspense fallback={loading}><LazyAIPlayground /></Suspense> : loading}
-  </div>;
-}
 
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("playground");
-  // Preserve old /app/#agents bookmarks while moving chat to its own page.
-  useEffect(() => {
-    if (window.location.hash === "#agents") {
-      window.location.replace("/-meridian-showcase/agents/");
-    }
-    if (window.location.hash === "#ai-playground") {
-      requestAnimationFrame(() => document.getElementById("ai-playground")?.scrollIntoView());
-    }
-  }, []);
 
   useEffect(() => {
     const reveal = new IntersectionObserver(
@@ -71,63 +25,21 @@ export function App() {
     return () => reveal.disconnect();
   }, []);
 
-  useEffect(() => {
-    const ids = ["playground", "ai-playground", "agents", "start", "community", "directory", "architecture", "wilenny", "status"];
-    const sections = ids.map(id => document.getElementById(id)).filter((node): node is HTMLElement => Boolean(node));
-    const observer = new IntersectionObserver(entries => {
-      const mostVisible = entries.filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (mostVisible) setActiveSection(mostVisible.target.id);
-    }, { rootMargin: "-15% 0px -55% 0px", threshold: [0, 0.15, 0.5] });
-    sections.forEach(section => observer.observe(section));
-    const onEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMobileOpen(false);
-    };
-    window.addEventListener("keydown", onEscape);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("keydown", onEscape);
-    };
-  }, []);
-
-  const navigation = [
-    { label: "Playground", href: "#playground", id: "playground" },
-    { label: "AI Lab", href: "#ai-playground", id: "ai-playground" },
-    { label: "Agentes", href: "/-meridian-showcase/agents/", id: "agents" },
-    { label: "Get started", href: "#start", id: "start" },
-    { label: "Ecosystem", href: "#community", id: "community" },
-    { label: "Directory", href: "#directory", id: "directory" },
-    { label: "Sync Library", href: "#meridian-sync", id: "meridian-sync" },
-  ] as const;
-
-  if (window.location.pathname.replace(/\/+$/, "").endsWith("/desktop")) {
-    return <VirtualDesktop />;
-  }
-
-  // Dedicated agents website: no Community navigation, marketing sections or footer.
-  if (window.location.pathname.replace(/\/+$/, "").endsWith("/agents")) {
-    return <div className="agents-standalone"><AgentsWorkspace /></div>;
-  }
-
   return (
     <div className="site-shell">
-      <a className="skip-link" href="#playground">Skip to interactive demo</a>
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Meridian Community">
+        <a className="brand" href="#top" aria-label="Meridian showcase">
           <span className="brand-mark">M</span>
-          <span>MERIDIAN / COMMUNITY</span>
+          <span>MERIDIAN / SYSTEM SHOWCASE</span>
         </a>
 
-        <nav className="topnav" aria-label="Primary navigation">
-          {navigation.map(link => (
-            <a key={link.id} href={link.href}
-              aria-current={activeSection === link.id ? "location" : undefined}>
-              {link.label}
-            </a>
-          ))}
-          <a className="nav-pill" href="https://github.com/christianhola/-meridian-showcase"
-            target="_blank" rel="noreferrer" aria-label="Open Meridian Community on GitHub (requires repository access)">
-            GitHub <Github size={14} aria-hidden="true" />
+        <nav className="topnav" aria-label="Principal">
+          <a href="#proof">Proof</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#wilenny">WILENNY</a>
+          <a href="#status">Status</a>
+          <a className="nav-pill" href="https://github.com/christianhola/-meridian-showcase">
+            GitHub <Github size={14} />
           </a>
         </nav>
 
@@ -136,7 +48,6 @@ export function App() {
           className="menu-button"
           aria-label={mobileOpen ? "Cerrar navegación" : "Abrir navegación"}
           aria-expanded={mobileOpen}
-          aria-controls="mobile-menu"
           onClick={() => setMobileOpen((value) => !value)}
         >
           {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -144,86 +55,54 @@ export function App() {
       </header>
 
       {mobileOpen ? (
-        <nav id="mobile-menu" className="mobile-nav" aria-label="Mobile navigation">
-          {navigation.map(link => (
-            <a key={link.id} href={link.href}
-              aria-current={activeSection === link.id ? "location" : undefined}
-              onClick={() => setMobileOpen(false)}>
-              {link.label}<ArrowRight size={15} aria-hidden="true" />
+        <nav className="mobile-nav" aria-label="Principal móvil">
+          {[
+            ["Proof", "#proof"],
+            ["Architecture", "#architecture"],
+            ["WILENNY", "#wilenny"],
+            ["Status", "#status"],
+          ].map(([label, href]) => (
+            <a key={href} href={href} onClick={() => setMobileOpen(false)}>
+              {label}<ArrowRight size={15} />
             </a>
           ))}
-          <div className="mobile-nav__divider" role="separator" />
-          <a href="https://github.com/christianhola/-meridian-showcase" target="_blank" rel="noreferrer"
-            onClick={() => setMobileOpen(false)}>
-            Open on GitHub <Github size={15} aria-hidden="true"/>
-          </a>
         </nav>
       ) : null}
 
       <main id="top">
-
         <section className="hero">
           <div className="hero-copy" data-reveal>
             <span className="hero-kicker">
               <span className="pulse-dot" />
-              Meridian Community / Developer preview
+              Evidence-first AI operating layer
             </span>
             <h1>
-              Tools for builders.
-              <span>Made to be explored.</span>
+              Context becomes
+              <span>controlled execution.</span>
             </h1>
             <p>
-              Build with transparent agent interfaces, reproducible starters and portable skills.
-              Explore real code, propose improvements and help shape the Meridian ecosystem.
+              Meridian conecta intención, contexto, agentes especializados y herramientas
+              autorizadas en una capa operativa verificable para trabajo empresarial.
             </p>
             <div className="hero-actions">
-              <a className="button button--primary" href="#playground">
-                Try the interactive demo <ArrowRight size={15} />
+              <a className="button button--primary" href="#proof">
+                Inspect the system <ArrowRight size={15} />
               </a>
-              <a className="button button--secondary" href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/agent-response-starter" target="_blank" rel="noreferrer">
-                Get the starter
-              </a>
-              <a className="button button--sync" href="#meridian-sync">
-                Open Sync Library <ArrowRight size={15} />
+              <a className="button button--secondary" href="#wilenny">
+                Explore WILENNY
               </a>
             </div>
             <div className="hero-meta">
-              <span><Sparkles size={13} /> open-source building blocks</span>
-              <span><PauseCircle size={13} /> demo data, zero secrets</span>
+              <span><Sparkles size={13} /> agent orchestration</span>
+              <span><PauseCircle size={13} /> preview-first execution</span>
             </div>
           </div>
 
           <div className="hero-visual" data-reveal>
-            <AgentResponseShowcase />
+            <LiveTrace />
           </div>
         </section>
 
-        <DeferredAIPlayground />
-
-        <section className="developer-start" id="start" aria-labelledby="dev-start-title" data-reveal>
-          <div className="developer-start__heading">
-            <span className="eyebrow">Explore · learn · contribute</span>
-            <h2 id="dev-start-title">Your first build starts here<span>.</span></h2>
-            <p>Local-first tutorials and transparent demos. No fictional SDK imports, no production tokens, no hidden setup.</p>
-          </div>
-          <div className="developer-start__steps">
-            <a href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/agent-response-starter" target="_blank" rel="noreferrer">
-              <span>01 / RUN</span><strong>Agent response starter</strong><small>A real local HTTP API, browser UI and tests.</small><ArrowRight size={18} aria-hidden="true"/>
-            </a>
-            <a href="https://github.com/christianhola/-meridian-showcase/tree/main/examples/mcp-readonly" target="_blank" rel="noreferrer">
-              <span>02 / CONNECT</span><strong>Read-only MCP server</strong><small>Official SDK v2, typed tool and protocol tests.</small><ArrowRight size={18} aria-hidden="true"/>
-            </a>
-            <a href="https://github.com/christianhola/-meridian-showcase/blob/main/skills/wilenny/SKILL.md" target="_blank" rel="noreferrer">
-              <span>03 / LEARN</span><strong>Portable WILENNY skill</strong><small>Capability routing, safety and evaluations.</small><ArrowRight size={18} aria-hidden="true"/>
-            </a>
-            <a href="https://github.com/christianhola/-meridian-showcase/blob/main/CONTRIBUTING.md" target="_blank" rel="noreferrer">
-              <span>04 / CONTRIBUTE</span><strong>Make your first contribution</strong><small>Guidelines, reviews and documented boundaries.</small><ArrowRight size={18} aria-hidden="true"/>
-            </a>
-          </div>
-        </section>
-
-        <div data-reveal><CommunityHub /></div>
-        <div data-reveal><MeridianSyncCatalog /></div>
         <div data-reveal><ProofGrid /></div>
         <div data-reveal><ArchitectureMap /></div>
 
@@ -246,13 +125,14 @@ export function App() {
 
         <section className="cta" data-reveal>
           <span className="eyebrow eyebrow--dark">Next frontier</span>
-          <h2>Open collaboration, built responsibly.</h2>
+          <h2>Del manifiesto a la evidencia reproducible.</h2>
           <p>
-            The first examples are here. The public organization, verified community catalog and full launch security review are still being prepared.
+            El siguiente paso del showcase es conectar demos seguras, evals versionados y
+            traces anonimizados del runtime real sin publicar secretos ni datos de clientes.
           </p>
           <div className="cta-actions">
-            <a className="button button--light" href="https://github.com/christianhola/-meridian-showcase/blob/main/README.md">Read the technical hub</a>
-            <a className="button button--ghost-dark" href="https://github.com/christianhola/-meridian-showcase/blob/main/skills/wilenny/SKILL.md">
+            <a className="button button--light" href="./README.md">Read the technical hub</a>
+            <a className="button button--ghost-dark" href="./skills/wilenny/SKILL.md">
               Inspect WILENNY
             </a>
           </div>
@@ -264,7 +144,7 @@ export function App() {
           <span className="brand-mark brand-mark--small">M</span>
           <strong>MERIDIAN</strong>
         </div>
-        <p>Private community preview · Examples are local-first, with clear simulation boundaries.</p>
+        <p>Building an auditable operating layer for intelligent work.</p>
         <span>© 2026</span>
       </footer>
     </div>
