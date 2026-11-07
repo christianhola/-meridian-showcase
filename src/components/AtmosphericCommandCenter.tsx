@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Map as LibreMap, Marker as LibreMarker } from "maplibre-gl";
 import { classifyGust, parseWindForecast, type WindReading } from "../lib/wind-forecast";
+import { buildOsmEmbedUrl } from "../lib/osm-embed";
 import {
   Activity,
   AlertTriangle,
@@ -169,7 +170,7 @@ export default function AtmosphericCommandCenter() {
 
         map.on("error", () => {
           if (!disposed && !didLoad) {
-            setMapError("No se pudo cargar el estilo o los azulejos del mapa.");
+            setMapError("La visualización 3D no está disponible en este navegador. Se muestra OpenStreetMap 2D.");
           }
         });
 
@@ -231,7 +232,7 @@ export default function AtmosphericCommandCenter() {
         }
       } catch (error) {
         if (!disposed) {
-          setMapError(error instanceof Error ? error.message : "No se pudo inicializar el mapa.");
+          setMapError("No se pudo iniciar WebGL para el mapa 3D. Se muestra OpenStreetMap 2D.");
         }
       }
     }
@@ -494,7 +495,17 @@ export default function AtmosphericCommandCenter() {
           <div className="ma-map-shell" data-overload={String(overloaded)}>
             <div ref={mapContainerRef} className="ma-map" aria-label={`Mapa interactivo de ${city.name}`} />
             {!mapReady && !mapError && <span className="ma-map-loading">Inicializando motor cartográfico…</span>}
-            {mapError && <div className="ma-map-error" role="alert">{mapError}</div>}
+            {mapError && (
+              <div className="ma-map-fallback" role="region" aria-label={`Mapa 2D de ${city.name}`}>
+                <iframe
+                  src={buildOsmEmbedUrl(city.latitude, city.longitude)}
+                  title={`Mapa alternativo interactivo OpenStreetMap de ${city.name}`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+                <div className="ma-map-fallback-note" role="status">{mapError}</div>
+              </div>
+            )}
             <div className="ma-map-hud">
               <span>LAT {city.latitude.toFixed(4)}</span>
               <span>LON {city.longitude.toFixed(4)}</span>
@@ -592,6 +603,9 @@ export default function AtmosphericCommandCenter() {
         .ma-map-hud strong { color: #ff8fae; font-size: 9px; }
         .ma-map-loading, .ma-map-error { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 4; background: #fff; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #52627a; text-align: center; }
         .ma-map-error { color: #ae2846; }
+        .ma-map-fallback { position: absolute; inset: 0; z-index: 5; background: #e9edf3; }
+        .ma-map-fallback iframe { display: block; width: 100%; height: 100%; border: 0; }
+        .ma-map-fallback-note { position: absolute; top: 10px; left: 10px; right: 10px; max-width: 380px; color: #2d466b; font-size: 11px; line-height: 1.45; border: 1px solid rgba(25,46,80,.12); border-radius: 7px; background: rgba(255,255,255,.93); padding: 7px 10px; pointer-events: none; }
         .ma-map-footnote { padding-top: 13px; font-size: 10px; color: var(--ma-muted); align-items: flex-start; }
         .ma-map-footnote a { color: var(--ma-primary); display: inline-flex; align-items: center; gap: 3px; text-decoration: none; white-space: nowrap; }
         .ma-map-footnote a:hover { text-decoration: underline; }
