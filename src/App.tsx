@@ -16,7 +16,7 @@ export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const agentRoute = { href: "/-meridian-showcase/agents/" };
 
-  if (window.location.pathname.replace(/\\/+$/, "").endsWith("/atmosphere")) {
+  if (window.location.pathname.replace(/\/+$/, "").endsWith("/atmosphere")) {
     return <div className="atmosphere-page" style={{ padding: "clamp(14px, 3.5vw, 45px)", minHeight: "100vh" }}>
       <Suspense fallback={<div role="status">Cargando centro atmosférico…</div>}>
         <AtmosphericCommandCenter />
