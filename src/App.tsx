@@ -96,12 +96,11 @@ export function App() {
         <section className="hero">
           <div className="hero-copy" data-reveal>
             <span className="hero-kicker">
-              <span className="pulse-dot" />
-              Meridian Community / Open workspace
+              Meridian Community · Open workspace · 2026
             </span>
             <h1>
-              A better place
-              <span>to build in public.</span>
+              Build in public.
+              <span>Keep the system legible.</span>
             </h1>
             <p>
               Open examples, working interfaces and documented systems for people who care about
@@ -120,10 +119,14 @@ export function App() {
               <span><PauseCircle size={13} /> built in public</span>
             </div>
           </div>
+        </section>
 
-          <div className="hero-visual" data-reveal>
-            <LiveTrace />
+        <section className="hero-proof" data-reveal aria-label="Meridian system preview">
+          <div className="hero-proof__heading">
+            <span>THE WORKING SYSTEM</span>
+            <span>Preview / local / auditable</span>
           </div>
+          <LiveTrace />
         </section>
 
         <div data-reveal><ProofGrid /></div>
