@@ -18,9 +18,6 @@ hero:
     - theme: alt
       text: Descubrir la visión
       link: /vision
-    - theme: brand
-      text: Meridian Sync
-      link: /app/#meridian-sync
     - theme: alt
       text: Participar en GitHub
       link: https://github.com/christianhola/-meridian-showcase/issues
@@ -65,4 +62,3 @@ Esta es la página pública de presentación y documentación de Meridian Commun
 
 **¿Por dónde empezar?** [Lee la introducción](/GETTING-STARTED), [explora la arquitectura](/ARCHITECTURE) o [conoce cómo contribuir](/community).
 
-**[Meridian Sync](/meridian-sync)** · Runtime unificado, memoria, Swarm y catálogo de código visual.
