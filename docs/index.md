@@ -49,6 +49,20 @@ features:
     link: /community
 ---
 
+## Actividad diaria
+
+
+<div class="meridian-activity-embed">
+  <iframe
+    src="/-meridian-showcase/app/activity/"
+    title="Actividad diaria verificable de Meridian"
+    loading="lazy"
+    style="display:block;width:100%;height:490px;border:0;background:transparent"
+  ></iframe>
+</div>
+
+Actividad pública verificada; los registros internos solo se mostrarán si existe un endpoint público de estadísticas agregadas.
+
 ## Una comunidad para construir con criterio
 
 Esta es la página pública de presentación y documentación de Meridian Community. Reúne recursos educativos, propuestas de arquitectura, ejemplos y guías para personas que crean herramientas con IA.
