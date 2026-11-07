@@ -49,6 +49,23 @@ features:
     link: /community
 ---
 
+## Centro atmosférico 3D
+
+Explora pronósticos reales de viento y ráfagas con un gráfico Recharts y un mapa interactivo MapLibre: La Romana, Silicon Valley y Reykjavík. El botón de tormenta es una **simulación visual** y nunca una alerta meteorológica oficial.
+
+<div class="meridian-atmosphere-embed">
+  <iframe
+    src="/-meridian-showcase/app/atmosphere/"
+    title="Meridian: mapa 3D atmosférico interactivo y viento real"
+    loading="lazy"
+    style="display:block;width:100%;border:0;background:transparent;pointer-events:auto"
+  ></iframe>
+</div>
+
+<a href="/-meridian-showcase/app/atmosphere/">Abrir centro atmosférico a pantalla completa</a>
+
+## Actividad diaria verificada
+
 <div class="meridian-activity-embed" aria-label="Datos reales de Meridian y el clima">
   <iframe
     src="/-meridian-showcase/app/activity/"
