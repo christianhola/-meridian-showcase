@@ -59,6 +59,8 @@ export function parsePublicMetrics(input: unknown, now: Date = new Date()): Dail
   const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   return Array.from({ length: 7 }, (_, index) => {
     const date = utcDay(new Date(today - (6 - index) * DAY_MS));
-    return byDay.get(date) ?? { date, events: 0 };
+    const point = byDay.get(date);
+    if (!point) throw new TypeError('La API no proporcionó datos verificados para ' + date + '.');
+    return point;
   });
 }
