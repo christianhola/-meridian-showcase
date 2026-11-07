@@ -1,5 +1,5 @@
 import { ArrowRight, Github, Menu, PauseCircle, Sparkles, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import ecosystemUrl from "../assets/meridian-ecosystem-hub.svg";
 import { ArchitectureMap } from "./components/ArchitectureMap";
 import { AgentsWorkspace } from "./components/AgentsWorkspace";
@@ -10,9 +10,19 @@ import { StatusMatrix } from "./components/StatusMatrix";
 import { VirtualDesktop } from "./components/VirtualDesktop";
 import { WilennyLab } from "./components/WilennyLab";
 
+const AtmosphericCommandCenter = lazy(() => import("./components/AtmosphericCommandCenter"));
+
 export function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const agentRoute = { href: "/-meridian-showcase/agents/" };
+
+  if (window.location.pathname.replace(/\\/+$/, "").endsWith("/atmosphere")) {
+    return <div className="atmosphere-page" style={{ padding: "clamp(14px, 3.5vw, 45px)", minHeight: "100vh" }}>
+      <Suspense fallback={<div role="status">Cargando centro atmosférico…</div>}>
+        <AtmosphericCommandCenter />
+      </Suspense>
+    </div>;
+  }
 
   if (window.location.pathname.replace(/\/+$/, "").endsWith("/activity")) {
     return <div className="activity-page"><ActivityChart /></div>;
