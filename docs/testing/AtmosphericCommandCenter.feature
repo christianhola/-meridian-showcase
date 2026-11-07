@@ -47,6 +47,8 @@ Feature: Centro atmosférico Meridian con telemetría verificable y mapa 3D
     When se abre el centro atmosférico
     Then se mantiene el gráfico meteorológico real
     And se muestra un mapa interactivo 2D de OpenStreetMap sin claves API
+    And Leaflet usa mosaicos raster que no requieren WebGL
+    And la atribución a OpenStreetMap permanece visible
     And el texto explica que la visualización 3D no está disponible
     When el usuario selecciona Reykjavík
     Then el mapa alternativo muestra la ubicación de Reykjavík
