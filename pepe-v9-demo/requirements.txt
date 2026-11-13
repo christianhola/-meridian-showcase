@@ -1,0 +1,6 @@
+transformers==4.53.3
+peft==0.16.0
+accelerate==1.8.1
+safetensors==0.5.3
+huggingface_hub>=0.33,<1
+gradio>=5,<6
